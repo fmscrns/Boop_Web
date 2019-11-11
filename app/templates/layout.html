@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?xml version="1.0" encoding="utf-8"?>      
+        <title>Boop | {{ title }}</title>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/glm-ajax.js') }}"></script>
+        <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='assets/boop.ico') }}">
+    </head>
+    {% block bodyStyle %}{% endblock bodyStyle %}
+        <header>
+            {% block navbarAdjust %}{% endblock navbarAdjust %}
+                {% block navbarStyle %}{% endblock navbarStyle %}
+                    <div class="row align-items-start container-fluid" style="margin:0;padding:0;">
+                        <div class="col-1" style="padding:0;margin-right:10px;">
+                            <a class="navbar-brand" href="{{ url_for('landingpage') }}">
+                                {% block navbarNameplate %}{% endblock navbarNameplate %}
+                            </a>
+                        </div>
+                        {% block navbarContent %}{% endblock navbarContent %}
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <div style="padding-left:calc(100vw - 100%);">
+            {% block flashMessage %}{% endblock flashMessage %}
+            {% block content %} {% endblock content %}
+        </div>
+        <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+    </body>
+</html>

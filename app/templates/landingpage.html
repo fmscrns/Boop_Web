@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+    {% block bodyStyle %}
+        <body style="background-image:url({{ url_for('static', filename='assets/bg-space.svg') }});background-size:cover;">
+    {% endblock bodyStyle %}
+
+    {% block navbarAdjust %}
+        <div id="welcome-navbar" class="container-fluid">
+    {% endblock navbarAdjust %}
+
+    {% block navbarStyle %}
+        <nav class="navbar navbar-expand-lg navbar-dark" style="padding:0;">
+    {% endblock navbarStyle %}
+
+    {% block navbarNameplate %}
+        <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate.svg') }}" style="width:80px;margin:25px 0 0 35px;">
+    {% endblock navbarNameplate %}
+
+    {% block navbarContent %}
+        
+    {% endblock navbarContent %}
+
+    {% block content %}
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-sm">
+                    <div class="floating-anim">
+                        <img src="{{ url_for('static', filename='assets/petronauts.svg') }}">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="container-fluid" style="margin-top:40px;">
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-auto">
+                                <div class="jumbotron jumbotron-fluid" style="text-align:center;background:transparent;">
+                                    <div class="container-fluid">
+                                        <span class="h2" style="color:white;font-size:37px;"><strong>A space for pets.</strong></span>
+                                    </div>
+                                    <div style="display:flex;flex-direction:column;">
+                                        <a href="#" class="btn auth-btn btn-outline-light" role="button" aria-pressed="true">Sign up</a>
+                                        <a href="#" class="btn auth-btn btn-outline-light" role="button" aria-pressed="true">Log in</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}
