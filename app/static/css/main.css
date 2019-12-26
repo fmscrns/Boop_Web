@@ -1,17 +1,31 @@
+body {
+    padding:0;
+    background-color:#efe9f2 !important;
+}
 @media (max-width:1200px) {
     #welcome-navbar-login {
         display:none;
     }
 }
+@media (max-width:991.98px) {
+    #navbar-dropdown {
+        display:none;
+    }
+}
+@media (min-width:992px) {
+    .nav-item-collapse {
+        display:none;
+    }
+}
 @media (max-width:767px) {
     #account-profPic {
-        border:2px rgb(200, 200, 239) solid;
+        border:2px white solid;
         border-radius:50%;
         margin:12px 25px;
         width:100px;
         height:100px;
         object-fit:cover;
-        background:#2f2f73;
+        background:white;
     }
     #account-info-panel-leftSpace {
         display:none;
@@ -28,13 +42,13 @@
 }
 @media (min-width:768px) {
     #account-profPic {
-        border:4px rgb(200, 200, 239) solid;
+        border:4px white solid;
         border-radius:50%;
         margin:25px;
         width:180px;
         height:180px;
         object-fit:cover;
-        background:#2f2f73;
+        background:white;
     }
     #account-info-panel-leftSpace {
         width:200px;
@@ -45,6 +59,8 @@
     #account-primary-editProfile-btn-cont {
         margin:0;
         padding:0;
+        position:absolute;
+        right:0;
     }
 }
 @media (max-width:1200px) {
@@ -63,11 +79,10 @@
     #flash-secondary-cont {
         width:100%;
         padding:0;
-        margin:0;
+        margin:15px 0 20px 0;
     }
     #ha-secondary-flash {
         margin:0;
-        border-radius:0;
         border:0;
     }
 }
@@ -75,7 +90,7 @@
     #ha-leftSection {
         width:370px;
         height:500px;
-        border:1px rgb(200, 200, 239) solid;
+        background-color:white;
         border-radius:8.5px;
     }
     #ha-leftSection-space {
@@ -99,10 +114,7 @@
 }
 #ha-rightSection {
     padding:0;
-}
-body {
-    padding:0;
-    margin:0;
+    margin-bottom:20px;
 }
 #floating-widget {
     position:fixed;
@@ -113,37 +125,26 @@ body {
 .boop-nameplate:hover {
     opacity:0.5;
 }
-#upperNavbar-aboutBtn {
-    font-family:Poppins-Medium;
-    width:120px;
-}
-#bottomNavbar-aboutBtn {
-    font-family:Poppins-Medium;
-    width:120px;
-}
 .auth-btn {
-    font-family:Poppins-Bold;
+    font-family:Poppins;
+    font-weight:700 !important;
     margin-top:10px;
     width:100%;
     border:1px white solid;
     color:white;
     border-radius:150px;
 }
-#about-btn {
-    font-family:Poppins-Bold;
-    width:140px;
-}
 #signup-form {
     border-radius:8.5px;
     background-color:white;
-    border:1px rgb(200, 200, 239) solid;
+    border:1px #9d7a86 solid;
     margin:40px 0;
     padding:30px;
 }
 #login-form {
     border-radius:8.5px;
     background-color:white;
-    border:1px rgb(200, 200, 239) solid;
+    border:1px #9d7a86 solid;
     margin:40px 0;
     padding:30px;
 }
@@ -202,7 +203,8 @@ body {
 .typewriting-anim h1 {
     color:white;
     font-size:60px;
-    font-family:Poppins-Bold;
+    font-family:Poppins;
+    font-weight:700;
     overflow:hidden;
     border-right:.15em solid orange;
     white-space:nowrap;
@@ -224,18 +226,21 @@ body {
     text-align:center;
 }
 #account-action-panel {
-    border-left:1px rgb(200, 200, 239) solid;
-    border-right:1px rgb(200, 200, 239) solid;
-    border-bottom:1px rgb(200, 200, 239) solid;
+    background-color:white;
+    border-bottom-left-radius:8.5px;
+    border-bottom-right-radius:8.5px;
+    overflow:hidden;
+
 }
 .account-actionPanel-item {
-    font-family:Poppins-Medium;
+    font-family:Poppins;
+    font-weight:500;
     height:35px;
     padding-top:7px;
     color:black;
 }
 .account-actionPanel-item:hover {
-    background-color:#2f2f73;
+    background-color:#00002A;
     color:white;
     text-decoration:none;
 }
@@ -243,14 +248,14 @@ body {
     text-align:center;
 }
 #account-fullName {
-    font-family:Poppins-SemiBold;
+    font-family:Poppins;
+    font-weight:600;
 }
 #ha-body {
     margin-top:80px;
 }
 #account-coverPhoto-panel{
     height:200px;
-    border:1px rgb(200, 200, 239) solid;
     background-color:rgb(200, 200, 239);
     border-top-left-radius:8.5px;
     border-top-right-radius:8.5px;
@@ -261,116 +266,73 @@ body {
     left:5px;
 }
 #account-info-panel {
-    height:140px;
+    height:100px;
     padding-top:10px;
-    border-left:1px rgb(200, 200, 239) solid;
-    border-right:1px rgb(200, 200, 239) solid;
+    background-color:white;
 }
-#account-secondary-editProf-btn {
-    border-radius:50px; 
-}
-#account-fullName-cont {
+#account-primary-nameplate-cont {
     padding:0;
 }
-#account-username-cont {
+#account-secondary-nameplate-cont {
     padding:0;
     margin-top:-7px;
+    color:#6c757d;
 }
-#account-content-panel {
+#account-content-posts-panel {
+    margin-top:20px;
     padding:0;
-    border:1px rgb(200, 200, 239) solid;
     border-top:0;
-    height:1000px;
-    border-bottom-left-radius:8.5px;
-    border-bottom-right-radius:8.5px;
+    height:auto;
+}
+#account-content-stories-panel {
+    margin-top:20px;
+    padding:23px 0 0 0;
+    border-radius:8.5px;
+    height:500px;
+    background-color:white;
+}
+#account-content-about-panel {
+    margin-top:20px;
+    padding:23px 0 0 0;
+    border-radius:8.5px;
+    height:500px;
+    background-color:white;
+}
+#account-content-pets-panel {
+    margin-top:20px;
+    padding:0;
+    border-top:0;
+    height:auto;
 }
 #home-content-panel {
     padding:0;
-    border:1px rgb(200, 200, 239) solid;
     border-top:0;
     height:1000px;
     border-radius:8.5px;
+    background-color:white;
+    margin-bottom:20px;
 }
-#create-pet-label-container {
+#floating-btn-cont {
     position:fixed;
+    width:70px;
+    height:70px;
+    bottom:40px;
+    right:40px;
+    background-color:#00002A;
     border-radius:50%;
-	bottom:132.8px;
-	right:105px;
-	display:table;
-	visibility: hidden;
+    z-index:1000;
 }
-#create-pet-label-text {
-	color:#FFF;
-	background:rgba(51,51,51,0.5);
-	display:table-cell;
-	vertical-align:middle;
-	padding:10px;
-	border-radius:3px;
+#floating-btn {
+    position:relative;
+    left:15px;
+    top:17.5px;
+    width:40px;
 }
-.primary-floating-btn {
-	position:fixed;
-	width:60px;
-	height:60px;
-	bottom:40px;
-	right:40px;
-	background-color:#00002A;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
-	box-shadow: 2px 2px 3px #999;
-	z-index:1000;
-}
-#menu-action-list {
-	position:fixed;
-	right:40px;
-	padding-bottom:20px;
-	bottom:80px;
-	z-index:100;
-}
-#menu-action-list li {
-	list-style:none;
-	margin-bottom:10px;
-}
-#menu-action-list li a {
-	background-color:#00002A;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
-	box-shadow: 2px 2px 3px #999;
-	width:60px;
-	height:60px;
-	display:block;
-}
-#menu-action-list:hover {
-	visibility:visible!important;
-	opacity:1!important;
-}
-.secondary-floating-btn {
-    font-size:24px;
-	margin-top:14px;
-}
-a#menu-action-btn + #menu-action-list {
-    visibility:hidden;
-}
-a#menu-action-btn:hover + #menu-action-list {
-    visibility:visible;
-    animation:scale-in 0.5s;
-}
-a#menu-action-btn img {
+a#floating-btn-cont > img {
 	animation:rotate-in 0.5s;
 }
-a#menu-action-btn:hover > img {
+a#floating-btn-cont:hover > img {
 	animation:rotate-out 0.5s;
-}
-@keyframes scale-in {
-    from {
-        transform:scale(0);
-        opacity: 0;
-    }
-    to {
-        transform:scale(1);
-        opacity: 1;
-    }
 }
 @keyframes rotate-in {
     from {
@@ -388,45 +350,92 @@ a#menu-action-btn:hover > img {
         transform:rotate(0deg);
     }
 }
-a#create-pet-floating-btn + div#create-pet-label-container {
-    visibility:hidden;
-    opacity:0;
-    transition:visibility 0s, opacity 0.5s ease;
-  }
-a#create-pet-floating-btn:hover + div#create-pet-label-container {
-    visibility:visible;
-    opacity:1;
-}
 #account-leftSection-space {
     pointer-events:none;
 }
 #gear-btn:hover .st0 {
     fill:#00002A; 
 }
-#home-btn:hover .st0 {
+#navbar-collapse-toggler-btn:hover .st0 {
     fill:#00002A; 
 }
-#account-btn:hover .st0 {
-    fill:#00002A; 
+#addPetForm-modal-body {
+    height:70vh;
+    overflow-y:scroll;
 }
-.red {
-    background-color:red;
+#ownerList-modal-body {
+    height:70vh;
+    overflow-y:scroll;
+    padding:0;
 }
-.blue {
-    background-color:blue;
+#acc-content-pet-card:hover {
+    background-color:#9d7a86;
 }
-.yellow {
-    background-color:yellow;
+#acc-content-pet-name-cont {
+    height:25px;
+    white-space:nowrap;
+    border-bottom:1px #00002A solid;
+    margin-bottom:15px;
 }
-.green {
-    background-color:green;
+#acc-content-pet-name {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    font-weight:500;
 }
-.orange {
-    background-color:orange;
+#pet-card {
+    color:black;
 }
-.violet {
-    background-color:violet;
+#pet-card:hover {
+    text-decoration:none;
 }
-.pink {
-    background-color:pink;
+.card-title:hover {
+    text-decoration:none;
+}
+#pet-profpic-preview {
+    height:200px;
+    width:200px;
+    object-fit:cover;
+    background:gray;
+    border:1px #9d7a86 solid;
+}
+#pet-card-profPic-cont {
+    left:50px;
+    margin:0 auto;
+}
+#pet-profPic-sm {
+    border:3.2px white solid;
+    border-radius:50%;
+    margin:-50px auto 0 auto;
+    width:5rem;
+    height:5rem;
+    object-fit:cover;
+    background:#00002A;
+}
+#account-profPic-vsm {
+    border-radius:50%;
+    width:25px;
+    height:25px;
+    object-fit:cover;
+}
+.owner_link {
+    color:#6c757d;
+}
+.owner_link:hover {
+    color:#6c757d;
+}
+.acc-details-col {
+    margin-bottom:15px;
+}
+#account-details-panel {
+    height:130px;
+    background-color:white;
+}
+.acc-detail-img-cont {
+    width:20px;
+}
+#image-upload-layout {
+    margin:4px 0 15px 0;
+    padding:15px 0 25px 0;
+    border:1px rgb(200, 200, 239) solid;
+    border-radius:8.5px;
 }

@@ -1,18 +1,24 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin
+from flask import Flask, session
+import os, cloudinary as _cloud, cloudinary.uploader
+from flask_bcrypt import Bcrypt
 
-server = Flask(__name__)
-dbase = SQLAlchemy(server)
+boop = Flask(__name__)
 
-server.config['SECRET_KEY'] = 'secretsecretsecret'
-server.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/BoopWeb'
-server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+flask_bcrypt = Bcrypt()
 
-login_manager = LoginManager()
-login_manager.init_app(server)
+boop.config["SECRET_KEY"] = os.urandom(24)
 
-from app.app import *
+_cloud.config(
+  cloud_name = "fmscrns",
+  api_key = "231339544622852",  
+  api_secret = "cR3RImpJd8njjhS8-zO5GDRacO4"  
+)
 
-dbase.create_all()
+@boop.after_request
+def add_header(response):
+    if "Cache-Control" not in response.headers:
+        response.headers["Cache-Control"] = "no-store"
+        
+    return response
+
+from app import routes
