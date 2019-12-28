@@ -163,8 +163,16 @@
                                                         Edit Profile
                                                     </button>
                                                 {% endif %}
-                                            </div>
-                                        </div>
+                                            </div> 
+                                    </div>
+                                    <div id="account-primary-editProfile-btn-cont" class="col-4 align-self-center">
+                                        {% if current_user_page == True %}
+                                        
+                                            <form action="{{ url_for('delete_pet',public_id=pet.public_id, username=user.username) }}" method="DELETE">
+                                                <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Pet ">
+                                            </form>
+                                        {% endif %}
+                                    </div>
                                     </div>
                                 </div>
                                 <div id="account-info-panel-rightSpace" class="col-4">

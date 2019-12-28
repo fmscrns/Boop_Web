@@ -102,8 +102,95 @@
             <div class="container" style="position:fixed;padding:0;">
                 <div class="row" style="padding:0;margin:0;">
                     <div class="col-4" style="padding:0;">
-                        <div id="ha-leftSection" class="container-fluid" style="padding:0;margin:0;">
-                        </div>
+                        {% if user_pets is defined %}
+                            <div id="account-content-pets-panel" class="container-fluid">
+                                <div id="flash-secondary-cont" class="container-fluid">
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+                                        {% if messages %}
+                                            {% for category, message in messages %}
+                                                <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                                    <strong>{{ message }}</strong>
+                                                    <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                                {% if user_pets is defined and user_pets|length == 0 %}
+                                    <div class="container-fluid">
+                                        @{{ user.username }} hasn't created any pet profiles yet.
+                                    </div>
+                                {% endif %}
+                                <div id="acc-content-pet-deck" class="row">
+                                    {% for pet in user_pets %}
+                                        <div class="col-4">
+                                            <a id="pet-card" href="{{ url_for('pet_profile_wall', username=user.username, public_id=pet.public_id) }}">
+                                                <div class="card">
+                                                    <img src="https://res.cloudinary.com/fmscrns/image/upload/c_scale,w_300/v1557286605/boopit/pet/default/small/default-coverPhoto-sm.jpg" class="card-img-top" alt="...">
+                                                    {% if pet.profPic_filename == "default" %}
+                                                        <img id="pet-profPic-sm" src="https://res.cloudinary.com/fmscrns/image/upload/c_scale,w_120/v1557286605/boopit/pet/default/default-profilePhoto.jpg">
+                                                    {% else %}
+                                                        <img id="pet-profPic-sm" src="https://res.cloudinary.com/fmscrns/image/upload/c_scale,w_120/v1557301121/boopit/pet/{{ user.username }}/{{ pet.profPic_filename }}">
+                                                    {% endif %}
+                                                    <div class="card-body">
+                                                        <div id="acc-content-pet-name-cont">
+                                                            <p id="acc-content-pet-name" class="card-title text-center">
+                                                                {{ pet.pet_name }}
+                                                            </p>
+                                                        </div>
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-3">
+                                                                    <img src="{{ url_for('static', filename='assets/' + pet.specie_name + '.svg') }}" style="width:25px;">
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <span style="font-size:10px;"><p class="card-text text-muted">{{ pet.sex }}</p></span>
+                                                                        </div>
+                                                                        <div class="w-100"></div>
+                                                                        <div class="col">
+                                                                            <span style="font-size:10px;"><p class="card-text text-muted">{{ pet.specie_name }} | {{ pet.breed_name }}</p></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        {% if loop.index % 3 == 0 %}
+                                            <div class="w-100" style="height:20px;"></div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% elif user_posts is defined %}
+                            <div id="account-content-posts-panel" class="container-fluid">
+                                <div id="flash-secondary-cont" class="container-fluid">
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+                                        {% if messages %}
+                                            {% for category, message in messages %}
+                                                <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                                    <strong>{{ message }}</strong>
+                                                    <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                                {% if user_posts is defined and user_posts|length == 0 %}
+                                    <div class="container-fluid">
+                                        @{{ user.username }} hasn't created any posts yet.
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
                         <div id="flash-primary-cont" class="container-fluid">
                             {% with messages = get_flashed_messages(with_categories=true) %}
                                 {% if messages %}

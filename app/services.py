@@ -101,6 +101,8 @@ class User:
 
     @staticmethod
     def get_pet_owners(public_id):
+
+        print("{}/user/pet/{}".format(Variable.api_url(), public_id))
         petOwners_req = requests.get("{}/user/pet/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
 
         return json.loads(petOwners_req.text)
@@ -136,6 +138,14 @@ class Pet:
         
         return json.loads(getUserPets_req.text)
 
+        
+    @staticmethod
+    def delete_pet(public_id):
+        deleteUserPets_req = requests.delete("{}/pet/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+
+        return json.loads(deleteUserPets_req.text)
+
+
 class Specie:
     @staticmethod
     def get_all_specie():
@@ -159,5 +169,15 @@ class Content:
         shareContent_req = requests.post("{}/content/".format(Variable.api_url()), json={"content" : content, "taggedPets" : tagged_pets}, headers={"authorization" : session["booped_in"]})
 
         return json.loads(shareContent_req.text)
+"""
+    -----GET CONTENT----
+    @staticmethod
+    def get_a_content(data):
+        getContent_req = requests.get("{}/content/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(getUserPets_req.text)
+
+"""
+
 
 

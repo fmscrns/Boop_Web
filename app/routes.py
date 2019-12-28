@@ -179,6 +179,7 @@ def user_profile_posts(username):
 
     return render_template("user_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, postsNavActivate="3px #00002A solid")
 
+
 @boop.route("/<username>/pets/<public_id>", methods=["GET", "POST"])
 @boop.route("/<username>/pets/<public_id>/wall", methods=["GET", "POST"])
 @login_required
@@ -203,9 +204,31 @@ def pet_profile_wall(username, public_id):
         if current_user["username"] == user["username"]:
             current_user_page = True
 
-    pet_json["birthday"] = Helper.datetime_str_to_datetime_obj(pet_json["birthday"])   
+    pet_json["birthday"] = Helper.datetime_str_to_datetime_obj(pet_json["birthday"])  
 
-    return render_template("pet_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, pet=pet_json, owner_list=owner_list, postsNavActivate="3px #00002A solid")
+    return render_template("pet_profile.html", title="Account", public_id=public_id, current_user_page=current_user_page, current_user=current_user, user=user_json, pet=pet_json, owner_list=owner_list, postsNavActivate="3px #00002A solid")
+
+@boop.route("/<username>/pets/<public_id>/delete", methods=["GET","POST","DELETE"])
+@login_required
+def delete_pet(public_id, username):
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    pet_json = Pet.get_a_pet(public_id)
+    pet_existence = Helper.pet_existence_check(pet_json)
+
+
+    if pet_existence is False:
+        abort(404)
+    
+    if username == current_user["username"]:
+        current_user_page = True
+        
+        Pet.delete_pet(public_id)
+     
+    pet_json["birthday"] = Helper.datetime_str_to_datetime_obj(pet_json["birthday"])  
+
+    return redirect(url_for('user_profile_pets',username=current_user["username"]))
+
 
 @boop.route("/<username>/pets/<public_id>/media", methods=["GET", "POST"])
 @login_required
