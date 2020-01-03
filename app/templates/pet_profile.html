@@ -167,10 +167,32 @@
                                     </div>
                                     <div id="account-primary-editProfile-btn-cont" class="col-4 align-self-center">
                                         {% if current_user_page == True %}
+
+                                        <a href="#" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#myModal"}> Delete Pet </a>
                                         
+                                        <div class="modal fade" name="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header border-0 text-center">
+                                                  <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Confirm Action</h5>
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                                </div>
+                                                <div class="modal-body mb-0">
+                                                    <h5>Are you sure you want to delete pet?</h5>
+                                                </div>
+                                                <div class="modal-footer border-0">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+                                                   
                                             <form action="{{ url_for('delete_pet',public_id=pet.public_id, username=user.username) }}" method="DELETE">
                                                 <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Pet ">
                                             </form>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+
                                         {% endif %}
                                     </div>
                                     </div>

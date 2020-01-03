@@ -229,6 +229,27 @@ def delete_pet(public_id, username):
 
     return redirect(url_for('user_profile_pets',username=current_user["username"]))
 
+@boop.route("/<username>/pets/<public_id>/update", methods=["GET","PUT","DELETE"])
+@login_required
+def update_pet(public_id, username):
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    pet_json = Pet.get_a_pet(public_id)
+    pet_existence = Helper.pet_existence_check(pet_json)
+
+
+    if pet_existence is False:
+        abort(404)
+    
+    if username == current_user["username"]:
+        current_user_page = True
+        
+        Pet.update_pet(public_id)
+     
+    pet_json["birthday"] = Helper.datetime_str_to_datetime_obj(pet_json["birthday"])  
+
+    return redirect(url_for('pet_profile_wall',username=username, public_id=public_id))
+
 
 @boop.route("/<username>/pets/<public_id>/media", methods=["GET", "POST"])
 @login_required

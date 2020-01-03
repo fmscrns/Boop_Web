@@ -145,6 +145,12 @@ class Pet:
 
         return json.loads(deleteUserPets_req.text)
 
+    @staticmethod
+    def update_pet(public_id, data):
+        updateUserPets_req = requests.put("{}/pet/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+
+        return json.loads(updateUserPets_req.text)
+
 
 class Specie:
     @staticmethod
