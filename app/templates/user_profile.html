@@ -272,7 +272,31 @@
                                     </div>
                                 {% endif %}
                             </div>
+
+                            <div id="acc-content-pet-deck" class="row">
+                                {% for post in user_posts %}
+                                    <div class="col-4">
+                                       
+                                                <div class="card-body">
+                                                    <div id="acc-content-pet-name-cont">
+                                                        <p id="acc-content-pet-name" class="card-title text-center">
+                                                            {{ post.content }}
+                                                        </p>
+                                                    </div>
+                                                   
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    {% if loop.index % 3 == 0 %}
+                                        <div class="w-100" style="height:20px;"></div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                            
                         {% endif %}
+                        
                     </div>
                 </div>
             </div>
@@ -460,19 +484,7 @@
                                                         {{ shareContentForm.shareContent_input(class="form-control") }}
                                                     {% endif %}
                                                 </div>
-                                                <div class="form-group">
-                                                    <label>Tag a pet</label>
-                                                    {% if shareContentForm.taggedPet_input.errors %}
-                                                        {{ shareContentForm.taggedPet_input(class="form-control is-invalid") }}
-                                                        <div class="invalid-feedback">
-                                                            {% for error in shareContentForm.taggedPet_input.errors %}
-                                                                <span> {{ error }} </span>
-                                                            {% endfor %}
-                                                        </div>
-                                                    {% else %}
-                                                        {{ shareContentForm.taggedPet_input(class="form-control") }}
-                                                    {% endif %}
-                                                </div>
+                                              
                                             </fieldset>
                                         </div>
                                     </div>
@@ -486,5 +498,6 @@
                     </div>
                 {% endif %}
             {% endif %}
+
         </div>
     {% endblock content %}

@@ -147,7 +147,8 @@ def user_profile_posts(username):
     if user_existence is False:
         abort(404)
 
-    userPosts = []
+    userPosts = Post.get_user_posts(username)["data"]
+    print(userPosts)
 
     shareContentForm = ShareContentForm()
 
@@ -156,20 +157,19 @@ def user_profile_posts(username):
 
         userPets_json = Pet.get_user_pets(username)
 
-        shareContentForm.taggedPet_input.choices = [(data["public_id"], data["pet_name"]) for data in userPets_json["data"]]
-
         if request.method == "POST":
             if shareContentForm.validate_on_submit():
-                shareContent_json = Content.share_a_content(request)
-
+                shareContent_json = Post.new_post(request)
+                
                 if shareContent_json["status"] == "success":
+                    
                     flash(shareContent_json["payload"], "success")
-
+                    
                     return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
                 else:
                     flash(shareContent_json["payload"], "danger")
-
+                    
                     return redirect(url_for("user_profile_posts", username=current_user["username"]))
             
             else:

@@ -46,6 +46,5 @@ class UpdatePetForm(FlaskForm):
 
 class ShareContentForm(FlaskForm):
     shareContent_input = StringField("Story Content", validators=[DataRequired(), Length(min=1, max=150)])
-    taggedPet_input = SelectMultipleField("Tagged Pet", coerce=str, choices=[], validators=[InputRequired()])
 
     shareContent_submit_input = SubmitField("Post story")

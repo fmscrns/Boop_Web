@@ -166,16 +166,25 @@ class Breed:
         
         return json.loads(getDogBreeds_req.text)
 
-class Content:
-    @staticmethod
-    def share_a_content(data):
-        content = data.get("shareContent_input")
-        tagged_pets = data.get("taggedPet_input")
-        
-        shareContent_req = requests.post("{}/content/".format(Variable.api_url()), json={"content" : content, "taggedPets" : tagged_pets}, headers={"authorization" : session["booped_in"]})
 
-        return json.loads(shareContent_req.text)
+
+class Post:
+    @staticmethod
+    def new_post(data):
+        form = data.form
+        content = form.get("shareContent_input")
+        newPost_req= requests.post("{}/post/".format(Variable.api_url()), json={"content" : content}, headers={"authorization" : session["booped_in"]})
+        print('add new posssttt')
+        return json.loads(newPost_req.text)
+
+
+    @staticmethod
+    def get_user_posts(username):
+        getUserPost_req = requests.get("{}/post/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
+        print('get user possssssssttt')
+        return json.loads(getUserPost_req.text)
 """
+
     -----GET CONTENT----
     @staticmethod
     def get_a_content(data):
