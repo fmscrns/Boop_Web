@@ -48,3 +48,4 @@ class ShareContentForm(FlaskForm):
     shareContent_input = StringField("Story Content", validators=[DataRequired(), Length(min=1, max=150)])
 
     shareContent_submit_input = SubmitField("Post story")
+

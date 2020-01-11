@@ -107,7 +107,9 @@ def user_profile_pets(username):
     userPets = Pet.get_user_pets(username)["data"]
     for pet in userPets:
         print(pet["profPic_filename"])
+
     addPetForm = AddPetForm()
+    updateUserForm = SignupForm()
 
     if username == current_user["username"]:
         current_user_page = True
@@ -134,7 +136,29 @@ def user_profile_pets(username):
                 
                 return redirect(url_for("user_profile_pets", username=current_user["username"]))
 
-    return render_template("user_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_pets=userPets, addPetForm=addPetForm, petsNavActivate="3px #00002A solid")
+
+        if request.method == "POST":
+            print('update user')
+            if updateUserForm.validate_on_submit():
+                userUpdate_json = User.update_user(request)
+
+                if userUpdate["status"] == "success":
+                    flash(userUpdate_json["payload"], "success")
+
+                    return redirect(url_for("user_profile_pets", username=current_user["username"]))
+
+                else:
+                    flash(userUpdate_json["payload"], "danger")
+
+                    return redirect(url_for("user_profile_pets", username=current_user["username"]))
+            
+            else:
+                flash("Try again.", "danger")
+                
+                return redirect(url_for("user_profile_pets", username=current_user["username"]))
+
+
+    return render_template("user_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_pets=userPets, addPetForm=addPetForm, updateUserForm=updateUserForm, petsNavActivate="3px #00002A solid")
 
 @boop.route("/<username>/posts", methods=["GET", "POST"])
 @login_required
@@ -148,7 +172,6 @@ def user_profile_posts(username):
         abort(404)
 
     userPosts = Post.get_user_posts(username)["data"]
-    print(userPosts)
 
     shareContentForm = ShareContentForm()
 
@@ -177,8 +200,23 @@ def user_profile_posts(username):
                 
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
-    return render_template("user_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, postsNavActivate="3px #00002A solid")
+    return render_template("user_profile_post.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, postsNavActivate="3px #00002A solid")
 
+
+@boop.route("/<username>/posts/<post_id>/delete", methods=["GET","POST","DELETE"])
+@login_required
+def delete_post(post_id, username):
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    pot_json = Post.get_user_posts(username)
+
+    if username == current_user["username"]:
+        current_user_page = True
+        
+        Post.delete_post(post_id)
+        print('biiiiitchh')
+
+    return redirect(url_for('user_profile_posts',username=current_user["username"]))
 
 @boop.route("/<username>/pets/<public_id>", methods=["GET", "POST"])
 @boop.route("/<username>/pets/<public_id>/wall", methods=["GET", "POST"])

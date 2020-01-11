@@ -107,6 +107,14 @@ class User:
 
         return json.loads(petOwners_req.text)
 
+    @staticmethod
+    def update_user(username):
+
+        print("{}/user/{}".format(Variable.api_url(), username))
+        userUpdate_req = requests.get("{}/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
+
+        return json.loads(userUpdate_req.text)
+
 class Pet:
     @staticmethod
     def add_a_pet(data):
@@ -174,15 +182,27 @@ class Post:
         form = data.form
         content = form.get("shareContent_input")
         newPost_req= requests.post("{}/post/".format(Variable.api_url()), json={"content" : content}, headers={"authorization" : session["booped_in"]})
-        print('add new posssttt')
         return json.loads(newPost_req.text)
 
 
     @staticmethod
     def get_user_posts(username):
         getUserPost_req = requests.get("{}/post/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
-        print('get user possssssssttt')
+        print('get userpostssss')
         return json.loads(getUserPost_req.text)
+
+
+    @staticmethod
+    def get_a_post(post_id):
+        getPost_req = requests.get("{}/post/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
+
+        return json.loads(getPost_req.text)
+
+    @staticmethod
+    def delete_post(post_id):
+        deleteUserPosts_req = requests.delete("{}/post/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
+        print('pa graduate-a na ko!!!!')
+        return json.loads(deleteUserPosts_req.text)
 """
 
     -----GET CONTENT----
