@@ -21,8 +21,8 @@ def welcome():
                 Variable.store_session(loginUser_json["authorization"])
 
                 flash(loginUser_json["payload"], "success")
-
-                return redirect(url_for("home"))
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('home'))
 
             else:
                 flash(loginUser_json["payload"], "danger")
@@ -89,9 +89,66 @@ def login():
 @boop.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
+    form = ShareContentForm()
+    
     current_user = User.get_current_user()
 
-    return render_template("home.html", title="Home", current_user=current_user)
+    posts = Post.get_all_posts()["data"]
+    # post_json = Post.get_user_posts(username)
+    print(posts)
+
+    i=0
+
+    while i < len(posts):
+        posts[i]["posted_on"] = Helper.datetime_str_to_datetime_obj(posts[i]["posted_on"])  
+        i += 1
+
+    return render_template("home.html", title="Home", current_user=current_user, all_posts=posts, shareContentForm=form)
+
+@boop.route("/admin/users/all", methods=["GET"])
+@login_required
+def all_users():
+    current_user = User.get_current_user()
+
+    users = User.get_all_users()["data"]
+
+    return render_template("manage_user.html", title="All Users", current_user=current_user, users=users)
+
+@boop.route("/<username>/edit", methods=["GET", "PUT"])
+@login_required
+def update_user(username):
+    current_user = User.get_current_user()
+
+    updateForm = UpdateForm()
+
+    if request.method == "PUT":
+        if updateForm.validate_on_submit():
+            form = request.form
+
+            updateUser_json = User.update_user(username, form)
+
+            # loginUser_json = Auth.login_user(updateUser_json)
+
+            # if loginUser_json["status"] == "success":
+            #     Variable.store_session(loginUser_json["authorization"])
+
+            #     flash(loginUser_json["payload"], "success")
+
+            return redirect(url_for("home"))
+
+            # else:
+            #     flash(loginUser_json["payload"], "danger")
+
+            #     return redirect(url_for("login"))
+    elif request.method == "GET":
+        updateForm.firstName_input.data = current_user["firstName"]
+        updateForm.lastName_input.data = current_user["lastName"]
+        updateForm.email_input.data = current_user["email"]
+        updateForm.username_input.data = current_user["username"]
+        updateForm.contactNo_input.data = current_user["contactNo"]                 
+    
+    return render_template("update_user.html", title="Update", updateForm=updateForm)
+
 
 @boop.route("/<username>/pets", methods=["GET", "POST"])
 @login_required
@@ -172,6 +229,14 @@ def user_profile_posts(username):
         abort(404)
 
     userPosts = Post.get_user_posts(username)["data"]
+    # post_json = Post.get_user_posts(username)
+    print(userPosts)
+
+    i=0
+
+    while i < len(userPosts):
+        userPosts[i]["posted_on"] = Helper.datetime_str_to_datetime_obj(userPosts[i]["posted_on"])  
+        i += 1
 
     shareContentForm = ShareContentForm()
 
@@ -200,7 +265,7 @@ def user_profile_posts(username):
                 
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
-    return render_template("user_profile_post.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, postsNavActivate="3px #00002A solid")
+    return render_template("user_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, postsNavActivate="3px #00002A solid")
 
 
 @boop.route("/<username>/posts/<post_id>/delete", methods=["GET","POST","DELETE"])
@@ -208,13 +273,14 @@ def user_profile_posts(username):
 def delete_post(post_id, username):
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
-    pot_json = Post.get_user_posts(username)
+    post_json = Post.get_user_posts(username)
 
     if username == current_user["username"]:
         current_user_page = True
         
         Post.delete_post(post_id)
         print('biiiiitchh')
+
 
     return redirect(url_for('user_profile_posts',username=current_user["username"]))
 

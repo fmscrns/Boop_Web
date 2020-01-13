@@ -155,9 +155,9 @@
                                             </div>
                                             <div id="account-primary-editProfile-btn-cont" class="col-4 align-self-center">
                                                 {% if current_user_page == True %}
-                                                    <button type="button" class="btn btn-outline-primary float-right">
+                                                    <a href="{{ url_for('update_user', username=user.username) }}"<button type="button" class="btn btn-outline-primary float-right">
                                                         Edit Profile
-                                                    </button>
+                                                    </button></a>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -281,24 +281,23 @@
 
                                                 <div class="card-body">
                                                     <div id="acc-content-pet-name-cont">
-                                                        <p id="acc-content-pet-name" class="card-title text-center">
-                                                            {{ post.content }}
+                                                        <p id="acc-content-pet-name" class="card-title">
+                                                            {{ post.post_author }}
+                                                            <a href="#" data-toggle="modal" data-target="#myModal"}><img class="boop-nameplate" src="{{ url_for('static', filename='images/delete.png') }}" style="width:20px; float: right;"></a>
                                                         </p>
                                                     </div>
                                                     <div class="container-fluid">
                                                         <div class="row">
-                                                            <div class="col-3">
+                                                            <div class="col-1">
                                                                 <img style="width:25px;">
                                                             </div>
                                                             <div class="col">
                                                                 <div class="row">
                                                                     <div class="col">
-                                                                        <span style="font-size:10px;"><p >date: {{ post.posted_on }}</p></span>
+                                                                        {{ post.posted_on.strftime("%B") }} {{ post.posted_on.strftime("%d") }}, {{ post.posted_on.strftime("%Y") }}
+                                                                        <span style="font-size:25px;"><p >{{ post.content }} </p></span>
                                                                     </div>
                                                                     <div class="w-100">
-
-                                                                        <a href="#" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#myModal"}> Delete Post </a>
-                                        
                                                                         <div class="modal fade" name="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                                               <div class="modal-content">
@@ -314,7 +313,7 @@
                                                                                 <div class="modal-footer border-0">
                                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
                                                                                    
-                                                                            <form action="{{ url_for('delete_post',post_id=1, username=user.username) }}" method="DELETE">
+                                                                            <form action="{{ url_for('delete_post', post_id=post.post_id, username=user.username) }}" method="DELETE">
                                                                                 <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Post ">
                                                                             </form>
                                                                                 </div>

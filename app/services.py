@@ -24,7 +24,7 @@ class Helper:
             return False
 
     def pet_existence_check(pet):
-        if len(pet) == 8:
+        if len(pet) == 9:
             return True
 
         else:
@@ -108,12 +108,27 @@ class User:
         return json.loads(petOwners_req.text)
 
     @staticmethod
-    def update_user(username):
+    def update_user(username, data):
+
+        first_name = data.get("firstName_input")
+        last_name = data.get("lastName_input")
+        username = data.get("username_input")
+        email = data.get("email_input")
+        password = data.get("password_input")
+        contact_no = data.get("contactNo_input")
 
         print("{}/user/{}".format(Variable.api_url(), username))
-        userUpdate_req = requests.get("{}/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
+        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "username" : username, "email" : email, "password" : password, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
 
         return json.loads(userUpdate_req.text)
+
+    @staticmethod
+    def get_all_users():
+
+        print("{}/user/all".format(Variable.api_url))
+        allUsers_req = requests.get("{}/user/all".format(Variable.api_url()), headers={"authorization": session["booped_in"]})
+
+        return json.loads(allUsers_req.text)
 
 class Pet:
     @staticmethod
@@ -203,6 +218,15 @@ class Post:
         deleteUserPosts_req = requests.delete("{}/post/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
         print('pa graduate-a na ko!!!!')
         return json.loads(deleteUserPosts_req.text)
+
+    @staticmethod
+    def get_all_posts():
+
+        print("{}/post/all".format(Variable.api_url))
+        allPosts_req = requests.get("{}/post/all".format(Variable.api_url()), headers={"authorization": session["booped_in"]})
+
+        return json.loads(allPosts_req.text)
+    
 """
 
     -----GET CONTENT----
