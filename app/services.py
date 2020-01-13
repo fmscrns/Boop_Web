@@ -110,9 +110,17 @@ class User:
     @staticmethod
     def update_user(username):
 
-        print("{}/user/{}".format(Variable.api_url(), username))
-        userUpdate_req = requests.get("{}/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
+        form = data.form
+        first_name = form.get("firstName_input")
+        last_name = form.get("lastName_input")
+        email = form.get("email_input")
+        username = form.get("username_input")
+        contact_no = form.get("contactNo_input")
+        
 
+        print("{}/user/{}".format(Variable.api_url(), username))
+        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
+        print('update!!')
         return json.loads(userUpdate_req.text)
 
 class Pet:
@@ -174,8 +182,6 @@ class Breed:
         
         return json.loads(getDogBreeds_req.text)
 
-
-
 class Post:
     @staticmethod
     def new_post(data):
@@ -188,7 +194,7 @@ class Post:
     @staticmethod
     def get_user_posts(username):
         getUserPost_req = requests.get("{}/post/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
-        print('get userpostssss')
+  
         return json.loads(getUserPost_req.text)
 
 
@@ -201,10 +207,38 @@ class Post:
     @staticmethod
     def delete_post(post_id):
         deleteUserPosts_req = requests.delete("{}/post/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
-        print('pa graduate-a na ko!!!!')
-        return json.loads(deleteUserPosts_req.text)
-"""
 
+        return json.loads(deleteUserPosts_req.text)
+
+class Comment:
+    @staticmethod
+    def new_comment(data, post_id):
+        form = data.form
+        comment = form.get("commentPost_input")
+        newComment_req= requests.post("{}/comment/{}".format(Variable.api_url(), post_id), json={"comment" : comment}, headers={"authorization" : session["booped_in"]})
+        return json.loads(newComment_req.text)
+
+    @staticmethod
+    def get_a_comment(public_id):
+        print('get comment')
+        getComment_req = requests.get("{}/comment/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+        return json.loads(getComment_req.text)
+
+class Deal:
+    @staticmethod
+    def new_deal(data, public_id):
+        form = data.form
+        price = form.get("dealPet_input")
+        newDeal_req = requests.get("{}/deal/{}".format(Variable.api_url(), public_id),  json={"deal" : comment},headers={"authorization" : session["booped_in"]})
+        return json.loads(newDeal_req.text)
+    
+    @staticmethod
+    def get_all_deals():
+        print('get comment')
+        getComment_req = requests.get("{}/comment/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+        return json.loads(getComment_req.text)
+
+"""
     -----GET CONTENT----
     @staticmethod
     def get_a_content(data):
