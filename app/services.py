@@ -110,12 +110,13 @@ class User:
     @staticmethod
     def update_user(username, data):
 
-        first_name = data.get("firstName_input")
-        last_name = data.get("lastName_input")
-        username = data.get("username_input")
-        email = data.get("email_input")
-        password = data.get("password_input")
-        contact_no = data.get("contactNo_input")
+        form = data.form
+        first_name = form.get("firstName_input")
+        last_name = form.get("lastName_input")
+        email = form.get("email_input")
+        username = form.get("username_input")
+        contact_no = form.get("contactNo_input")
+        
 
         print("{}/user/{}".format(Variable.api_url(), username))
         userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "username" : username, "email" : email, "password" : password, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
@@ -170,6 +171,8 @@ class Pet:
 
     @staticmethod
     def update_pet(public_id, data):
+        form = data.form
+        
         updateUserPets_req = requests.put("{}/pet/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
 
         return json.loads(updateUserPets_req.text)
@@ -189,8 +192,6 @@ class Breed:
         
         return json.loads(getDogBreeds_req.text)
 
-
-
 class Post:
     @staticmethod
     def new_post(data):
@@ -203,7 +204,7 @@ class Post:
     @staticmethod
     def get_user_posts(username):
         getUserPost_req = requests.get("{}/post/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
-        print('get userpostssss')
+  
         return json.loads(getUserPost_req.text)
 
 
@@ -216,8 +217,56 @@ class Post:
     @staticmethod
     def delete_post(post_id):
         deleteUserPosts_req = requests.delete("{}/post/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
-        print('pa graduate-a na ko!!!!')
+
         return json.loads(deleteUserPosts_req.text)
+
+class Comment:
+    @staticmethod
+    def new_comment(data, post_id):
+        form = data.form
+        comment = form.get("commentPost_input")
+        newComment_req= requests.post("{}/comment/{}".format(Variable.api_url(), post_id), json={"comment" : comment}, headers={"authorization" : session["booped_in"]})
+        return json.loads(newComment_req.text)
+
+    @staticmethod
+    def get_a_comment(public_id):
+        print('get comment')
+        getComment_req = requests.get("{}/comment/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+        return json.loads(getComment_req.text)
+
+class Deal:
+    @staticmethod
+    def new_deal(data, pet_id):
+        form = data.form
+        price = form.post("pricePet_input")
+        newDeal_req = requests.get("{}/deal/{}".format(Variable.api_url(), pet_id),  json={"deal" : comment},headers={"authorization" : session["booped_in"]})
+        print('deal services')
+        return json.loads(newDeal_req.text)
+    
+    @staticmethod
+    def get_all_deals(data):
+        
+        getAllDeals_req = requests.get("{}/deal/{}".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        return json.loads(getAllDeals_req.text)
+
+    @staticmethod
+    def get_a_deal(public_id):
+        
+        getADeal_req = requests.get("{}/deal/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+        return json.loads(getADeal_req.text)
+
+    @staticmethod
+    def delete_deal(public_id):
+        deleteDeal_req = requests.delete("{}/deal/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+
+        return json.loads(deleteUserPosts_req.text)
+
+    @staticmethod
+    def get_user_deals(username):
+        
+        getUserDeal_req = requests.get("{}/deal/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
+        return json.loads(getUserDeal_req.text)
+
 
     @staticmethod
     def get_all_posts():
@@ -228,7 +277,6 @@ class Post:
         return json.loads(allPosts_req.text)
     
 """
-
     -----GET CONTENT----
     @staticmethod
     def get_a_content(data):

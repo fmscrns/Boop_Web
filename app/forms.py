@@ -13,7 +13,7 @@ class SignupForm(FlaskForm):
     password_input = PasswordField("Password", validators=[DataRequired(), Length(min=6, max=50)])
     confirmPassword_input = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password_input", message="Field must be equal to password.")])
 
-    signup_submit_input = SubmitField("Sign up")
+    signup_submit_input = SubmitField("Submit")
 
 class LoginForm(FlaskForm):
     usernameOrEmail_input = StringField("Username or Email Address", validators=[DataRequired()])
@@ -59,3 +59,12 @@ class ShareContentForm(FlaskForm):
 
     shareContent_submit_input = SubmitField("Post story")
 
+class CommentPostForm(FlaskForm):
+    commentPost_input = StringField("Comment..", validators=[DataRequired(), Length(min=1, max=150)])
+
+    commentPost_submit_input = SubmitField("Comment")
+
+class DealPetForm(FlaskForm):
+    pricePet_input = StringField("Price", validators=[DataRequired(), Length(min=1, max=150)])
+
+    dealPet_submit_input = SubmitField("Submit")
