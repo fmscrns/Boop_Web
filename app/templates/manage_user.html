@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
 
     {% block bodyStyle %}
-        <body>
+    <body>
     {% endblock bodyStyle %}
+
 
     {% block navbarAdjust %}
         <div id="secured-navbar" class="container-fluid">
@@ -107,48 +108,7 @@
                 <div class="row" style="padding:0;margin:0;">
                     <div class="col-4" style="padding:0;">
                         <div id="ha-leftSection" class="container-fluid" style="padding:0;margin:0;">
-                            <div class="row" style="height: 225px;">
-                                <div id="home-account-profPic-cont" class="container-fluid">
-                                    <img id="home-account-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
-                                </div>
-                            </div>
-                            <div class="row" style="padding-left: 30px;">
-                                <div id="account-primary-nameplate-cont" class="col">
-                                    <h5 id="account-fullName">{{ current_user.firstName }} {{ current_user.lastName }}</h5>
-                                </div>
-                                <div class="w-100"></div>
-                                <div id="account-secondary-nameplate-cont" class="col">
-                                    <small>@{{ current_user.username }}</small>
-                                </div>
-                            </div>
-                            <div class="row" style="padding: 30px;">
-                                <form method="POST" action="" enctype="multipart/form-data">
-                                    <div id="shareContentForm-modal-body" class="modal-body">
-                                        <div class="postStory-form" class="container">
-                                            {{ shareContentForm.hidden_tag() }}
-                                            <fieldset class="form-group">
-                                                <div class="form-group">
-                                                    {% if shareContentForm.shareContent_input.errors %}
-                                                        {{ shareContentForm.shareContent_input(class="form-control is-invalid") }}
-                                                        <div class="invalid-feedback">
-                                                            {% for error in shareContentForm.shareContent_input.errors %}
-                                                                <span> {{ error }} </span>
-                                                            {% endfor %}
-                                                        </div>
-                                                    {% else %}
-                                                        {{ shareContentForm.shareContent_input(class="form-control") }}
-                                                    {% endif %}
-                                                </div>
-                                              
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        {{ shareContentForm.shareContent_submit_input(class="btn btn-outline-primary") }}
-                                    </div>
-                                </form>
-                            </div>
+
                         </div>
                         <div id="flash-primary-cont" class="container-fluid">
                             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -169,11 +129,14 @@
                 </div>
             </div>
             <div class="row">
-                <div id="ha-leftSection-space" class="col-4"></div>
+                <div id="ha-leftSection-space" class="col-4">
+                    {% for user in users %}
+                        {{ user.username }}
+                    {% endfor %}
+                </div>
                 <div id="ha-rightSection" class="col">
                     <div class="container-fluid">
                         <div id="home-content-panel" class="container-fluid">
-                            
                             <div id="flash-secondary-cont" class="container-fluid">
                                 {% with messages = get_flashed_messages(with_categories=true) %}
                                     {% if messages %}
@@ -187,46 +150,6 @@
                                         {% endfor %}
                                     {% endif %}
                                 {% endwith %}
-                            </div>
-                            <div class="row">
-                                {% for post in all_posts| sort(attribute='posted_on', reverse = True)  %}
-                                    <div class="col-12">
-                                        <a id="pet-card" >
-                                            <div class="card">
-
-                                                <div class="card-body">
-                                                    <div id="acc-content-pet-name-cont">
-                                                        <p id="acc-content-pet-name" class="card-title">
-                                                            {{ post.post_author }}
-                                                        </p>
-                                                    </div>
-                                                    <div class="container-fluid">
-                                                        <div class="row">
-                                                            <div class="col-1">
-                                                                <img style="width:25px;">
-                                                            </div>
-                                                            <div class="col">
-                                                                <div class="row">
-                                                                    <div class="col">
-                                                                        {{ post.posted_on.strftime("%B") }} {{ post.posted_on.strftime("%d") }}, {{ post.posted_on.strftime("%I") }}:{{ post.posted_on.strftime("%M") }} {{ post.posted_on.strftime("%p") }}
-                                                                        <span style="font-size:25px;"><p >{{ post.content }} </p></span>
-                                                                    </div>
-                                                                    <div class="w-100">
-                                                                    </div>
-                                                                    <div class="col">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    {% if loop.index % 1 == 0 %}
-                                        <div class="w-100" style="height:20px;"></div>
-                                    {% endif %}
-                                {% endfor %}
                             </div>
                         </div>
                     </div>

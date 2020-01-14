@@ -24,7 +24,7 @@ class Helper:
             return False
 
     def pet_existence_check(pet):
-        if len(pet) == 8:
+        if len(pet) == 9:
             return True
 
         else:
@@ -108,20 +108,26 @@ class User:
         return json.loads(petOwners_req.text)
 
     @staticmethod
-    def update_user(username):
+    def update_user(username,data):
 
-        form = data.form
-        first_name = form.get("firstName_input")
-        last_name = form.get("lastName_input")
-        email = form.get("email_input")
-        username = form.get("username_input")
-        contact_no = form.get("contactNo_input")
+        first_name = data.get("firstName_input")
+        last_name = data.get("lastName_input")
+        username = data.get("username_input")
+        email = data.get("email_input")
+        password = data.get("password_input")
+        contact_no = data.get("contactNo_input")
+
+        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "username" : username, "email" : email, "password" : password, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
         
-
-        print("{}/user/{}".format(Variable.api_url(), username))
-        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
-        print('update!!')
         return json.loads(userUpdate_req.text)
+
+    @staticmethod
+    def get_all_users():
+
+        print("{}/user/all".format(Variable.api_url))
+        allUsers_req = requests.get("{}/user/all".format(Variable.api_url()), headers={"authorization": session["booped_in"]})
+
+        return json.loads(allUsers_req.text)
 
 class Pet:
     @staticmethod
@@ -212,6 +218,14 @@ class Post:
 
         return json.loads(deleteUserPosts_req.text)
 
+    @staticmethod
+    def get_all_posts():
+
+        print("{}/post/all".format(Variable.api_url))
+        allPosts_req = requests.get("{}/post/all".format(Variable.api_url()), headers={"authorization": session["booped_in"]})
+
+        return json.loads(allPosts_req.text)
+
 class Comment:
     @staticmethod
     def new_comment(data, post_id):
@@ -259,15 +273,6 @@ class Deal:
         getUserDeal_req = requests.get("{}/deal/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
         return json.loads(getUserDeal_req.text)
 
-"""
-    -----GET CONTENT----
-    @staticmethod
-    def get_a_content(data):
-        getContent_req = requests.get("{}/content/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
-        
-        return json.loads(getUserPets_req.text)
-
-"""
 
 
 

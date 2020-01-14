@@ -50,6 +50,17 @@ body {
         object-fit:cover;
         background:white;
     }
+    #home-account-profPic {
+        border:4px white solid;
+        border-radius:50%;
+        width:180px;
+        height:180px;
+        object-fit:cover;
+        background:white;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
     #account-info-panel-leftSpace {
         width:200px;
     }
@@ -372,7 +383,7 @@ a#floating-btn-cont:hover > img {
     background-color:#9d7a86;
 }
 #acc-content-pet-name-cont {
-    height:25px;
+    height:50px;
     white-space:nowrap;
     border-bottom:1px #00002A solid;
     margin-bottom:15px;
@@ -381,6 +392,7 @@ a#floating-btn-cont:hover > img {
     overflow:hidden;
     text-overflow:ellipsis;
     font-weight:500;
+    font-size: 35px;
 }
 #pet-card {
     color:black;
@@ -402,6 +414,12 @@ a#floating-btn-cont:hover > img {
     left:50px;
     margin:0 auto;
 }
+
+#home-account-profPic-cont {
+    position: absolute;
+    top: 25px;
+}
+
 #pet-profPic-sm {
     border:3.2px white solid;
     border-radius:50%;
