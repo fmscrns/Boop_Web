@@ -220,6 +220,14 @@ class Post:
 
         return json.loads(deleteUserPosts_req.text)
 
+    @staticmethod
+    def get_all_posts():
+
+        print("{}/post/all".format(Variable.api_url))
+        allPosts_req = requests.get("{}/post/all".format(Variable.api_url()), headers={"authorization": session["booped_in"]})
+
+        return json.loads(allPosts_req.text)
+
 class Comment:
     @staticmethod
     def new_comment(data, post_id):
@@ -233,6 +241,16 @@ class Comment:
         print('get comment')
         getComment_req = requests.get("{}/comment/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
         return json.loads(getComment_req.text)
+
+    @staticmethod
+    def get_rel_comment(post_id):
+        getRelation_req = requests.get("{}/comment/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
+        return json.loads(getRelation_req.text)
+
+    @staticmethod
+    def get_all_comments():
+        getAllComments_req = requests.get("{}/comment/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        return json.loads(getAllComments_req.text)
 
 class Deal:
     @staticmethod

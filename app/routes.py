@@ -114,40 +114,40 @@ def all_users():
 
     return render_template("manage_user.html", title="All Users", current_user=current_user, users=users)
 
-@boop.route("/<username>/edit", methods=["GET", "PUT"])
-@login_required
-def update_user(username):
-    current_user = User.get_current_user()
+# @boop.route("/<username>/edit", methods=["GET", "PUT"])
+# @login_required
+# def update_user(username):
+#     current_user = User.get_current_user()
 
-    updateForm = UpdateForm()
+#     updateForm = UpdateForm()
 
-    if request.method == "PUT":
-        if updateForm.validate_on_submit():
-            form = request.form
+#     if request.method == "PUT":
+#         if updateForm.validate_on_submit():
+#             form = request.form
 
-            updateUser_json = User.update_user(username, form)
+#             updateUser_json = User.update_user(username, form)
 
-            # loginUser_json = Auth.login_user(updateUser_json)
+#             # loginUser_json = Auth.login_user(updateUser_json)
 
-            # if loginUser_json["status"] == "success":
-            #     Variable.store_session(loginUser_json["authorization"])
+#             # if loginUser_json["status"] == "success":
+#             #     Variable.store_session(loginUser_json["authorization"])
 
-            #     flash(loginUser_json["payload"], "success")
+#             #     flash(loginUser_json["payload"], "success")
 
-            return redirect(url_for("home"))
+#             return redirect(url_for("home"))
 
-            # else:
-            #     flash(loginUser_json["payload"], "danger")
+#             # else:
+#             #     flash(loginUser_json["payload"], "danger")
 
-            #     return redirect(url_for("login"))
-    elif request.method == "GET":
-        updateForm.firstName_input.data = current_user["firstName"]
-        updateForm.lastName_input.data = current_user["lastName"]
-        updateForm.email_input.data = current_user["email"]
-        updateForm.username_input.data = current_user["username"]
-        updateForm.contactNo_input.data = current_user["contactNo"]                 
+#             #     return redirect(url_for("login"))
+#     elif request.method == "GET":
+#         updateForm.firstName_input.data = current_user["firstName"]
+#         updateForm.lastName_input.data = current_user["lastName"]
+#         updateForm.email_input.data = current_user["email"]
+#         updateForm.username_input.data = current_user["username"]
+#         updateForm.contactNo_input.data = current_user["contactNo"]                 
     
-    return render_template("update_user.html", title="Update", updateForm=updateForm)
+#     return render_template("update_user.html", title="Update", updateForm=updateForm)
 
 
 @boop.route("/<username>/pets", methods=["GET", "POST"])
@@ -279,6 +279,8 @@ def user_profile_posts(username):
     user_json = User.get_a_user(username)
     user_existence = Helper.user_existence_check(user_json)
     post_json = Post.get_user_posts(username)
+    comments = Comment.get_all_comments()
+    print(comments)
 
     if user_existence is False:
         abort(404)
