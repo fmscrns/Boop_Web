@@ -292,6 +292,8 @@ def user_profile_posts(username):
     user_json = User.get_a_user(username)
     user_existence = Helper.user_existence_check(user_json)
     post_json = Post.get_user_posts(username)
+    comments = Comment.get_all_comments()
+    print(comments)
 
     if user_existence is False:
         abort(404)
@@ -309,6 +311,9 @@ def user_profile_posts(username):
         userPosts[i]["posted_on"] = Helper.datetime_str_to_datetime_obj(userPosts[i]["posted_on"])  
         i += 1
 
+    
+    updateUserForm = SignupForm()
+    commentPostForm = CommentPostForm()
     shareContentForm = ShareContentForm()
 
     if username == current_user["username"]:
@@ -408,8 +413,6 @@ def pet_profile_wall(username, public_id):
     user_json = User.get_a_user(username)
     user_existence = Helper.user_existence_check(user_json)
 
-    dealPetForm = DealPetForm()
-
     if user_existence is False:
         abort(404)
 
@@ -427,7 +430,7 @@ def pet_profile_wall(username, public_id):
 
     pet_json["birthday"] = Helper.datetime_str_to_datetime_obj(pet_json["birthday"])  
 
-    return render_template("pet_profile.html", title="Account", dealPetForm=dealPetForm, public_id=public_id, current_user_page=current_user_page, current_user=current_user, user=user_json, pet=pet_json, owner_list=owner_list, postsNavActivate="3px #00002A solid")
+    return render_template("pet_profile.html", title="Account", public_id=public_id, current_user_page=current_user_page, current_user=current_user, user=user_json, pet=pet_json, owner_list=owner_list, postsNavActivate="3px #00002A solid")
 
 
 @boop.route("/<username>/pets/<public_id>/delete", methods=["GET","POST","DELETE"])

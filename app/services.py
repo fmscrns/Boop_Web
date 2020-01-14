@@ -240,6 +240,16 @@ class Comment:
         getComment_req = requests.get("{}/comment/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
         return json.loads(getComment_req.text)
 
+    @staticmethod
+    def get_rel_comment(post_id):
+        getRelation_req = requests.get("{}/comment/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
+        return json.loads(getRelation_req.text)
+
+    @staticmethod
+    def get_all_comments():
+        getAllComments_req = requests.get("{}/comment/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        return json.loads(getAllComments_req.text)
+
 class Deal:
     @staticmethod
     def new_deal(data, pet_id):
@@ -273,6 +283,24 @@ class Deal:
         getUserDeal_req = requests.get("{}/deal/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
         return json.loads(getUserDeal_req.text)
 
+
+    @staticmethod
+    def get_all_posts():
+
+        print("{}/post/all".format(Variable.api_url))
+        allPosts_req = requests.get("{}/post/all".format(Variable.api_url()), headers={"authorization": session["booped_in"]})
+
+        return json.loads(allPosts_req.text)
+    
+"""
+    -----GET CONTENT----
+    @staticmethod
+    def get_a_content(data):
+        getContent_req = requests.get("{}/content/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(getUserPets_req.text)
+
+"""
 
 
 

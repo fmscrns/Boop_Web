@@ -155,7 +155,7 @@
                                             </div>
                                             <div id="account-primary-editProfile-btn-cont" class="col-4 align-self-center">
                                                 {% if current_user_page == True %}
-                                                {% if current_user_page == True %}
+                                               
                                                 <button type="button" data-toggle="modal" data-target="#update-user-modal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
                                                     Edit Profile
                                                 </button>
@@ -255,7 +255,7 @@
                                                 </div>
 
                                             {% endif %}
-                                                {% endif %}
+                                              
                                             </div>
                                         </div>
                                     </div>
@@ -387,6 +387,10 @@
                                                        
                                                          <br>
                                                          <>{{post.content}}</>
+                                                        <p id="acc-content-pet-name" class="card-title">
+                                                            {{ post.post_author }}
+                                                            <a href="#" data-toggle="modal" data-target="#myModal"}><img class="boop-nameplate" src="{{ url_for('static', filename='images/delete.png') }}" style="width:20px; float: right;"></a>
+                                                        </p>
                                                        
                                                          {{ post.posted_on.strftime("%B") }} {{ post.posted_on.strftime("%d") }}, {{ post.posted_on.strftime("%Y") }}
                                                                     
@@ -402,20 +406,41 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                               </button>
                                                             </div>
-                                                            <div class="modal-body mb-0">
-                                                                <h5>Are you sure you want to delete post?</h5>
-                                                            </div>
-                                                            <div class="modal-footer border-0">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
-                                                               
-                                                        <form action="{{ url_for('delete_post',post_id=post.post_id, username=user.username) }}" method="DELETE">
-                                                            <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Post ">
-                                                        </form>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                    </div>
-                                                <br>                        
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        {{ post.posted_on.strftime("%B") }} {{ post.posted_on.strftime("%d") }}, {{ post.posted_on.strftime("%Y") }}
+                                                                        <span style="font-size:25px;"><p >{{ post.content }} </p></span>
+                                                                    </div>
+                                                                    <div class="w-100">
+                                                                        <div class="modal fade" name="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                              <div class="modal-content">
+                                                                                <div class="modal-header border-0 text-center">
+                                                                                  <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Confirm Action</h5>
+                                                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                  </button>
+                                                                                </div>
+                                                                                <div class="modal-body mb-0">
+                                                                                    <h5>Are you sure you want to delete post?</h5>
+                                                                                </div>
+                                                                                <div class="modal-footer border-0">
+                                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+                                                                                   
+                                                                            <form action="{{ url_for('delete_post', post_id=post.post_id, username=user.username) }}" method="DELETE">
+                                                                                <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Post ">
+                                                                            </form>
+
+                                                                            
+
+                                                                                </div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </div>
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        
                 
                         {% if user_posts is defined %}
                         <br>
