@@ -61,7 +61,6 @@ class Helper:
         else:
             return "default"
 
-
 class Auth:
     @staticmethod
     def signup_user(data):
@@ -170,7 +169,6 @@ class Pet:
         updateUserPets_req = requests.put("{}/pet/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
 
         return json.loads(updateUserPets_req.text)
-
 
 class Specie:
     @staticmethod

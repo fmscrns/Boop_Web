@@ -292,11 +292,18 @@ def user_profile_posts(username):
     user_json = User.get_a_user(username)
     user_existence = Helper.user_existence_check(user_json)
     post_json = Post.get_user_posts(username)
-    comments = Comment.get_all_comments()
-    print(comments)
+    posts = Post.get_all_posts()["data"]
+    comments = Comment.get_all_comments()["data"]
+    print("aw: ",comments)
 
     if user_existence is False:
         abort(404)
+
+    for p in posts:
+        for c in comments:
+                print(p["content"])
+                if p["post_id"] == c["post_id"]:
+                    print(c["comment"]) 
 
     userPosts = Post.get_user_posts(username)["data"]
     
@@ -342,7 +349,7 @@ def user_profile_posts(username):
                 
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
-    return render_template("user_profile.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, postsNavActivate="3px #00002A solid")
+    return render_template("aw.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, comments=comments, postsNavActivate="3px #00002A solid")
 
 @boop.route("/<username>/posts/<post_id>/comment", methods=["GET", "POST"])
 @login_required
