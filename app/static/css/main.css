@@ -1,0 +1,502 @@
+body {
+    padding:0;
+    background-color:#efe9f2 !important;
+}
+hr {
+    background-color: rgb(200, 200, 239);
+}
+@media (max-width:1200px) {
+    #welcome-navbar-login {
+        display:none;
+    }
+}
+@media (max-width:991.98px) {
+    #navbar-dropdown {
+        display:none;
+    }
+}
+@media (min-width:992px) {
+    .nav-item-collapse {
+        display:none;
+    }
+}
+@media (max-width:767px) {
+    #account-profPic {
+        border:2px white solid;
+        border-radius:50%;
+        margin:12px 25px;
+        width:100px;
+        height:100px;
+        object-fit:cover;
+        background:white;
+    }
+    #account-info-panel-leftSpace {
+        display:none;
+    }
+    #account-userInfo-cont{
+        width:200px;
+    }
+    #account-primary-editProfile-btn-cont {
+        display:none;
+    }
+    #account-info-panel-rightSpace {
+        right:20px;
+    }
+}
+@media (min-width:768px) {
+    #account-profPic {
+        border:4px white solid;
+        border-radius:50%;
+        margin:25px;
+        width:180px;
+        height:180px;
+        object-fit:cover;
+        background:white;
+    }
+    #home-profPic {
+        border:4px white solid;
+        border-radius:50%;
+        width:110px;
+        height:110px;
+        object-fit:cover;
+        background:white;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #account-info-panel-leftSpace {
+        width:200px;
+    }
+    #account-info-panel-rightSpace {
+        display:none;
+    }
+    #account-primary-editProfile-btn-cont {
+        margin:0;
+        padding:0;
+        position:absolute;
+        right:0;
+    }
+}
+@media (max-width:1200px) {
+    #ha-leftSection {
+        display:none;
+    }
+    #ha-leftSection-space {
+        display:none;
+    }
+    #ha-rightSection {
+        padding:0;
+        margin-bottom:20px;
+        margin-top:-20px;
+    }
+    #flash-primary-cont {
+        display:none;
+    }
+    #ha-primary-flash {
+        display:none;
+    }
+    #flash-secondary-cont {
+        width:100%;
+        padding:0;
+        margin:15px 0 20px 0;
+    }
+    #ha-secondary-flash {
+        margin:0;
+        border:0;
+    }
+}
+@media (min-width:1201px) {
+    #ha-leftSection {
+        width:370px;
+        height:auto;
+        margin:0;
+    }
+    #ha-leftSection-space {
+        width:370px;
+        height:500px;
+        pointer-events: none;
+    }
+    #ha-rightSection {
+        padding:0;
+        margin-bottom:20px;
+    }
+    #flash-primary-cont {
+        width:370px;
+        padding:0;
+        margin:0;
+    }
+    #ha-primary-flash {
+        margin:22px 0 0 0;
+    }
+    #flash-secondary-cont {
+        display:none;
+    }
+    #ha-secondary-flash {
+        display:none;
+    }
+}
+#floating-widget {
+    position:fixed;
+}
+::-webkit-input-placeholder {
+    font-size:12px;
+}
+.boop-nameplate:hover {
+    opacity:0.5;
+}
+.auth-btn {
+    font-family:Poppins;
+    font-weight:700 !important;
+    margin-top:10px;
+    width:100%;
+    border:1px white solid;
+    color:white;
+    border-radius:150px;
+}
+#signup-form {
+    border-radius:8.5px;
+    background-color:white;
+    border:1px #9d7a86 solid;
+    margin:40px 0;
+    padding:30px;
+}
+#login-form {
+    border-radius:8.5px;
+    background-color:white;
+    border:1px #9d7a86 solid;
+    margin:40px 0;
+    padding:30px;
+}
+#alert-box {
+    z-index:2;
+    width:350px;
+    position:fixed;
+    right:40px;
+    bottom:40px;
+}
+#welcome-navbar {
+    position:fixed;
+    z-index:2;
+    width:100%;
+    height:50px;
+    padding:0;
+}
+#secured-navbar {
+    position:fixed;
+    z-index:2;
+    padding:0 17%;
+    width:100%;
+    background-color:#00002A;
+    height:auto;
+    top:-0.5px;
+}
+#home-btn:hover .st0 {
+    fill:#00002A;
+}
+#account-btn:hover .st0 {
+    fill:#00002A;
+}
+#navbar-account:hover {
+    background-color:#00002A;
+    color:white;    
+}
+#navbar-settings:hover {
+    background-color:#00002A;
+    color:white;    
+}
+#navbar-logout:hover {
+    background-color:#00002A;
+    color:white;    
+}
+.floating-anim {
+    animation-name:floating-anim;
+    animation-duration:3s;
+    animation-iteration-count:infinite;
+    animation-timing-function:ease-in-out;
+}
+@keyframes floating-anim {
+    from { transform:translate(0,  0px); }
+    65%  { transform:translate(0, 15px); }
+    to   { transform:translate(0, -0px); }    
+}
+.typewriting-anim h1 {
+    color:white;
+    font-size:60px;
+    font-family:Poppins;
+    font-weight:700;
+    overflow:hidden;
+    border-right:.15em solid orange;
+    white-space:nowrap;
+    margin:0 auto;
+    letter-spacing:2px;
+    animation: 
+      typing 2s steps(30, end),
+      blink-caret 1.5s step-end infinite;
+}
+@keyframes typing {
+    from { width:0 }
+    to { width:100% }
+}
+@keyframes blink-caret {
+    from, to { border-color:transparent }
+    50% { border-color:orange }
+}
+.text-center {
+    text-align:center;
+}
+#account-action-panel {
+    background-color:white;
+    border-bottom-left-radius:8.5px;
+    border-bottom-right-radius:8.5px;
+    overflow:hidden;
+
+}
+.account-actionPanel-item {
+    font-family:Poppins;
+    font-weight:500;
+    height:35px;
+    padding-top:7px;
+    color:black;
+}
+.account-actionPanel-item:hover {
+    background-color:#00002A;
+    color:white;
+    text-decoration:none;
+}
+.text-center {
+    text-align:center;
+}
+#account-fullName {
+    font-family:Poppins;
+    font-weight:600;
+}
+#ha-body {
+    margin-top:80px;
+}
+#account-coverPhoto-panel{
+    height:200px;
+    background-color:rgb(200, 200, 239);
+    border-top-left-radius:8.5px;
+    border-top-right-radius:8.5px;
+}
+#account-profPic-cont {
+    position:absolute;
+    top:80px;
+    left:5px;
+}
+#account-info-panel {
+    height:100px;
+    padding-top:10px;
+    background-color:white;
+}
+#account-primary-nameplate-cont {
+    padding:0;
+}
+#account-secondary-nameplate-cont {
+    padding:0;
+    margin-top:-7px;
+    color:#6c757d;
+}
+#account-content-posts-panel {
+    margin-top:20px;
+    padding:0;
+    border-top:0;
+    height:auto;
+}
+#account-content-stories-panel {
+    margin-top:20px;
+    padding:23px 0 0 0;
+    border-radius:8.5px;
+    height:500px;
+    background-color:white;
+}
+#account-content-about-panel {
+    margin-top:20px;
+    padding:23px 0 0 0;
+    border-radius:8.5px;
+    height:500px;
+    background-color:white;
+}
+#account-content-pets-panel {
+    margin-top:20px;
+    padding:0;
+    border-top:0;
+    height:auto;
+}
+#home-content-panel {
+    padding:0;
+    border-top:0;
+    height:1000px;
+    border-radius:8.5px;
+    background-color:white;
+    margin-bottom:20px;
+}
+#floating-btn-cont {
+    position:fixed;
+    width:70px;
+    height:70px;
+    bottom:40px;
+    right:40px;
+    background-color:#00002A;
+    border-radius:50%;
+    z-index:1000;
+}
+#floating-btn {
+    position:relative;
+    left:15px;
+    top:17.5px;
+    width:40px;
+}
+a#floating-btn-cont > img {
+	animation:rotate-in 0.5s;
+}
+a#floating-btn-cont:hover > img {
+	animation:rotate-out 0.5s;
+}
+@keyframes rotate-in {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+@keyframes rotate-out {
+    from {
+        transform:rotate(360deg);
+    }
+    to {
+        transform:rotate(0deg);
+    }
+}
+#account-leftSection-space {
+    pointer-events:none;
+}
+#gear-btn:hover .st0 {
+    fill:#00002A; 
+}
+#navbar-collapse-toggler-btn:hover .st0 {
+    fill:#00002A; 
+}
+#addPetForm-modal-body {
+    height:70vh;
+    overflow-y:scroll;
+}
+#ownerList-modal-body {
+    height:70vh;
+    overflow-y:scroll;
+    padding:0;
+}
+#acc-content-pet-card:hover {
+    background-color:#9d7a86;
+}
+#acc-content-pet-name-cont {
+    height:50px;
+    white-space:nowrap;
+    border-bottom:1px #00002A solid;
+    margin-bottom:15px;
+}
+#acc-content-pet-name {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    font-weight:500;
+    font-size: 35px;
+}
+#pet-card {
+    color:black;
+}
+#pet-card:hover {
+    text-decoration:none;
+}
+.card-title:hover {
+    text-decoration:none;
+}
+#pet-profpic-preview {
+    height:200px;
+    width:200px;
+    object-fit:cover;
+    background:gray;
+    border:1px #9d7a86 solid;
+}
+#pet-card-profPic-cont {
+    left:50px;
+    margin:0 auto;
+}
+
+#pet-profPic-sm {
+    border:3.2px white solid;
+    border-radius:50%;
+    margin:-50px auto 0 auto;
+    width:5rem;
+    height:5rem;
+    object-fit:cover;
+    background:#00002A;
+}
+#account-profPic-vsm {
+    border-radius:50%;
+    width:25px;
+    height:25px;
+    object-fit:cover;
+}
+.owner_link {
+    color:#6c757d;
+}
+.owner_link:hover {
+    color:#6c757d;
+}
+.acc-details-col {
+    margin-bottom:15px;
+}
+#account-details-panel {
+    height:130px;
+    background-color:white;
+}
+.acc-detail-img-cont {
+    width:20px;
+}
+#image-upload-layout {
+    margin:4px 0 15px 0;
+    padding:15px 0 25px 0;
+    border:1px rgb(200, 200, 239) solid;
+    border-radius:8.5px;
+}
+.ha-lefSection-profileSnippet {
+    margin:0 0 20px 0;
+    border-radius:8.5px;
+    background-color: white;
+    padding:0 0 0 0;
+}
+.ha-lefSection-children {
+    margin-bottom:20px;
+    border-radius:8.5px;
+    background-color: white;
+    padding:10px 0 10px 0;
+}
+
+#home-coverPhoto-panel{
+    height:110px;
+    background-color:rgb(200, 200, 239);
+    border-top-left-radius:8.5px;
+    border-top-right-radius:8.5px;
+    object-fit: cover;
+    padding: 0 !important; 
+}
+#home-profPic-cont {
+    position:absolute;
+    top:55px;
+}
+.red {
+    background-color: red;
+}
+.blue {
+    background-color: blue;
+}
+.yellow {
+    background-color: yellow;
+}
+.green {
+    background-color: green;
+}
+.orange {
+    background-color: orange;
+}

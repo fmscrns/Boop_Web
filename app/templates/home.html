@@ -1,0 +1,266 @@
+{% extends "layout.html" %}
+
+    {% block bodyStyle %}
+        <body>
+    {% endblock bodyStyle %}
+
+    {% block navbarAdjust %}
+        <div id="secured-navbar" class="container-fluid">
+    {% endblock navbarAdjust %}
+
+    {% block navbarStyle %}
+        <nav class="navbar navbar-expand-lg navbar-dark">
+    {% endblock navbarStyle %}
+
+    {% block navbarNameplate %}
+        <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate.svg') }}" style="width:60px;">
+    {% endblock navbarNameplate %}
+
+    {% block navbarContent %}
+        <button id="navbar-collapse-toggler-btn" class="btn btn-outline-light navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <div style="width:25px;margin:0 2px -5px 2px;">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                    <style type="text/css">
+                        .st0{fill:#FFFFFF;}
+                    </style>
+                    <g>
+                        <g>
+                            <path class="st0" d="M491.3,235.3H20.7C9.3,235.3,0,244.6,0,256s9.3,20.7,20.7,20.7h470.6c11.4,0,20.7-9.3,20.7-20.7
+                                C512,244.6,502.7,235.3,491.3,235.3z"/>
+                        </g>
+                    </g>
+                    <g>
+                        <g>
+                            <path class="st0" d="M491.3,78.4H20.7C9.3,78.4,0,87.7,0,99.1s9.3,20.7,20.7,20.7h470.6c11.4,0,20.7-9.3,20.7-20.7
+                                S502.7,78.4,491.3,78.4z"/>
+                        </g>
+                    </g>
+                    <g>
+                        <g>
+                            <path class="st0" d="M491.3,392.2H20.7C9.3,392.2,0,401.5,0,412.9s9.3,20.7,20.7,20.7h470.6c11.4,0,20.7-9.3,20.7-20.7
+                                S502.7,392.2,491.3,392.2z"/>
+                        </g>
+                    </g>
+               </svg>
+            </div>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home') }}" role="button" style="color:white;">
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('user_profile_pets', username=current_user['username']) }}" role="button" style="color:white;">
+                        Account
+                    </a>
+                </li>
+                <li class="nav-item nav-item-collapse">
+                    <a class="nav-link" href="#" role="button" style="color:white;">
+                        Settings
+                    </a>
+                </li>
+                <li class="nav-item nav-item-collapse">
+                    <a class="nav-link" href="{{ url_for('logout') }}" role="button" style="color:white;">
+                        Log out
+                    </a>
+                </li>
+            </ul>
+            <div id="navbar-dropdown" class="dropdown">
+                <div class="dropdown">
+                    <button id="gear-btn" class="btn btn-outline-light" data-toggle="dropdown">
+                        <div style="width:25px;margin:0 2px -5px 2px;">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                viewBox="150 -150 500 500" style="enable-background:new 150 -150 500 500;" xml:space="preserve">
+                                <style type="text/css">
+                                    .st0{fill:white;}
+                                </style>
+                                <path class="st0" d="M621.6,62.2l-60.1-9.8c-3.4-11.6-8-22.6-13.7-33.1l35.1-50c2.8-4,2.3-9.4-1.1-12.8l-38.9-38.9
+                                    c-3.5-3.5-8.9-3.9-12.9-1L480.7-48c-10.5-5.8-21.6-10.4-33.3-13.9l-10.5-59.8c-0.8-4.8-5-8.3-9.9-8.3h-55c-4.9,0-9.1,3.5-9.9,8.4
+                                    l-9.7,59.6c-11.7,3.4-22.8,8-33.4,13.7L270-83.5c-4-2.8-9.4-2.4-12.9,1.1l-38.9,38.9c-3.4,3.4-3.9,8.8-1.1,12.8l34.6,49.5
+                                    c-5.8,10.6-10.5,21.8-14,33.6l-59.3,9.9c-4.8,0.8-8.3,5-8.3,9.9v55c0,4.9,3.5,9,8.2,9.9l59.3,10.5c3.5,11.8,8.1,23,13.9,33.6l-35,49
+                                    c-2.8,4-2.4,9.4,1.1,12.9l38.9,38.9c3.4,3.4,8.8,3.9,12.8,1.1l49.6-34.7c10.5,5.8,21.7,10.4,33.5,13.8l9.9,59.6
+                                    c0.8,4.8,5,8.4,9.9,8.4h55c4.9,0,9-3.5,9.9-8.3l10.6-59.9c11.7-3.5,22.8-8.2,33.3-14l49.9,35c4,2.8,9.4,2.3,12.8-1.1l38.9-38.9
+                                    c3.5-3.5,3.9-8.9,1-12.9l-35.6-49.4c5.7-10.4,10.3-21.5,13.7-33.1l60.2-10.5c4.8-0.8,8.3-5,8.3-9.9v-55
+                                    C630,67.2,626.4,63,621.6,62.2z M400,180c-44.1,0-80-35.9-80-80s35.9-80,80-80s80,35.9,80,80S444.1,180,400,180z"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a id="navbar-settings" class="dropdown-item" href="#">
+                            Settings
+                        </a>
+                        <a id="navbar-logout" class="dropdown-item" href="{{ url_for('logout') }}">
+                            Log out
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock navbarContent %}
+
+    {% block content %}
+        <div id="ha-body" class="container" style="padding:0;">
+            <div class="container" style="position:fixed;padding:0;">
+                <div class="row" style="padding:0;margin:0;">
+                    <div class="col-4" style="padding:0;">
+                        <div id="ha-leftSection" style="padding-top:0;">
+                            <div class="ha-lefSection-profileSnippet">
+                                <img src="https://res.cloudinary.com/fmscrns/image/upload/v1579030880/ehxrxzwpziiwoquj9fax.jpg" id="home-coverPhoto-panel" class="container-fluid">
+                                <div id="home-profPic-cont" class="container">
+                                    <div class="float-left">
+                                        <img id="home-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+                                    </div>
+                                </div>
+                                <div class="row mx-auto">
+                                    <div class="col-md-auto" style="width:120px;"></div>
+                                    <div class="col" style="margin:0;padding:0;">
+                                        <div class="row" style="margin:5px 0 15px 2px;">
+                                            <div class="col">
+                                                <a href="{{ url_for('user_profile_pets', username=current_user.username) }}">{{ current_user.firstName }} {{ current_user.lastName }}</a>
+                                            </div>
+                                            <div class="w-100"></div>
+                                            <div class="col">
+                                                <a href="{{ url_for('user_profile_pets', username=current_user.username) }}"><small>@{{ current_user.username }}</small></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container ha-lefSection-children">
+                                <div class="row">
+                                    <div class="container">
+                                        <button type="button" class="btn btn-primary btn-lg btn-block">Post story</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {#
+                            <div class="row" style="height: 225px;">
+                                <div class="container-fluid">
+                                    <img id="home-account-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+                                </div>
+                            </div>
+                            <div class="row" style="padding-left: 30px;">
+                                <div id="account-primary-nameplate-cont" class="col">
+                                    <h5 id="account-fullName">{{ current_user.firstName }} {{ current_user.lastName }}</h5>
+                                </div>
+                                <div class="w-100"></div>
+                                <div id="account-secondary-nameplate-cont" class="col">
+                                    <small>@{{ current_user.username }}</small>
+                                </div>
+                            </div>
+                            <div class="row" style="padding: 30px;">
+                                <form method="POST" action="" enctype="multipart/form-data">
+                                    <div id="shareContentForm-modal-body" class="modal-body">
+                                        <div class="postStory-form" class="container">
+                                            {{ shareContentForm.hidden_tag() }}
+                                            <fieldset class="form-group">
+                                                <div class="form-group">
+                                                    {% if shareContentForm.shareContent_input.errors %}
+                                                        {{ shareContentForm.shareContent_input(class="form-control is-invalid") }}
+                                                        <div class="invalid-feedback">
+                                                            {% for error in shareContentForm.shareContent_input.errors %}
+                                                                <span> {{ error }} </span>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% else %}
+                                                        {{ shareContentForm.shareContent_input(class="form-control") }}
+                                                    {% endif %}
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        {{ shareContentForm.shareContent_submit_input(class="btn btn-outline-primary") }}
+                                    </div>
+                                </form>
+                            </div>
+                            #}
+                        </div>
+                        <div id="flash-primary-cont" class="container-fluid">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div id="ha-primary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                            <strong>{{ message }}</strong>
+                                            <button id="ha-primary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="ha-leftSection-space" class="col-4"></div>
+                <div id="ha-rightSection" class="col">
+                    <div class="container-fluid">
+                        <div id="home-content-panel" class="container-fluid">
+                            <div id="flash-secondary-cont" class="container-fluid">
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                            <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                                <strong>{{ message }}</strong>
+                                                <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                            <div class="row">
+                                {% for post in all_posts| sort(attribute='posted_on', reverse = True)  %}
+                                    <div class="col-12">
+                                        <a id="pet-card" >
+                                            <div class="card">
+
+                                                <div class="card-body">
+                                                    <div id="acc-content-pet-name-cont">
+                                                        <p id="acc-content-pet-name" class="card-title">
+                                                            {{ post.post_author }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="container-fluid">
+                                                        <div class="row">
+                                                            <div class="col-1">
+                                                                <img style="width:25px;">
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        {{ post.posted_on.strftime("%B") }} {{ post.posted_on.strftime("%d") }}, {{ post.posted_on.strftime("%I") }}:{{ post.posted_on.strftime("%M") }} {{ post.posted_on.strftime("%p") }}
+                                                                        <span style="font-size:25px;"><p >{{ post.content }} </p></span>
+                                                                    </div>
+                                                                    <div class="w-100">
+                                                                    </div>
+                                                                    <div class="col">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    {% if loop.index % 1 == 0 %}
+                                        <div class="w-100" style="height:20px;"></div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}
