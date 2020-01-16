@@ -61,7 +61,6 @@ class Helper:
         else:
             return "default"
 
-
 class Auth:
     @staticmethod
     def signup_user(data):
@@ -175,7 +174,6 @@ class Pet:
 
         return json.loads(updateUserPets_req.text)
 
-
 class Specie:
     @staticmethod
     def get_all_specie():
@@ -220,8 +218,6 @@ class Post:
 
     @staticmethod
     def get_all_posts():
-
-        print("{}/post/all".format(Variable.api_url))
         allPosts_req = requests.get("{}/post/all".format(Variable.api_url()), headers={"authorization": session["booped_in"]})
 
         return json.loads(allPosts_req.text)
