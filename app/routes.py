@@ -349,7 +349,7 @@ def user_profile_posts(username):
                 
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
-    return render_template("aw.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, comments=comments, postsNavActivate="3px #00002A solid")
+    return render_template("user_profile.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, comments=comments, postsNavActivate="3px #00002A solid")
 
 @boop.route("/<username>/posts/<post_id>/comment", methods=["GET", "POST"])
 @login_required
