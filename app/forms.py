@@ -68,3 +68,13 @@ class DealPetForm(FlaskForm):
     pricePet_input = StringField("Price", validators=[DataRequired(), Length(min=1, max=150)])
 
     dealPet_submit_input = SubmitField("Submit")
+
+class UpdateUserForm(FlaskForm):
+    firstName_input = StringField("First Name", validators=[DataRequired(), Length(min=2, max=50)])
+    lastName_input = StringField("Last Name", validators=[DataRequired(), Length(min=2, max=50)])
+    contactNo_input = StringField("Contact Number", validators=[DataRequired(), Length(min=2, max=50)])
+    username_input = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
+    email_input = StringField("Email", validators=[DataRequired(), Email()])
+    
+
+    signup_submit_input = SubmitField("Update")
