@@ -179,7 +179,7 @@ class Pet:
 class Specie:
     @staticmethod
     def get_all_specie():
-        getAllSpecie_req = requests.get("{}/specie/".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        getAllSpecie_req = requests.get("{}/specie/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
         
         return json.loads(getAllSpecie_req.text)
 
