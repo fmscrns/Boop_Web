@@ -23,61 +23,66 @@
 
     {% block content %}
         <div class="input-group mb-3 justify-content-center">
-            <div id="login-form">
+            <div id="signup-form">
                 <div class="row">
-                    <div id="welcomeForm-illustrationSection" class="col-md-auto" style="background: url('{{ url_for('static', filename='assets/spaceship_landing.svg') }}') center no-repeat;">
+                    <div id="welcomeForm-illustrationSection" class="col-md-auto" style="background: url('{{ url_for('static', filename='assets/rocketship-atmosphere.svg') }}') center no-repeat;">
                         <a href="{{ url_for('welcome') }}">
                             <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate.svg') }}" style="width:80px;margin:25px 0 0 15px;">
                         </a>
                     </div>
-                    <div id="loginForm-inputSection-gradient" class="col">
+                    <div id="signupForm-inputSectionTwo-gradient" class="col">
                         <div id="welcomeForm-inputSection-cont">
                             <div id="welcomeForm-inputSection">
                                 <form method="POST" action="">
-                                    {{ loginForm.hidden_tag() }}
+                                    {{ signupPartTwoForm.hidden_tag() }}
                                     <fieldset class="form-group">
                                         <div class="form-group">
-                                            <label>Username or Email Address</label>
-                                            {% if loginForm.usernameOrEmail_input.errors %}
-                                                {{ loginForm.usernameOrEmail_input(class="form-control is-invalid", style="width:20rem;", placeholder="Username or Email Address") }}
+                                            <label>Contact Number</label>
+                                            {% if signupPartTwoForm.contactNo_input.errors %}
+                                                {{ signupPartTwoForm.contactNo_input(class="form-control is-invalid") }}
                                                 <div class="invalid-feedback">
-                                                    {% for error in loginForm.usernameOrEmail_input.errors %}
+                                                    {% for error in signupPartTwoForm.contactNo_input.errors %}
                                                         <span> {{ error }} </span>
                                                     {% endfor %}
                                                 </div>
                                             {% else %}
-                                                {{ loginForm.usernameOrEmail_input(class="form-control", style="width:20rem;", placeholder="Username or Email Address") }}
+                                                {{ signupPartTwoForm.contactNo_input(class="form-control") }}
                                             {% endif %}
                                         </div>
                                         <div class="form-group">
                                             <label>Password</label>
-                                            {% if loginForm.password_input.errors %}
-                                                {{ loginForm.password_input(class="form-control is-invalid", placeholder="Password") }}
+                                            {% if signupPartTwoForm.password_input.errors %}
+                                                {{ signupPartTwoForm.password_input(class="form-control is-invalid") }}
                                                 <div class="invalid-feedback">
-                                                    {% for error in loginForm.password_input.errors %}
+                                                    {% for error in signupPartTwoForm.password_input.errors %}
                                                         <span> {{ error }} </span>
                                                     {% endfor %}
                                                 </div>
                                             {% else %}
-                                                {{ loginForm.password_input(class="form-control", placeholder="Password") }}
+                                                {{ signupPartTwoForm.password_input(class="form-control") }}
                                             {% endif %}
                                         </div>
-                                        <div class="form-check">
-                                            <div>
-                                                {{ loginForm.remember_input(class="form-check-input") }}
-                                            </div>
-                                            <div>
-                                                <label>Remember password</label>
-                                            </div>
+                                        <div class="form-group">
+                                            <label>Confirm Password</label>
+                                            {% if signupPartTwoForm.confirmPassword_input.errors %}
+                                                {{ signupPartTwoForm.confirmPassword_input(class="form-control is-invalid") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in signupPartTwoForm.confirmPassword_input.errors %}
+                                                        <span> {{ error }} </span>
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                {{ signupPartTwoForm.confirmPassword_input(class="form-control") }}
+                                            {% endif %}
                                         </div>
                                         <div class="form-group text-right" style="padding-top:1.5rem;">
-                                            {{ loginForm.login_submit_input(class="btn btn-outline-primary btn-block") }}
+                                            {{ signupPartTwoForm.signup_submit_input(class="btn btn-outline-primary btn-block") }}
                                         </div>
                                         <div class="border-top pt-3">
                                             <small class="text-muted">
-                                                New to Boop? <a class="ml-2" href="{{ url_for('signup_part_one') }}" style="color:#00002A;">Sign up here</a>
+                                                Already have an account? <a class="ml-2" href="{{ url_for('login') }}" style="color:#00002A;">Log in here</a>
                                             </small>
-                                        </div> 
+                                        </div>
                                     </fieldset>
                                 </form>
                             </div>
@@ -86,4 +91,4 @@
                 </div>
             </div>
         </div>
-    {% endblock content %}
+	{% endblock content %}

@@ -1,4 +1,3 @@
 {
-    "python.pythonPath": "env\\Scripts\\python.exe",
-    "workbench.colorTheme": "Tomorrow Night Blue"
+    "python.pythonPath": "env\\Scripts\\python.exe"
 }
