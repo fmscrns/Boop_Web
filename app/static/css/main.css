@@ -516,6 +516,7 @@ a#floating-btn-cont:hover > img {
 .acc-lefSection-galleryCont {
     margin:0 0 20px 0;
     border-radius:8.5px;
+<<<<<<< HEAD
     background-color: white;
     padding:0 0 0 0;
 }
@@ -781,3 +782,6 @@ a#floating-btn-cont:hover > img {
 .white {
     background-color: white !important;
 }
+=======
+}
+>>>>>>> 3bb1d2ef2db1ac9fccf7ac7d0adb7f884efe081e

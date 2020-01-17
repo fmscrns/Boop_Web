@@ -312,7 +312,7 @@ def user_profile_posts(username):
 
     userPosts = Post.get_user_posts(username)["data"]
     
-    updateUserForm = UpdateForm()
+    updateUserForm = UpdateUserForm()
     commentPostForm = CommentPostForm()
     # post_json = Post.get_user_posts(username)
 
@@ -323,7 +323,7 @@ def user_profile_posts(username):
         i += 1
 
     
-    updateUserForm = UpdateForm()
+    updateUserForm = UpdateUserForm()
     commentPostForm = CommentPostForm()
     shareContentForm = ShareContentForm()
 
