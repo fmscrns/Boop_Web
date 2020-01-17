@@ -146,6 +146,7 @@
                                         <div class="row align-items-center">
                                             <div class="col-8">
                                                 <div id="account-userInfo-cont" class="container">
+                                                    
                                                     <div class="row">
                                                         <div id="account-primary-nameplate-cont" class="col">
                                                             <h5 id="account-fullName">{{ pet.pet_name }}</h5>
@@ -156,9 +157,23 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                             <div id="account-primary-editProfile-btn-cont" class="col-4 align-self-center">
+                                               
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item"  data-toggle="modal" data-target="#adoptPet"}> Adopt Pet </a>
+                                                        <a class="dropdown-item"   data-toggle="modal" data-target="#petForSale"}> Pet For Sale </a>
+                                                        <a class="dropdown-item"   data-toggle="modal" data-target="#myModal"}> Delete Pet </a>
+                                                
+                                                    </div>
+                                                  </div>
                                                 {% if current_user_page == True %}
+                                               <!--- {% for deal in deal_pets %}
                                                 <button type="button" data-toggle="modal" data-target="#update-user-modal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
                                                     Adopt Pet
                                                 </button>
@@ -172,7 +187,7 @@
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <form method="POST" action="{{ url_for('deal_pet', username=user.username, pet_id=pet.pet_id) }}" enctype="multipart/form-data">
+                                                            <form method="POST" action="{{ url_for('deal_pet', username=user.username, pet_id=deal.pet_id) }}" enctype="multipart/form-data">
                                                                 <div id="updateUserForm-modal-body" class="modal-body">
                                                                     <div class="updateUser-form" class="container">
                                                                         {{ dealPetForm.hidden_tag() }}
@@ -205,14 +220,67 @@
                                                     </div>
                                                     
                                                 </div>
+                                                {% endfor %}
                                                 {% endif %}
+                                                --->
                                             </div> 
                                     </div>
                                     <div id="account-primary-editProfile-btn-cont" class="col-4 align-self-center">
                                         {% if current_user_page == True %}
 
-                                        <a href="#" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#myModal"}> Delete Pet </a>
-                                        
+                                    
+                                        <br>
+                                          <!--Adopt Pet Modal-->
+                                          <div class="modal fade" name="modal" id="adoptPet" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header border-0 text-center">
+                                                  <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Adopt Pet</h5>
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                                </div>
+                                                <div class="modal-body mb-0">
+                                                    <h5>Are you sure you want to adopt pet?</h5>
+                                                </div>
+                                                <div class="modal-footer border-0">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+                                                   
+                                            <form action="{{ url_for('delete_pet',public_id=pet.public_id, username=user.username) }}" method="DELETE">
+                                                <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Pet ">
+                                            </form>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <!--End Adopt Pet-->
+
+                                           <!--Pet for Sale Modal-->
+                                           <div class="modal fade" name="modal" id="petForSale" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header border-0 text-center">
+                                                  <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Pet for Sale</h5>
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                                </div>
+                                                <div class="modal-body mb-0">
+                                                    <h5>Are you sure you want to delete pet?</h5>
+                                                </div>
+                                                <div class="modal-footer border-0">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+                                                   
+                                            <form action="{{ url_for('delete_pet',public_id=pet.public_id, username=user.username) }}" method="DELETE">
+                                                <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Pet ">
+                                            </form>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <!--End Pet for sale-->
+
+                                        <!--Delete Pet Modal-->
                                         <div class="modal fade" name="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                               <div class="modal-content">
@@ -235,6 +303,7 @@
                                               </div>
                                             </div>
                                           </div>
+                                          <!--End Delete Pet-->
 
                                         {% endif %}
                                     </div>
@@ -255,7 +324,7 @@
                                     <div class="col acc-details-col">
                                         <div class="row">
                                             <div class="col-1 acc-detail-img-cont">
-                                                <img src="{{ url_for('static', filename='assets/' + pet.specie_name + '.svg') }}" style="width:25px;">
+                                             <img src="{{ url_for('static', filename='assets/' + pet.specie_name + '.svg') }}" style="width:25px;">
                                             </div>
                                             <div class="col-7" style="margin:0 0 0 2px;">
                                                 <small><span class="text-muted">{{ pet.specie_name }} | {{ pet.breed_name }}</span></small>

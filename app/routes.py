@@ -114,43 +114,8 @@ def all_users():
 
     return render_template("manage_user.html", title="All Users", current_user=current_user, users=users)
 
-# @boop.route("/<username>/edit", methods=["GET", "PUT"])
-# @login_required
-# def update_user(username):
-#     current_user = User.get_current_user()
 
-#     updateForm = UpdateForm()
-
-#     if request.method == "PUT":
-#         if updateForm.validate_on_submit():
-#             form = request.form
-
-#             updateUser_json = User.update_user(username, form)
-
-#             # loginUser_json = Auth.login_user(updateUser_json)
-
-#             # if loginUser_json["status"] == "success":
-#             #     Variable.store_session(loginUser_json["authorization"])
-
-#             #     flash(loginUser_json["payload"], "success")
-
-#             return redirect(url_for("home"))
-
-#             # else:
-#             #     flash(loginUser_json["payload"], "danger")
-
-#             #     return redirect(url_for("login"))
-#     elif request.method == "GET":
-#         updateForm.firstName_input.data = current_user["firstName"]
-#         updateForm.lastName_input.data = current_user["lastName"]
-#         updateForm.email_input.data = current_user["email"]
-#         updateForm.username_input.data = current_user["username"]
-#         updateForm.contactNo_input.data = current_user["contactNo"]                 
-    
-#     return render_template("update_user.html", title="Update", updateForm=updateForm)
-
-
-@boop.route("/<username>/pets", methods=["GET", "POST"])
+@boop.route("/<username>/pets", methods=["GET", "POST", "PUT"])
 @login_required
 def user_profile_pets(username):
     current_user_page = False
@@ -233,7 +198,7 @@ def update_user(username):
                 
                 return redirect(url_for("user_profile_pets", username=current_user["username"]))
 
-'''
+
 
 @boop.route("/<username>/update", methods=["GET", "POST"])
 @login_required
@@ -269,6 +234,54 @@ def update_user(username):
         return redirect(url_for("user_profile_pets", username=current_user["username"]))
 	
     return redirect(url_for("user_profile_pets", username=current_user["username"]))
+'''
+
+@boop.route("/<username>/edit", methods=["GET", "PUT"])
+@login_required
+def update_user(username):
+    current_user_page = False
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    user_existence = Helper.user_existence_check(user_json)
+    
+
+    if user_existence is False:
+        abort(404)
+
+    User.update_user(username)['data']
+
+    updateUserForm = SignupForm()
+
+    if request.method == "POST":
+        if updateForm.validate_on_submit():
+            form = request.form
+
+            updatepUser_json = User.update_user(form,username)
+
+            if updatepUser_json["status"] == "success":
+                Variable.store_session(updatepUser_json["authorization"])
+
+                flash(updatepUser_json["payload"], "success")
+
+                return redirect(url_for("user_profile_pets", username=current_user["username"]))
+
+            else:
+                flash(updatepUser_json["payload"], "danger")
+
+                return redirect(url_for("user_profile_pets", username=current_user["username"]))
+        
+        return redirect(url_for("user_profile_pets", username=current_user["username"]))
+
+    elif request.method == "GET":
+        updateForm.firstName_input.data = current_user["firstName"]
+        updateForm.lastName_input.data = current_user["lastName"]
+        updateForm.email_input.data = current_user["email"]
+        updateForm.username_input.data = current_user["username"]
+        updateForm.contactNo_input.data = current_user["contactNo"]            
+
+    
+    return redirect(url_for("user_profile_pets", username=current_user["username"]))
+
 
 
 @boop.route("/<username>/posts", methods=["GET", "POST"])
@@ -293,6 +306,9 @@ def user_profile_posts(username):
                     print(c["comment"]) 
 
     userPosts = Post.get_user_posts(username)["data"]
+    
+    updateUserForm = SignupForm()
+    commentPostForm = CommentPostForm()
     # post_json = Post.get_user_posts(username)
     print(userPosts)
 
@@ -333,7 +349,7 @@ def user_profile_posts(username):
                 
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
-    return render_template("aw.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, comments=comments, postsNavActivate="3px #00002A solid")
+    return render_template("user_profile.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, comments=comments, postsNavActivate="3px #00002A solid")
 
 @boop.route("/<username>/posts/<post_id>/comment", methods=["GET", "POST"])
 @login_required
@@ -404,8 +420,6 @@ def pet_profile_wall(username, public_id):
     user_json = User.get_a_user(username)
     user_existence = Helper.user_existence_check(user_json)
 
-    dealPetForm = DealPetForm()
-
     if user_existence is False:
         abort(404)
 
@@ -423,7 +437,7 @@ def pet_profile_wall(username, public_id):
 
     pet_json["birthday"] = Helper.datetime_str_to_datetime_obj(pet_json["birthday"])  
 
-    return render_template("pet_profile.html", title="Account", dealPetForm=dealPetForm, public_id=public_id, current_user_page=current_user_page, current_user=current_user, user=user_json, pet=pet_json, owner_list=owner_list, postsNavActivate="3px #00002A solid")
+    return render_template("pet_profile.html", title="Account", public_id=public_id, current_user_page=current_user_page, current_user=current_user, user=user_json, pet=pet_json, owner_list=owner_list, postsNavActivate="3px #00002A solid")
 
 
 @boop.route("/<username>/pets/<public_id>/delete", methods=["GET","POST","DELETE"])
@@ -446,7 +460,7 @@ def delete_pet(public_id, username):
     pet_json["birthday"] = Helper.datetime_str_to_datetime_obj(pet_json["birthday"])  
 
     return redirect(url_for('user_profile_pets',username=current_user["username"]))
-
+'''
 @boop.route("/<username>/pet/<pet_id>/deal", methods=["GET", "POST"])
 @login_required
 def deal_pet(username, pet_id):
@@ -458,7 +472,6 @@ def deal_pet(username, pet_id):
     if user_existence is False:
         abort(404)
 
-    dealPets = Deal.get_user_deals(username)["data"]
     dealPetForm = DealPetForm()
 
     if username == current_user["username"]:
@@ -487,7 +500,7 @@ def deal_pet(username, pet_id):
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
     return redirect(url_for("pet_profile_wall",username=current_user["username"]))
-   
+'''   
 
 @boop.route("/<username>/pets/<public_id>/update", methods=["GET","PUT","DELETE"])
 @login_required

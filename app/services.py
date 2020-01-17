@@ -107,19 +107,17 @@ class User:
         return json.loads(petOwners_req.text)
 
     @staticmethod
-    def update_user(username, data):
+    def update_user(username,data):
 
-        form = data.form
-        first_name = form.get("firstName_input")
-        last_name = form.get("lastName_input")
-        email = form.get("email_input")
-        username = form.get("username_input")
-        contact_no = form.get("contactNo_input")
-        
+        first_name = data.get("firstName_input")
+        last_name = data.get("lastName_input")
+        username = data.get("username_input")
+        email = data.get("email_input")
+        password = data.get("password_input")
+        contact_no = data.get("contactNo_input")
 
-        print("{}/user/{}".format(Variable.api_url(), username))
         userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "username" : username, "email" : email, "password" : password, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
-
+        
         return json.loads(userUpdate_req.text)
 
     @staticmethod
