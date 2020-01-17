@@ -1,8 +1,10 @@
 import requests, json, os, uuid
-from app import _cloud
+from app import boop, _cloud
 from dateutil import parser
 from flask import session
 from PIL import Image
+import urllib.request as urllib
+import io
 from app import boop
 
 class Variable:
@@ -49,30 +51,62 @@ class Helper:
     def save_image(form_image, folder):
         if form_image:
             filename = str(uuid.uuid4())
+            
+            _cloud.uploader.upload_image(form_image, folder="BoopIt/", public_id=filename)
 
             _, f_ext = os.path.splitext(form_image.filename)
             picture_fn = filename + f_ext
-
-            username = User.get_current_user()["username"]
-
-            _cloud.uploader.upload_image(form_image, folder="BoopIt/{}/{}/".format(folder, username), public_id=filename)
+            picture_path = os.path.join(boop.root_path,'static/images', picture_fn)
             
-            return picture_fn
+            output_size=(500, 500)
+            i = Image.open(form_image)
+            i.thumbnail(output_size)
+            i.save(picture_path)
+    
         else:
             return "default"
 
+    @staticmethod
+    def ensure_localAndCloud_imageUpload_reflection(photo_id):
+        file_exists = os.path.exists("{}/static/images/{}".format(boop.root_path, photo_id + ".jpg"))
+        photo_fn = photo_id + ".jpg"
+
+        if file_exists is True:
+
+            return photo_fn + "IF"
+        
+        else:
+            upload_path = os.path.join(boop.root_path, 'static/images', photo_fn)
+
+            url = "https://res.cloudinary.com/fmscrns/image/upload/v1579236287/BoopIt/{}".format(photo_fn)
+            
+            fd = urllib.urlopen(url)
+            image_file = io.BytesIO(fd.read())
+            im = Image.open(image_file)
+            im.save(upload_path)
+            return photo_fn + "ELSE"
+
 class Auth:
     @staticmethod
-    def signup_user(data):
-        first_name = data.get("firstName_input")
-        last_name = data.get("lastName_input")
-        username = data.get("username_input")
-        email = data.get("email_input")
-        password = data.get("password_input")
-        contact_no = data.get("contactNo_input")
+    def verify_email(email):
+        verifyEmail_resp = requests.get("{}/user/verify/email".format(Variable.api_url()), json={"email" : email})
 
-        signup_req = requests.post("{}/user/".format(Variable.api_url()), json={"firstName" : first_name, "lastName" : last_name, "username" : username, "email" : email, "password" : password, "contactNo" : contact_no})
+        email_resp = json.loads(verifyEmail_resp.text)
 
+        return email_resp
+
+    @staticmethod
+    def verify_username(username):
+        verifyUsername_resp = requests.get("{}/user/verify/username".format(Variable.api_url()), json={"username" : username})
+
+        username_resp = json.loads(verifyUsername_resp.text)
+
+        return username_resp
+
+    @staticmethod
+    def signup_user_part_two(data):
+        signup_req = requests.post("{}/user/".format(Variable.api_url()), json={"firstName" : data["first_name"], "lastName" : data["last_name"], "username" : data["username"], "email" : data["email"], "password" : data["password"], "contactNo" : data["contact_no"]})
+    
         return json.loads(signup_req.text)
 
     @staticmethod
@@ -173,7 +207,7 @@ class Pet:
 class Specie:
     @staticmethod
     def get_all_specie():
-        getAllSpecie_req = requests.get("{}/specie/".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        getAllSpecie_req = requests.get("{}/specie/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
         
         return json.loads(getAllSpecie_req.text)
 

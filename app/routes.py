@@ -7,7 +7,7 @@ from app.services import *
 
 @boop.route("/", methods=["GET", "POST"])
 @boop.route("/welcome", methods=["GET", "POST"])
-@not_authenticated
+@inaccesible_if_authenticated
 def welcome():
     loginForm = LoginForm()
 
@@ -32,20 +32,33 @@ def welcome():
     return render_template("welcome.html", title="Welcome", loginForm=loginForm)
 
 @boop.route("/about", methods=["GET", "POST"])
-@not_authenticated
+@inaccesible_if_authenticated
 def about():
     return render_template("about.html", title="Welcome")
 
 @boop.route("/signup", methods=["GET", "POST"])
-@not_authenticated
-def signup():
-    signupForm = SignupForm()
+@inaccesible_if_authenticated
+def signup_part_one():
+    signupPartOneForm = SignupPartOneForm()
+    
+    if request.method == "POST":
+        if signupPartOneForm.validate_on_submit():
+            data = request.form
+
+            return redirect(url_for("signup_part_two", firstName=data.get("firstName_input"), lastName=data.get("lastName_input"), email=data.get("email_input"), username=data.get("username_input")))
+
+    return render_template("signup_part_one.html", title="Sign up", signupPartOneForm=signupPartOneForm)
+
+@boop.route("/signup/p2/fname=<firstName>&lname=<lastName>&email=<email>&username=<username>", methods=["GET", "POST"])
+@inaccesible_if_authenticated
+def signup_part_two(firstName, lastName, email, username):
+    signupPartTwoForm = SignupPartTwoForm()
 
     if request.method == "POST":
-        if signupForm.validate_on_submit():
-            form = request.form
-
-            signupUser_json = Auth.signup_user(form)
+        if signupPartTwoForm.validate_on_submit():
+            data = {"first_name" : firstName, "last_name" : lastName, "email" : email, "username" : username, "contact_no" : request.form.get("contactNo_input"), "password" : request.form.get("password_input")}
+            
+            signupUser_json = Auth.signup_user_part_two(data)
 
             if signupUser_json["status"] == "success":
                 Variable.store_session(signupUser_json["authorization"])
@@ -59,10 +72,10 @@ def signup():
 
                 return redirect(url_for("login"))
 
-    return render_template("signup.html", title="Welcome", signupForm=signupForm)
+    return render_template("signup_part_two.html", title="Sign up", signupPartTwoForm=signupPartTwoForm)
     
 @boop.route("/login", methods=["GET", "POST"])
-@not_authenticated
+@inaccesible_if_authenticated
 def login():
     loginForm = LoginForm()
 
@@ -95,7 +108,6 @@ def home():
 
     posts = Post.get_all_posts()["data"]
     # post_json = Post.get_user_posts(username)
-    print(posts)
 
     i=0
 
@@ -127,11 +139,9 @@ def user_profile_pets(username):
         abort(404)
 
     userPets = Pet.get_user_pets(username)["data"]
-    for pet in userPets:
-        print(pet["profPic_filename"])
 
     addPetForm = AddPetForm()
-    updateUserForm = SignupForm()
+    updateUserForm = UpdateForm()
 
     if username == current_user["username"]:
         current_user_page = True
@@ -250,7 +260,7 @@ def update_user(username):
 
     User.update_user(username)['data']
 
-    updateUserForm = SignupForm()
+    updateUserForm = UpdateForm()
 
     if request.method == "POST":
         if updateForm.validate_on_submit():
@@ -294,23 +304,16 @@ def user_profile_posts(username):
     post_json = Post.get_user_posts(username)
     posts = Post.get_all_posts()["data"]
     comments = Comment.get_all_comments()["data"]
-    print("aw: ",comments)
 
     if user_existence is False:
         abort(404)
 
-    for p in posts:
-        for c in comments:
-                print(p["content"])
-                if p["post_id"] == c["post_id"]:
-                    print(c["comment"]) 
 
     userPosts = Post.get_user_posts(username)["data"]
     
-    updateUserForm = SignupForm()
+    updateUserForm = UpdateForm()
     commentPostForm = CommentPostForm()
     # post_json = Post.get_user_posts(username)
-    print(userPosts)
 
     i=0
 
@@ -319,7 +322,7 @@ def user_profile_posts(username):
         i += 1
 
     
-    updateUserForm = SignupForm()
+    updateUserForm = UpdateForm()
     commentPostForm = CommentPostForm()
     shareContentForm = ShareContentForm()
 
@@ -349,7 +352,7 @@ def user_profile_posts(username):
                 
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
-    return render_template("aw.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, comments=comments, postsNavActivate="3px #00002A solid")
+    return render_template("user_profile.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, comments=comments, postsNavActivate="3px #00002A solid")
 
 @boop.route("/<username>/posts/<post_id>/comment", methods=["GET", "POST"])
 @login_required
@@ -370,7 +373,6 @@ def comment(username, post_id):
         current_user_page = True
 
     if request.method == "POST":
-            print('comment bitchhh')
             if commentPostForm.validate_on_submit():
                 commentPost_json = Comment.new_comment(request,post_id)
                 
@@ -405,8 +407,6 @@ def delete_post(post_id, username):
         current_user_page = True
         
         Post.delete_post(post_id)
-    
-        print(post_id)
 
 
     return redirect(url_for('user_profile_posts',username=current_user["username"]))
@@ -535,3 +535,7 @@ def logout():
     session.pop("booped_in")
 
     return redirect(url_for("welcome"))
+
+@boop.route("/test", methods=["GET"])
+def imageload():
+    return Helper.ensure_localAndCloud_imageUpload_reflection("645c6fb3-2d40-4315-a648-10f86100fd52")

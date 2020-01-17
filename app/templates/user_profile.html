@@ -1,4 +1,6 @@
 {% extends "layout.html" %}
+{% from "account_components.html" import gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6 %}
+{% from "navbar_components.html" import secured_navbar %}
 
     {% block bodyStyle %}
         <body style="overflow-y:scroll;">
@@ -17,88 +19,7 @@
     {% endblock navbarNameplate %}
 
     {% block navbarContent %}
-        <button id="navbar-collapse-toggler-btn" class="btn btn-outline-light navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <div style="width:25px;margin:0 2px -5px 2px;">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-                    <style type="text/css">
-                        .st0{fill:#FFFFFF;}
-                    </style>
-                    <g>
-                        <g>
-                            <path class="st0" d="M491.3,235.3H20.7C9.3,235.3,0,244.6,0,256s9.3,20.7,20.7,20.7h470.6c11.4,0,20.7-9.3,20.7-20.7
-                                C512,244.6,502.7,235.3,491.3,235.3z"/>
-                        </g>
-                    </g>
-                    <g>
-                        <g>
-                            <path class="st0" d="M491.3,78.4H20.7C9.3,78.4,0,87.7,0,99.1s9.3,20.7,20.7,20.7h470.6c11.4,0,20.7-9.3,20.7-20.7
-                                S502.7,78.4,491.3,78.4z"/>
-                        </g>
-                    </g>
-                    <g>
-                        <g>
-                            <path class="st0" d="M491.3,392.2H20.7C9.3,392.2,0,401.5,0,412.9s9.3,20.7,20.7,20.7h470.6c11.4,0,20.7-9.3,20.7-20.7
-                                S502.7,392.2,491.3,392.2z"/>
-                        </g>
-                    </g>
-               </svg>
-            </div>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('home') }}" role="button" style="color:white;">
-                        Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('user_profile_pets', username=current_user['username']) }}" role="button" style="color:white;">
-                        Account
-                    </a>
-                </li>
-                <li class="nav-item nav-item-collapse">
-                    <a class="nav-link" href="#" role="button" style="color:white;">
-                        Settings
-                    </a>
-                </li>
-                <li class="nav-item nav-item-collapse">
-                    <a class="nav-link" href="{{ url_for('logout') }}" role="button" style="color:white;">
-                        Log out
-                    </a>
-                </li>
-            </ul>
-            <div id="navbar-dropdown" class="dropdown">
-                <div class="dropdown">
-                    <button id="gear-btn" class="btn btn-outline-light" data-toggle="dropdown">
-                        <div style="width:25px;margin:0 2px -5px 2px;">
-                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                viewBox="150 -150 500 500" style="enable-background:new 150 -150 500 500;" xml:space="preserve">
-                                <style type="text/css">
-                                    .st0{fill:white;}
-                                </style>
-                                <path class="st0" d="M621.6,62.2l-60.1-9.8c-3.4-11.6-8-22.6-13.7-33.1l35.1-50c2.8-4,2.3-9.4-1.1-12.8l-38.9-38.9
-                                    c-3.5-3.5-8.9-3.9-12.9-1L480.7-48c-10.5-5.8-21.6-10.4-33.3-13.9l-10.5-59.8c-0.8-4.8-5-8.3-9.9-8.3h-55c-4.9,0-9.1,3.5-9.9,8.4
-                                    l-9.7,59.6c-11.7,3.4-22.8,8-33.4,13.7L270-83.5c-4-2.8-9.4-2.4-12.9,1.1l-38.9,38.9c-3.4,3.4-3.9,8.8-1.1,12.8l34.6,49.5
-                                    c-5.8,10.6-10.5,21.8-14,33.6l-59.3,9.9c-4.8,0.8-8.3,5-8.3,9.9v55c0,4.9,3.5,9,8.2,9.9l59.3,10.5c3.5,11.8,8.1,23,13.9,33.6l-35,49
-                                    c-2.8,4-2.4,9.4,1.1,12.9l38.9,38.9c3.4,3.4,8.8,3.9,12.8,1.1l49.6-34.7c10.5,5.8,21.7,10.4,33.5,13.8l9.9,59.6
-                                    c0.8,4.8,5,8.4,9.9,8.4h55c4.9,0,9-3.5,9.9-8.3l10.6-59.9c11.7-3.5,22.8-8.2,33.3-14l49.9,35c4,2.8,9.4,2.3,12.8-1.1l38.9-38.9
-                                    c3.5-3.5,3.9-8.9,1-12.9l-35.6-49.4c5.7-10.4,10.3-21.5,13.7-33.1l60.2-10.5c4.8-0.8,8.3-5,8.3-9.9v-55
-                                    C630,67.2,626.4,63,621.6,62.2z M400,180c-44.1,0-80-35.9-80-80s35.9-80,80-80s80,35.9,80,80S444.1,180,400,180z"/>
-                            </svg>
-                        </div>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a id="navbar-settings" class="dropdown-item" href="#">
-                            Settings
-                        </a>
-                        <a id="navbar-logout" class="dropdown-item" href="{{ url_for('logout') }}">
-                            Log out
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{ secured_navbar(current_user) }}
     {% endblock navbarContent %}
 
     {% block content %}
@@ -106,7 +27,9 @@
             <div class="container" style="position:fixed;padding:0;">
                 <div class="row" style="padding:0;margin:0;">
                     <div class="col-4" style="padding:0;">
-                        <div id="ha-leftSection" class="container-fluid" style="padding:0;margin:0;">
+                        <div id="acc-leftSection" class="container-fluid" style="padding:0;margin:0;">
+                            <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
+                            {{ gallery_6() }}
                         </div>
                         <div id="flash-primary-cont" class="container-fluid">
                             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -132,7 +55,7 @@
                 </div>
                 <div id="ha-rightSection" class="col">
                     <div class="container-fluid">
-                        <img src="https://res.cloudinary.com/fmscrns/image/upload/v1557286605/boopit/pet/default/large/default-coverPhoto-lg.jpg" id="account-coverPhoto-panel" class="container-fluid">
+                        <img src="https://res.cloudinary.com/fmscrns/image/upload/v1579030880/ehxrxzwpziiwoquj9fax.jpg" id="account-coverPhoto-panel" class="container-fluid mp-0">
                         <div id="account-profPic-cont" class="container-fluid">
                             <div class="float-left">
                                 <img id="account-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
@@ -251,7 +174,7 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    {{ updateUserForm.signup_submit_input(class="btn btn-outline-primary") }}
+                                                                    {{ updateUserForm.update_submit_input(class="btn btn-outline-primary") }}
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -310,35 +233,27 @@
                                 <div id="acc-content-pet-deck" class="row">
                                     {% for pet in user_pets %}
                                         <div class="col-4">
-                                            <a id="pet-card" href="{{ url_for('pet_profile_wall', username=user.username, public_id=pet.public_id) }}">
-                                                <div class="card">
-                                                    <img src="https://res.cloudinary.com/fmscrns/image/upload/c_scale,w_300/v1557286605/boopit/pet/default/small/default-coverPhoto-sm.jpg" class="card-img-top" alt="...">
-                                                    {% if pet.profPic_filename == "default" %}
-                                                        <img id="pet-profPic-sm" src="https://res.cloudinary.com/fmscrns/image/upload/c_scale,w_120/v1557286605/boopit/pet/default/default-profilePhoto.jpg">
-                                                    {% else %}
-                                                        <img id="pet-profPic-sm" src="https://res.cloudinary.com/fmscrns/image/upload/c_scale,w_120/v1557301121/boopit/pet/{{ user.username }}/{{ pet.profPic_filename }}">
-                                                    {% endif %}
-                                                    <div class="card-body">
-                                                        <div id="acc-content-pet-name-cont">
-                                                            <p id="acc-content-pet-name" class="card-title text-center">
-                                                                {{ pet.pet_name }}
-                                                            </p>
+                                            <a class="pet-card" href="{{ url_for('pet_profile_wall', username=user.username, public_id=pet.public_id) }}">
+                                                <div class="card border-all">
+                                                    <img class="card-img-top acc-pc-cp" src="https://res.cloudinary.com/fmscrns/image/upload/v1579030880/ehxrxzwpziiwoquj9fax.jpg">
+                                                    
+                                                    <div class="card-body" style="margin-top:-20px;">
+                                                        <img class="pet-profPic-sm float-left" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+                                                        <div class="container-fluid acc-pc-pn pl-4">
+                                                            {{ pet.pet_name }}
                                                         </div>
-                                                        <div class="container-fluid">
+                                                        <div class="text-muted small mt-3">
                                                             <div class="row">
-                                                                <div class="col-3">
-                                                                    <img src="{{ url_for('static', filename='assets/' + pet.specie_name + '.svg') }}" style="width:25px;">
-                                                                </div>
                                                                 <div class="col">
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                            <span style="font-size:10px;"><p class="card-text text-muted">{{ pet.sex }}</p></span>
-                                                                        </div>
-                                                                        <div class="w-100"></div>
-                                                                        <div class="col">
-                                                                            <span style="font-size:10px;"><p class="card-text text-muted">{{ pet.specie_name }} | {{ pet.breed_name }}</p></span>
-                                                                        </div>
-                                                                    </div>
+                                                                    {{ pet.sex }}
+                                                                </div>
+                                                                <div class="w-100"></div>
+                                                                <div class="col">
+                                                                    {{ pet.specie_name }}
+                                                                </div>
+                                                                <div class="w-100"></div>
+                                                                <div class="col">
+                                                                    {{ pet.breed_name }}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -351,102 +266,14 @@
                                         {% endif %}
                                     {% endfor %}
                                 </div>
+                                <div id="acc-content-pet-list" class="list-group">
+                                    {% for pet in user_pets %}
+                                        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                                    {% endfor %}
+                                </div>
                             </div>
                         {% elif user_posts is defined %}
-                            <div id="account-content-posts-panel" class="container-fluid">
-                                <div id="flash-secondary-cont" class="container-fluid">
-                                    {% with messages = get_flashed_messages(with_categories=true) %}
-                                        {% if messages %}
-                                            {% for category, message in messages %}
-                                                <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                                    <strong>{{ message }}</strong>
-                                                    <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                            {% endfor %}
-                                        {% endif %}
-                                    {% endwith %}
-                                </div>
-                                {% if user_posts is defined and user_posts|length == 0 %}
-                                    <div class="container-fluid">
-                                        @{{ user.username }} hasn't created any posts yet.
-                                    </div>
-                                {% endif %}
-                            </div>
-                            <div id="acc-content-pet-deck" class="row">
-                                
-                                {% for post in user_posts %}
-                                    <div class="col-12">
-                                        <a id="pet-card" >
-                                            <div class="card">
-
-                                                <div class="card-body">
-                                                    <div id="acc-content-pet-name-cont">
-                                                        <a href="#" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#myModal"}><img class="boop-nameplate" src="{{ url_for('static', filename='images/delete.png') }}" style="width:20px; float: right;"></a>
-                                                       
-                                                        
-                                                        <h5>  @{{ user.username }} </h5>
-                                                       <p id="acc-content-pet-name" class="card-title text-center">   
-                                                         </p>
-                                                       
-                                                         <br>
-                                                         <>{{post.content}}</>
-                                                        <p id="acc-content-pet-name" class="card-title">
-                                                            {{ post.post_author }}
-                                                            <a href="#" data-toggle="modal" data-target="#myModal"}><img class="boop-nameplate" src="{{ url_for('static', filename='images/delete.png') }}" style="width:20px; float: right;"></a>
-                                                        </p>
-                                                       
-                                                         {{ post.posted_on.strftime("%B") }} {{ post.posted_on.strftime("%d") }}, {{ post.posted_on.strftime("%Y") }}
-                                                                    
-                                                       <br>
-                                                    </div>
-                                                   
-                                                    <div class="modal fade" name="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                                          <div class="modal-content">
-                                                            <div class="modal-header border-0 text-center">
-                                                              <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Confirm Action</h5>
-                                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                              </button>
-                                                            </div>
-                                                            <div class="col">
-                                                                <div class="row">
-                                                                    <div class="col">
-                                                                        {{ post.posted_on.strftime("%B") }} {{ post.posted_on.strftime("%d") }}, {{ post.posted_on.strftime("%Y") }}
-                                                                        <span style="font-size:25px;"><p >{{ post.content }} </p></span>
-                                                                    </div>
-                                                                    <div class="w-100">
-                                                                        <div class="modal fade" name="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-                                                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                                              <div class="modal-content">
-                                                                                <div class="modal-header border-0 text-center">
-                                                                                  <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Confirm Action</h5>
-                                                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                    <span aria-hidden="true">&times;</span>
-                                                                                  </button>
-                                                                                </div>
-                                                                                <div class="modal-body mb-0">
-                                                                                    <h5>Are you sure you want to delete post?</h5>
-                                                                                </div>
-                                                                                <div class="modal-footer border-0">
-                                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
-                                                                                   
-                                                                                    <form action="{{ url_for('delete_post', post_id=post.post_id, username=user.username) }}" method="DELETE">
-                                                                                        <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Post ">
-                                                                                    </form>
-                                                                                </div>
-                                                                              </div>
-                                                                            </div>
-                                                                          </div>
-                                                                    </div>
-                                                                    <div class="col">
-                                                                        
-                
-                        {% if user_posts is defined %}
-                        <br>
-                    
+                                {#
                                 <form method="POST" action="{{ url_for('comment',post_id=post.post_id, username=user.username) }}" enctype="multipart/form-data">
                                     <div id="shareContentForm-modal-body" class="modal-body">
                                         <div class="postStory-form" class="container">
@@ -489,7 +316,7 @@
                                 {% endfor %}
                             </div>
                         
-                            
+                            #}
                         {% endif %}
                         
                     </div>
@@ -529,7 +356,7 @@
                                                     </div>
                                                     <div class="col">
                                                         <img id="pet-profpic-preview" class="rounded mx-auto d-block">
-                                                        <script>document.getElementById("pet-profpic-preview").src = "https://res.cloudinary.com/fmscrns/image/upload/v1557286605/boopit/pet/default/large/default-profilePhoto-lg.jpg";</script>
+                                                        <script>document.getElementById("pet-profpic-preview").src = "https://res.cloudinary.com/fmscrns/image/upload/v1557286605/boopit/pet/default/prof_pic.jpg";</script>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -693,6 +520,14 @@
                     </div>
                 {% endif %}
             {% endif %}
-
         </div>
+        <style>
+            #acc-search {
+                background-image: url({{ url_for('static', filename='assets/search.svg') }});
+                background-size:17.5px;
+                background-position: 4% 50%;
+                background-repeat: no-repeat;
+                text-indent: 30px;
+            }
+        </style>
     {% endblock content %}

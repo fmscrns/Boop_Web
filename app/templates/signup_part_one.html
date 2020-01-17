@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+    {% block bodyStyle %}
+        <body>
+    {% endblock bodyStyle %}
+
+    {% block flashMessage %}
+        <div id="alert-box" class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    {% endblock flashMessage %}
+
+    {% block content %}
+        <div class="input-group mb-3 justify-content-center">
+            <div id="signup-form">
+                <div class="row">
+                    <div id="welcomeForm-illustrationSection" class="col-md-auto" style="background: url('{{ url_for('static', filename='assets/rocketship-launch.svg') }}') center no-repeat;">
+                        <a href="{{ url_for('welcome') }}">
+                            <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate.svg') }}" style="width:80px;margin:25px 0 0 15px;">
+                        </a>
+                    </div>
+                    <div id="signupForm-inputSectionOne-gradient" class="col">
+                        <div id="welcomeForm-inputSection-cont">
+                            <div id="welcomeForm-inputSection">
+                                <form method="POST" action="">
+                                    {{ signupPartOneForm.hidden_tag() }}
+                                    <fieldset class="form-group">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    {% if signupPartOneForm.firstName_input.errors %}
+                                                        {{ signupPartOneForm.firstName_input(class="form-control is-invalid", placeholder="John") }}
+                                                        <div class="invalid-feedback">
+                                                            {% for error in signupPartOneForm.firstName_input.errors %}
+                                                                <span> {{ error }} </span>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% else %}
+                                                        {{ signupPartOneForm.firstName_input(class="form-control", placeholder="John") }}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col">
+                                                    {% if signupPartOneForm.lastName_input.errors %}
+                                                        {{ signupPartOneForm.lastName_input(class="form-control is-invalid", placeholder="Doe") }}
+                                                        <div class="invalid-feedback">
+                                                            {% for error in signupPartOneForm.lastName_input.errors %}
+                                                                <span> {{ error }} </span>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% else %}
+                                                        {{ signupPartOneForm.lastName_input(class="form-control", placeholder="Doe") }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Username</label>
+                                            {% if signupPartOneForm.username_input.errors %}
+                                                {{ signupPartOneForm.username_input(class="form-control is-invalid", placeholder="johndoe") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in signupPartOneForm.username_input.errors %}
+                                                        <span> {{ error }} </span>
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                {{ signupPartOneForm.username_input(class="form-control", placeholder="johndoe") }}
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email Address</label>
+                                            {% if signupPartOneForm.email_input.errors %}
+                                                {{ signupPartOneForm.email_input(class="form-control is-invalid", placeholder="johndoe@example.com") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in signupPartOneForm.email_input.errors %}
+                                                        <span> {{ error }} </span>
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                {{ signupPartOneForm.email_input(class="form-control", placeholder="johndoe@example.com") }}
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group text-right" style="padding-top:1.5rem;">
+                                            {{ signupPartOneForm.verify_identification_input(class="btn btn-outline-primary btn-block") }}
+                                        </div>
+                                        <div class="border-top pt-3">
+                                            <small class="text-muted">
+                                                Already have an account? <a class="ml-2" href="{{ url_for('login') }}" style="color:#00002A;">Log in here</a>
+                                            </small>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	{% endblock content %}
