@@ -103,8 +103,9 @@ def login():
 @login_required
 def home():
     form = ShareContentForm()
-    
+    current_user_page = False
     current_user = User.get_current_user()
+    
 
     posts = Post.get_all_posts()["data"]
     # post_json = Post.get_user_posts(username)
@@ -115,7 +116,7 @@ def home():
         posts[i]["posted_on"] = Helper.datetime_str_to_datetime_obj(posts[i]["posted_on"])  
         i += 1
 
-    return render_template("home.html", title="Home", current_user=current_user, all_posts=posts, shareContentForm=form)
+    return render_template("home.html", title="Home", current_user=current_user, all_posts=posts, shareContentForm=form, username=current_user["username"] )
 
 @boop.route("/admin/users/all", methods=["GET"])
 @login_required
@@ -141,7 +142,7 @@ def user_profile_pets(username):
     userPets = Pet.get_user_pets(username)["data"]
 
     addPetForm = AddPetForm()
-    updateUserForm = UpdateForm()
+    updateUserForm = UpdateUserForm()
 
     if username == current_user["username"]:
         current_user_page = True
@@ -263,7 +264,7 @@ def update_user(username):
     updateUserForm = UpdateForm()
 
     if request.method == "POST":
-        if updateForm.validate_on_submit():
+        if updateUserForm.validate_on_submit():
             form = request.form
 
             updatepUser_json = User.update_user(form,username)
@@ -283,11 +284,11 @@ def update_user(username):
         return redirect(url_for("user_profile_pets", username=current_user["username"]))
 
     elif request.method == "GET":
-        updateForm.firstName_input.data = current_user["firstName"]
-        updateForm.lastName_input.data = current_user["lastName"]
-        updateForm.email_input.data = current_user["email"]
-        updateForm.username_input.data = current_user["username"]
-        updateForm.contactNo_input.data = current_user["contactNo"]            
+        updateUserForm.firstName_input.data = current_user["firstName"]
+        updateUserForm.lastName_input.data = current_user["lastName"]
+        updateUserForm.email_input.data = current_user["email"]
+        updateUserForm.username_input.data = current_user["username"]
+        updateUserForm.contactNo_input.data = current_user["contactNo"]
 
     
     return redirect(url_for("user_profile_pets", username=current_user["username"]))
