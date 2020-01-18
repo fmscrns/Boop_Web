@@ -302,7 +302,7 @@ def user_profile_posts(username):
     for p in posts:
         for c in comments:
                 print(p["content"])
-                if p["post_id"] == c["post_id"]:
+                if p["public_id"] == c["post_id"]:
                     print(c["comment"]) 
 
     userPosts = Post.get_user_posts(username)["data"]
@@ -351,9 +351,9 @@ def user_profile_posts(username):
 
     return render_template("user_profile.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, comments=comments, postsNavActivate="3px #00002A solid")
 
-@boop.route("/<username>/posts/<post_id>/comment", methods=["GET", "POST"])
+@boop.route("/<username>/posts/<public_id>/comment", methods=["GET", "POST"])
 @login_required
-def comment(username, post_id):
+def comment(username, public_id):
     current_user_page = False
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
@@ -372,8 +372,7 @@ def comment(username, post_id):
     if request.method == "POST":
             print('comment bitchhh')
             if commentPostForm.validate_on_submit():
-                commentPost_json = Comment.new_comment(request,post_id)
-                
+                commentPost_json = Comment.new_comment(request,public_id)
 
                 if commentPost_json["status"] == "success":
                     
@@ -394,9 +393,9 @@ def comment(username, post_id):
     return redirect(url_for("user_profile_posts", username=current_user["username"]))
    
 
-@boop.route("/<username>/posts/<post_id>/delete", methods=["GET","POST","DELETE"])
+@boop.route("/<username>/posts/<public_id>/delete", methods=["GET","POST","DELETE"])
 @login_required
-def delete_post(post_id, username):
+def delete_post(public_id, username):
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
     post_json = Post.get_user_posts(username)
@@ -404,9 +403,9 @@ def delete_post(post_id, username):
     if username == current_user["username"]:
         current_user_page = True
         
-        Post.delete_post(post_id)
+        Post.delete_post(public_id)
     
-        print(post_id)
+        print(public_id)
 
 
     return redirect(url_for('user_profile_posts',username=current_user["username"]))

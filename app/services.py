@@ -224,10 +224,10 @@ class Post:
 
 class Comment:
     @staticmethod
-    def new_comment(data, post_id):
+    def new_comment(data, public_id):
         form = data.form
         comment = form.get("commentPost_input")
-        newComment_req= requests.post("{}/comment/{}".format(Variable.api_url(), post_id), json={"comment" : comment}, headers={"authorization" : session["booped_in"]})
+        newComment_req= requests.post("{}/comment/{}".format(Variable.api_url(), public_id), json={"comment" : comment}, headers={"authorization" : session["booped_in"]})
         return json.loads(newComment_req.text)
 
     @staticmethod
@@ -237,8 +237,8 @@ class Comment:
         return json.loads(getComment_req.text)
 
     @staticmethod
-    def get_rel_comment(post_id):
-        getRelation_req = requests.get("{}/comment/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
+    def get_rel_comment(public_id):
+        getRelation_req = requests.get("{}/comment/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
         return json.loads(getRelation_req.text)
 
     @staticmethod

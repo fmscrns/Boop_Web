@@ -4,7 +4,7 @@
     {{ p.content }}
   </p>
   {% for c in comments %}
-    {% if p.post_id == c.post_id %}
+    {% if p.public_id == c.public_id %}
       <div class="row">{{ c.comment }}</div>
     {% endif %}
   {% endfor %}
