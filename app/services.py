@@ -109,6 +109,8 @@ class User:
     @staticmethod
     def update_user(username,data):
 
+        print('servicess!!!')
+
         first_name = data.get("firstName_input")
         last_name = data.get("lastName_input")
         bio = data.get("bio_input")
@@ -178,7 +180,7 @@ class Pet:
 class Specie:
     @staticmethod
     def get_all_specie():
-        getAllSpecie_req = requests.get("{}/specie/".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        getAllSpecie_req = requests.get("{}/specie/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
         
         return json.loads(getAllSpecie_req.text)
 
@@ -225,10 +227,10 @@ class Post:
 
 class Comment:
     @staticmethod
-    def new_comment(data, post_id):
+    def new_comment(data, public_id):
         form = data.form
         comment = form.get("commentPost_input")
-        newComment_req= requests.post("{}/comment/{}".format(Variable.api_url(), post_id), json={"comment" : comment}, headers={"authorization" : session["booped_in"]})
+        newComment_req= requests.post("{}/comment/{}".format(Variable.api_url(), public_id), json={"comment" : comment}, headers={"authorization" : session["booped_in"]})
         return json.loads(newComment_req.text)
 
     @staticmethod
@@ -246,6 +248,12 @@ class Comment:
     def get_all_comments():
         getAllComments_req = requests.get("{}/comment/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
         return json.loads(getAllComments_req.text)
+
+    @staticmethod
+    def delete_comment(public_id):
+        deletePostComment_req = requests.delete("{}/comment/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+
+        return json.loads(deletePostComment_req.text)
 
 class Deal:
     @staticmethod

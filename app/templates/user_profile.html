@@ -169,9 +169,10 @@
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <form method="POST" action="{{ url_for('update_user', username=user.username) }}" enctype="multipart/form-data">
+                                                            <form method="POST" action="" enctype="multipart/form-data">
                                                                 <div id="updateUserForm-modal-body" class="modal-body">
                                                                     <div class="updateUser-form" class="container">
+                                                                        {{ updateUserForm.csrf_token }}
                                                                         {{ updateUserForm.hidden_tag() }}
                                                                         <fieldset class="form-group">
                                                                             
@@ -378,7 +379,7 @@
 
                                                 <div class="card-body">
                                                     <div id="acc-content-pet-name-cont">
-                                                        <a class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#{{post.post_id}}"><img class="boop-nameplate" src="{{ url_for('static', filename='images/delete.png') }}" style="width:20px; float: right;"></a>
+                                                        <a class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#post{{post.public_id}}"><img class="boop-nameplate" src="{{ url_for('static', filename='images/delete.png') }}" style="width:20px; float: right;"></a>
                                                         <p id="acc-content-pet-name" class="card-title text-center">
                                                             <h5>@{{ post.post_author }}</h5>
                                                         </p>
@@ -397,24 +398,61 @@
 
                                                                         <p>{{ post.posted_on.strftime("%B") }} {{ post.posted_on.strftime("%d") }}, {{ post.posted_on.strftime("%Y") }}</p>
                                                
-                                                                        
-                                                                     
-                                                                          {% for c in comments %}
-                                                                            {% if post.post_id == c.post_id %}
 
-                                                                              <div class="row">{{c.posted_by}}: {{ c.comment }}</div>
+                                                                        <!--COMMENT SECTION-->
+                                                                     
+                                                                          
+                                                                        {% for c in comments %}
+
+                                                                            {% if post.public_id == c.post_id %}
+
+                                                                              {{c.posted_by}}: {{ c.comment }}
+                                                                              <a class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#comment{{c.public_id}}"><img class="boop-nameplate" src="{{ url_for('static', filename='images/delete.png') }}" style="width:20px; float: right;"></a>
+                                                       
+
+                                                                            <br>
+                                                                            <br>
 
                                                                             {% endif %}
+
+
+                                                                            <!--DELETE COMMENT modal-->
+                                                                    <div class="modal fade" name="modal" id="comment{{c.public_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                          <div class="modal-content">
+                                                                            <div class="modal-header border-0 text-center">
+                                                                              <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Confirm Action</h5>
+                                                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                              </button>
+                                                                            </div>
+                                                                            <div class="modal-body mb-0">
+                                                                                <h5>Are you sure you want to delete comment? {{c.comment}}</h5>
+                                                                            </div>
+                                                                            <div class="modal-footer border-0">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+                                                                               
+                                                                        <form action="{{ url_for('delete_comment',public_id=c.public_id, username=user.username) }}" method="DELETE">
+                                                                            <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Comment ">
+                                                                        </form>
+                                                                            </div>
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>
+                                                                    <!--end DELETE COMMENT modal-->
+
                                                                           {% endfor %}
                                                                        
-                                                                       
+                                                                    <!--END COMMENT SECTION-->
 
                                                                     </div>
+
+
                                                                     <div class="w-100">
 
                                                                         
-                                                                        <!--delete modal-->
-                                                                        <div class="modal fade" name="modal" id="{{post.post_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                                                        <!--DELETE POST modal-->
+                                                                        <div class="modal fade" name="modal" id="post{{post.public_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                                               <div class="modal-content">
                                                                                 <div class="modal-header border-0 text-center">
@@ -429,22 +467,22 @@
                                                                                 <div class="modal-footer border-0">
                                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
                                                                                    
-                                                                            <form action="{{ url_for('delete_post',post_id=post.post_id, username=user.username) }}" method="DELETE">
+                                                                            <form action="{{ url_for('delete_post',public_id=post.public_id, username=user.username) }}" method="DELETE">
                                                                                 <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Post ">
                                                                             </form>
                                                                                 </div>
                                                                               </div>
                                                                             </div>
                                                                           </div>
-                                                                        <!--end delete modal-->
+                                                                        <!--end DELETE POST modal-->
                                                                     </div>
-                                                                
-                            
+
+                                                    
 
                       <div class="col">
                         {% if user_posts is defined %}
                     
-                                <form method="POST" action="{{ url_for('comment',post_id=post.post_id, username=user.username) }}" enctype="multipart/form-data">
+                                <form method="POST" action="{{ url_for('comment',public_id=post.public_id, username=user.username) }}" enctype="multipart/form-data">
                                     <div id="shareContentForm-modal-body" class="modal-body">
                                         <div class="postStory-form" class="container">
                                             {{ commentPostForm.hidden_tag() }}

@@ -141,6 +141,7 @@ def user_profile_pets(username):
         if request.method == "POST":
             addPetForm.breed_input.choices = [(request.form.get("breed_input"), "")]
             if addPetForm.validate_on_submit():
+                print('add pet!!')
                 addPet_json = Pet.add_a_pet(request)
 
                 if addPet_json["status"] == "success":
@@ -162,47 +163,6 @@ def user_profile_pets(username):
     return render_template("user_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_pets=userPets, addPetForm=addPetForm, updateUserForm=updateUserForm, petsNavActivate="3px #00002A solid")
 
 
-@boop.route("/<username>/user/edit", methods=["POST"])
-@login_required
-def update_user(username):
-    current_user_page = False
-    current_user = User.get_current_user()
-    user_json = User.get_a_user(username)
-    user_existence = Helper.user_existence_check(user_json)
-
-    userPets_json = Pet.get_user_pets(username)
-    updateUserForm = UpdateUserForm()
-
-    if user_existence is False:
-        abort(404)
-
-    if username == current_user["username"]:
-        current_user_page = True
-
-        if request.method == "POST":
-            print('bitcccccccchhhhh')
-            if updateUserForm.validate_on_submit():
-                updateUser_json = User.update_user(request,username)
-                
-                if updateUser_json["status"] == "success":
-                    
-                    flash(updateUser_json["payload"], "success")
-                    
-                    return redirect(url_for("user_profile_petss", username=current_user["username"]))
-
-                else:
-                    flash(updateUser_json["payload"], "danger")
-                    
-                    return redirect(url_for("user_profile_pets", username=current_user["username"]))
-            
-            else:
-                flash("Try again.", "danger")
-                
-                return redirect(url_for("user_profile_pets", username=current_user["username"]))
-
-    return redirect(url_for("user_profile_pets", username=current_user["username"]))
-
-
 @boop.route("/<username>/posts", methods=["GET", "POST"])
 @login_required
 def user_profile_posts(username):
@@ -220,7 +180,7 @@ def user_profile_posts(username):
     for p in posts:
         for c in comments:
                 print(p["content"])
-                if p["post_id"] == c["post_id"]:
+                if p["public_id"] == c["post_id"]:
                     print(c["comment"]) 
 
     userPosts = Post.get_user_posts(username)["data"]
@@ -264,17 +224,82 @@ def user_profile_posts(username):
 
     return render_template("user_profile.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, comments=comments, postsNavActivate="3px #00002A solid")
 
-@boop.route("/<username>/posts/<post_id>/comment", methods=["GET", "POST"])
+
+@boop.route("/<username>/user/edit", methods=["POST", "GET"])
 @login_required
-def comment(username, post_id):
+def update_user(username):
+    current_user_page = False
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    user_existence = Helper.user_existence_check(user_json)
+
+    if user_existence is False:
+        abort(404)
+
+    userPets_json = Pet.get_user_pets(username)
+    updateUserForm = UpdateUserForm()
+
+    if username == current_user["username"]:
+        current_user_page = True
+
+        if request.method == "POST":
+            print(updateUserForm.firstName_input)
+            if updateUserForm.validate_on_submit():
+                print('validate submit')
+                updateUser_json = User.update_user(request,username)
+                
+                if updateUser_json["status"] == "success":
+                    
+                    flash(updateUser_json["payload"], "success")
+                    
+                    return redirect(url_for("update_uuser_profile_postsser_posts", username=current_user["username"]))
+
+                else:
+                    flash(updateUser_json["payload"], "danger")
+                    
+                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
+
+            else:
+                flash("Try again.", "danger")
+                
+                return redirect(url_for("user_profile_posts", username=current_user["username"]))
+
+    return redirect(url_for("user_profile_posts", username=current_user["username"]))
+
+@boop.route("/<username>/posts/<public_id>/comment", methods=["GET", "POST"])
+@login_required
+def comment(username, public_id):
     current_user_page = False
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
     user_existence = Helper.user_existence_check(user_json)
     post_json = Post.get_user_posts(username)
+    posts = Post.get_all_posts()["data"]
+    comments = Comment.get_all_comments()["data"]
 
     if user_existence is False:
         abort(404)
+
+
+    for p in posts:
+        for c in comments:
+                print(p["content"])
+                if p["public_id"] == c["post_id"]:
+                    print(c["comment"]) 
+
+    userPosts = Post.get_user_posts(username)["data"]
+    
+    updateUserForm = UpdateUserForm()
+    commentPostForm = CommentPostForm()
+    shareContentForm = ShareContentForm()
+    # post_json = Post.get_user_posts(username)
+    print(userPosts)
+
+    i=0
+
+    while i < len(userPosts):
+        userPosts[i]["posted_on"] = Helper.datetime_str_to_datetime_obj(userPosts[i]["posted_on"])  
+        i += 1
 
     userPosts = Post.get_user_posts(username)["data"]
     commentPostForm = CommentPostForm()
@@ -285,8 +310,7 @@ def comment(username, post_id):
     if request.method == "POST":
             print('comment bitchhh')
             if commentPostForm.validate_on_submit():
-                commentPost_json = Comment.new_comment(request,post_id)
-                
+                commentPost_json = Comment.new_comment(request, public_id)
 
                 if commentPost_json["status"] == "success":
                     
@@ -307,9 +331,9 @@ def comment(username, post_id):
     return redirect(url_for("user_profile_posts", username=current_user["username"]))
    
 
-@boop.route("/<username>/posts/<post_id>/delete", methods=["GET","POST","DELETE"])
+@boop.route("/<username>/posts/<public_id>/delete", methods=["GET","POST","DELETE"])
 @login_required
-def delete_post(post_id, username):
+def delete_post(public_id, username):
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
     post_json = Post.get_user_posts(username)
@@ -317,10 +341,9 @@ def delete_post(post_id, username):
     if username == current_user["username"]:
         current_user_page = True
         
-        Post.delete_post(post_id)
+        Post.delete_post(public_id)
     
-        print(post_id)
-
+        print(public_id)
 
     return redirect(url_for('user_profile_posts',username=current_user["username"]))
 
@@ -375,6 +398,22 @@ def delete_pet(public_id, username):
 
     return redirect(url_for('user_profile_pets',username=current_user["username"]))
 
+
+@boop.route("/<username>/comment/<public_id>/delete", methods=["GET","POST","DELETE"])
+@login_required
+def delete_comment(public_id, username):
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    post_json = Post.get_user_posts(username)
+
+    if username == current_user["username"]:
+        current_user_page = True
+        
+        Comment.delete_comment(public_id)
+    
+        print(public_id)
+
+    return redirect(url_for('user_profile_posts',username=current_user["username"]))
 
 @boop.route("/<username>/pets/<public_id>/adopt", methods=["GET","POST","DELETE"])
 @login_required

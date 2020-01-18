@@ -28,7 +28,6 @@ class UpdateUserForm(FlaskForm):
     bio_input = StringField("Bio", validators=[DataRequired(), Length(min=2, max=150)])
     contactNo_input = StringField("Contact Number", validators=[DataRequired(), Length(min=2, max=50)])
     username_input = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
-    email_input = StringField("Email", validators=[DataRequired(), Email()])
 
     update_submit_input = SubmitField("Update")
 
