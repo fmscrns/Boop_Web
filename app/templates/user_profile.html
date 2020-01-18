@@ -169,7 +169,7 @@
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <form method="PUT" action="{{ url_for('update_user', username=user.username) }}" enctype="multipart/form-data">
+                                                            <form method="POST" action="{{ url_for('update_user', username=user.username) }}" enctype="multipart/form-data">
                                                                 <div id="updateUserForm-modal-body" class="modal-body">
                                                                     <div class="updateUser-form" class="container">
                                                                         {{ updateUserForm.hidden_tag() }}
@@ -202,6 +202,19 @@
                                                                                 {% endif %}
                                                                             </div>
                                                                             <div class="form-group">
+                                                                                <label>Bio</label>
+                                                                                {% if updateUserForm.bio_input.errors %}
+                                                                                    {{ updateUserForm.bio_input(class="form-control is-invalid") }}
+                                                                                    <div class="invalid-feedback">
+                                                                                        {% for error in updateUserForm.bio_input.errors %}
+                                                                                            <span> {{ error }} </span>
+                                                                                        {% endfor %}
+                                                                                    </div>
+                                                                                {% else %}
+                                                                                    {{ updateUserForm.bio_input(class="form-control") }}
+                                                                                {% endif %}
+                                                                            </div>
+                                                                            <div class="form-group">
                                                                                 <label>Contact Number</label>
                                                                                 {% if updateUserForm.contactNo_input.errors %}
                                                                                     {{ updateUserForm.contactNo_input(class="form-control is-invalid") }}
@@ -227,26 +240,13 @@
                                                                                     {{ updateUserForm.username_input(class="form-control") }}
                                                                                 {% endif %}
                                                                             </div>
-                                                                            <div class="form-group">
-                                                                                <label>Email Address</label>
-                                                                                {% if updateUserForm.email_input.errors %}
-                                                                                    {{ updateUserForm.email_input(class="form-control is-invalid") }}
-                                                                                    <div class="invalid-feedback">
-                                                                                        {% for error in updateUserForm.email_input.errors %}
-                                                                                            <span> {{ error }} </span>
-                                                                                        {% endfor %}
-                                                                                    </div>
-                                                                                {% else %}
-                                                                                    {{ updateUserForm.email_input(class="form-control") }}
-                                                                                {% endif %}
-                                                                                </div>
                                                                             
                                                                         </fieldset>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    {{ updateUserForm.signup_submit_input(class="btn btn-outline-primary") }}
+                                                                    {{ updateUserForm.update_submit_input(class="btn btn-outline-primary") }}
                                                                 </div>
                                                             </form>
                                                         </div>

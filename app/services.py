@@ -111,12 +111,13 @@ class User:
 
         first_name = data.get("firstName_input")
         last_name = data.get("lastName_input")
+        bio = data.get("bio_input")
         username = data.get("username_input")
-        email = data.get("email_input")
-        password = data.get("password_input")
         contact_no = data.get("contactNo_input")
 
-        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "username" : username, "email" : email, "password" : password, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
+        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "bio" : bio, "username" : username, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
+        print('---------------------------------------')
+        print (userUpdate_req)
         
         return json.loads(userUpdate_req.text)
 
@@ -250,7 +251,7 @@ class Deal:
     @staticmethod
     def new_deal(data, pet_id):
         form = data.form
-        price = form.post("pricePet_input")
+        price = form.post("forSale_input")
         newDeal_req = requests.get("{}/deal/{}".format(Variable.api_url(), pet_id),  json={"deal" : comment},headers={"authorization" : session["booped_in"]})
         print('deal services')
         return json.loads(newDeal_req.text)
@@ -279,15 +280,6 @@ class Deal:
         getUserDeal_req = requests.get("{}/deal/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
         return json.loads(getUserDeal_req.text)
 
-
-    @staticmethod
-    def get_all_posts():
-
-        print("{}/post/all".format(Variable.api_url))
-        allPosts_req = requests.get("{}/post/all".format(Variable.api_url()), headers={"authorization": session["booped_in"]})
-
-        return json.loads(allPosts_req.text)
-    
 """
     -----GET CONTENT----
     @staticmethod

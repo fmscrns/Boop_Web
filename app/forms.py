@@ -22,13 +22,13 @@ class LoginForm(FlaskForm):
     
     login_submit_input = SubmitField("Log in")
 
-class UpdateForm(FlaskForm):
+class UpdateUserForm(FlaskForm):
     firstName_input = StringField("First Name", validators=[DataRequired(), Length(min=2, max=50)])
     lastName_input = StringField("Last Name", validators=[DataRequired(), Length(min=2, max=50)])
+    bio_input = StringField("Bio", validators=[DataRequired(), Length(min=2, max=150)])
     contactNo_input = StringField("Contact Number", validators=[DataRequired(), Length(min=2, max=50)])
     username_input = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
     email_input = StringField("Email", validators=[DataRequired(), Email()])
-    password_input = PasswordField("Password", validators=[DataRequired(), Length(min=6, max=50)])
 
     update_submit_input = SubmitField("Update")
 
@@ -64,7 +64,7 @@ class CommentPostForm(FlaskForm):
 
     commentPost_submit_input = SubmitField("Comment")
 
-class DealPetForm(FlaskForm):
-    pricePet_input = StringField("Price", validators=[DataRequired(), Length(min=1, max=150)])
+class ForSaleForm(FlaskForm):
+    forSale_input = StringField("Price", validators=[DataRequired(), Length(min=1, max=150)])
 
-    dealPet_submit_input = SubmitField("Submit")
+    forSale_submit_input = SubmitField("Submit")
