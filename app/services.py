@@ -258,13 +258,22 @@ class Comment:
 
 class Deal:
     @staticmethod
-    def new_deal(data, public_id):
+    def sale_pet(data, public_id):
         form = data.form
         price = form.get("forSale_input")
-        status = form.get('status_input')
-        newDeal_req = requests.post("{}/deal/{}".format(Variable.api_url(), public_id),  json={"price" : price, "status" : status },headers={"authorization" : session["booped_in"]})
-        print('deal services')
-        return json.loads(newDeal_req.text)
+        status = 'for_sale'
+        newSale_req = requests.post("{}/deal/{}".format(Variable.api_url(), public_id),  json={"price" : price, "status": status},headers={"authorization" : session["booped_in"]})
+        print('sale pet')
+        return json.loads(newSale_req.text)
+
+    @staticmethod
+    def adopt_pet(data, public_id):
+        form = data.form
+        price = '0.0'
+        status = 'adopt'
+        newStatus_req = requests.post("{}/deal/{}".format(Variable.api_url(), public_id),  json={"price":price, "status" : status},headers={"authorization" : session["booped_in"]})
+        print('adopt pet')
+        return json.loads(newStatus_req.text)
     
     @staticmethod
     def get_all_deals():

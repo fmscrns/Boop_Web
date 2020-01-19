@@ -66,6 +66,5 @@ class CommentPostForm(FlaskForm):
 
 class ForSaleForm(FlaskForm):
     forSale_input = DecimalField("Price", validators=[InputRequired(), NumberRange(min=Decimal('0.0'))])
-    status_input = StringField("Status", validators=[DataRequired(), Length(min=1, max=150)])
-
+    status_input = [('Adopt', 'Adopt')]
     forSale_submit_input = SubmitField("Submit")

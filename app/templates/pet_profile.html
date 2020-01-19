@@ -152,11 +152,19 @@
                                                             <h5 id="account-fullName">{{ pet.pet_name }}</h5>
                                                         </div>
                                                         {% for deal in deals %}
-                                                        {% if deal.pet_id == pet.public_id %}
-                                                        <div id="account-primary-nameplate-cont" class="col">  
-                                                           <h5> Price : {{ deal.price }} </h5>
-                                                        </div>
-                                                        {% endif %}
+                                                            {% if deal.pet_id == pet.public_id %}
+                                                                {% if deal.status == 'adopt' %}
+                                                                    <div id="account-primary-nameplate-cont" class="col">  
+                                                                        <h5> For Adoption </h5>
+                                                                    </div>
+                                                                {% elif deal.status == 'for_sale' %}
+                                                                    <div id="account-primary-nameplate-cont" class="col">  
+                                                                        <h5> Price : {{ deal.price }} </h5>
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                <div id="account-primary-nameplate-cont" class="col"></div>
+                                                            {% endif %}                                                    
                                                         {% endfor %}
 
                                                         <div class="w-100"></div>
@@ -174,7 +182,7 @@
                                                         
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item"  data-toggle="modal" data-target="#adoptPet"}> Adopt Pet </a>
+                                                        <a class="dropdown-item"  data-toggle="modal" data-target="#adopt{{pet.public_id}}"}> For Adopt </a>
                                                         <a class="dropdown-item"   data-toggle="modal" data-target="#forsale{{pet.public_id}}"}> Pet For Sale </a>
                                                         <a class="dropdown-item"   data-toggle="modal" data-target="#delete{{pet.public_id}}"}> Delete Pet </a>
                                                 
@@ -239,11 +247,11 @@
                                     
                                         <br>
                                           <!--Adopt Pet Modal-->
-                                          <div class="modal fade" name="modal" id="adoptPet" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                          <div class="modal fade" name="modal" id="adopt{{pet.public_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                               <div class="modal-content">
                                                 <div class="modal-header border-0 text-center">
-                                                  <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Adopt Pet</h5>
+                                                  <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">For Adoption</h5>
                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                   </button>
@@ -254,8 +262,8 @@
                                                 <div class="modal-footer border-0">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
                                                    
-                                            <form action="{{ url_for('delete_pet',public_id=pet.public_id, username=user.username) }}" method="DELETE">
-                                                <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Pet ">
+                                            <form action="{{ url_for('adopt_pet',public_id=pet.public_id, username=user.username) }}" method="POST">
+                                                <input class="btn btn-outline-primary float-right" type="submit" value=" Adopt Pet ">
                                             </form>
                                                 </div>
                                               </div>

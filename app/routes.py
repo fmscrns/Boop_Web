@@ -440,7 +440,7 @@ def for_sale(username, public_id):
             print('for sale bitchhh')
             if forSaleForm.is_submitted():
                 
-                dealPet_json = Deal.new_deal(request, public_id)
+                dealPet_json = Deal.sale_pet(request, public_id)
                 
                 print('deal routes')
                 if dealPet_json["status"] == "success":
@@ -458,6 +458,36 @@ def for_sale(username, public_id):
                 flash("Try again.", "danger")
                 
                 return redirect(url_for("pet_profile_wall", username=current_user["username"], public_id=public_id))
+
+    return redirect(url_for("pet_profile_wall",username=current_user["username"], public_id=public_id))
+
+@boop.route("/<username>/pet/<public_id>/adopt", methods=["GET", "POST"])
+@login_required
+def adopt_pet(username, public_id):
+    current_user_page = False
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    user_existence = Helper.user_existence_check(user_json)
+    deals = Deal.get_all_deals()['data']
+    pet = Pet.get_a_pet(public_id)
+    get_a_deal = Deal.get_a_deal(public_id)
+
+    if user_existence is False:
+        abort(404)
+
+    forSaleForm = ForSaleForm()
+
+    if username == current_user["username"]:
+        current_user_page = True
+
+    if request.method == "POST":
+        print('madafakaaa')
+        if forSaleForm.is_submitted():
+            print('uwuuuuuuu')
+            dealPet_json = Deal.adopt_pet(request, public_id)
+            print('kabapoop')
+
+        return redirect(url_for("pet_profile_wall", username=current_user["username"], public_id=public_id))
 
     return redirect(url_for("pet_profile_wall",username=current_user["username"], public_id=public_id))
   
