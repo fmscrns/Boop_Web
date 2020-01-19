@@ -108,16 +108,17 @@ class User:
 
     @staticmethod
     def update_user(username,data):
+        form = data.form
 
         print('servicess!!!')
 
-        first_name = data.get("firstName_input")
-        last_name = data.get("lastName_input")
-        bio = data.get("bio_input")
-        username = data.get("username_input")
-        contact_no = data.get("contactNo_input")
+        first_name = form.get("firstName_input")
+        last_name = form.get("lastName_input")
+        bio = form.get("bio_input")
+        username = form.get("username_input")
+        contact_no = form.get("contactNo_input")
 
-        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "bio" : bio, "username" : username, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
+        userUpdate_req = requests.post("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "bio" : bio, "username" : username, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
         print('---------------------------------------')
         print (userUpdate_req)
         
@@ -257,17 +258,18 @@ class Comment:
 
 class Deal:
     @staticmethod
-    def new_deal(data, pet_id):
+    def new_deal(data, public_id):
         form = data.form
-        price = form.post("forSale_input")
-        newDeal_req = requests.get("{}/deal/{}".format(Variable.api_url(), pet_id),  json={"deal" : comment},headers={"authorization" : session["booped_in"]})
+        price = form.get("forSale_input")
+        status = form.get('status_input')
+        newDeal_req = requests.post("{}/deal/{}".format(Variable.api_url(), public_id),  json={"price" : price, "status" : status },headers={"authorization" : session["booped_in"]})
         print('deal services')
         return json.loads(newDeal_req.text)
     
     @staticmethod
-    def get_all_deals(data):
-        
-        getAllDeals_req = requests.get("{}/deal/{}".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+    def get_all_deals():
+
+        getAllDeals_req = requests.get("{}/deal/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
         return json.loads(getAllDeals_req.text)
 
     @staticmethod
@@ -281,6 +283,13 @@ class Deal:
         deleteDeal_req = requests.delete("{}/deal/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
 
         return json.loads(deleteUserPosts_req.text)
+
+    @staticmethod
+    def get_a_deal(public_id):
+        
+        getADeal_req = requests.get("{}/deal/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+        return json.loads(getADeal_req.text)
+
 
     @staticmethod
     def get_user_deals(username):

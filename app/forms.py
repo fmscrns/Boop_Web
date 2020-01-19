@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, IntegerField, PasswordField, BooleanField, RadioField, SelectField, SelectMultipleField, SubmitField
+from wtforms import StringField, IntegerField, PasswordField, BooleanField, RadioField, DecimalField, SelectField, SelectMultipleField, SubmitField
 from wtforms.fields.html5 import DateField
-from wtforms.validators import DataRequired, InputRequired, Length, Email, NumberRange, EqualTo
+from wtforms.validators import DataRequired, NumberRange, InputRequired, Length, Email, NumberRange, EqualTo
+from decimal import Decimal
 
 class SignupForm(FlaskForm):
     firstName_input = StringField("First Name", validators=[DataRequired(), Length(min=2, max=50)])
@@ -64,6 +65,7 @@ class CommentPostForm(FlaskForm):
     commentPost_submit_input = SubmitField("Comment")
 
 class ForSaleForm(FlaskForm):
-    forSale_input = StringField("Price", validators=[DataRequired(), Length(min=1, max=150)])
+    forSale_input = DecimalField("Price", validators=[InputRequired(), NumberRange(min=Decimal('0.0'))])
+    status_input = StringField("Status", validators=[DataRequired(), Length(min=1, max=150)])
 
     forSale_submit_input = SubmitField("Submit")

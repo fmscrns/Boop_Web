@@ -156,11 +156,11 @@
                                             <div id="account-primary-editProfile-btn-cont" class="col-4 align-self-center">
                                                 {% if current_user_page == True %}
                                                
-                                                <button type="button" data-toggle="modal" data-target="#update-user-modal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
+                                                <button type="button" data-toggle="modal" data-target="#update{{user.public_id}}" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
                                                     Edit Profile
                                                 </button>
 
-                                                <div class="modal" id="update-user-modal" tabindex="-1" role="dialog" aria-labelledby="update-user-modal-title" aria-hidden="true">
+                                                <div class="modal" id="update{{user.public_id}}" tabindex="-1" role="dialog" aria-labelledby="update-user-modal-title" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-scrollable" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -169,7 +169,7 @@
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <form method="POST" action="" enctype="multipart/form-data">
+                                                            <form method="POST" action="{{ url_for('update_user', username=user.username) }}" enctype="multipart/form-data">
                                                                 <div id="updateUserForm-modal-body" class="modal-body">
                                                                     <div class="updateUser-form" class="container">
                                                                         {{ updateUserForm.csrf_token }}
