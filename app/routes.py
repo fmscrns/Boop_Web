@@ -211,18 +211,12 @@ def user_profile_posts(username):
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
     user_existence = Helper.user_existence_check(user_json)
-    post_json = Post.get_user_posts(username)
-    posts = Post.get_all_posts()["data"]
-    comments = Comment.get_all_comments()["data"]
 
     if user_existence is False:
         abort(404)
 
-
     posts = Post.get_user_posts(username)["data"]
-
     display_posts = []
-
     for x, post in enumerate(posts):
         author = User.get_a_user(post["post_author"])
 
@@ -234,7 +228,9 @@ def user_profile_posts(username):
         dict["author_firstName"] =  author["first_name"]
         dict["author_lastName"] = author["last_name"]
         dict["author_username"] = author["username"]
-
+        dict["author_profPhoto_filename"] = author["profPhoto_filename"]
+        dict["photo"] = "https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg"
+        
         display_posts.append(dict)
 
     updateUserForm = UpdateUserForm()
@@ -244,10 +240,7 @@ def user_profile_posts(username):
     if username == current_user["username"]:
         current_user_page = True
 
-        userPets_json = Pet.get_user_pets(username)
-
         if request.method == "POST":
-            
             if shareContentForm.validate_on_submit():
                 shareContent_json = Post.new_post(request)
                 
@@ -267,7 +260,7 @@ def user_profile_posts(username):
                 
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
-    return render_template("user_profile.html", title="Account", commentPostForm = commentPostForm, updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=display_posts, shareContentForm=shareContentForm, comments=comments, postsNavActivate="3px #00002A solid")
+    return render_template("user_profile.html", title="Account", updateUserForm=updateUserForm, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=display_posts, shareContentForm=shareContentForm, postsNavActivate="3px #00002A solid")
 
 @boop.route("/<username>/gallery", methods=["GET", "POST", "PUT"])
 @login_required

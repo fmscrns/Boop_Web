@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
-{% from "account_components.html" import gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6 %}
+{% from "account_components.html" import content_item1, content_item2, content_item3, content_item4, content_item5, gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6 %}
 {% from "navbar_components.html" import secured_navbar %}
-{% from "home_components.html" import content_item1, content_item2, content_item3, content_item4, content_item5 %}
 
     {% block bodyStyle %}
         <body style="overflow-y:scroll;">
@@ -331,7 +330,7 @@
                                 {% endif %}
                                 <div id="home-content-group" class="list-group">
                                     {% for post in user_posts %}
-                                        {{ content_item1(post) }}
+                                        {{ content_item2(post) }}
                                     {% endfor %}
                                 </div>
                             </div>

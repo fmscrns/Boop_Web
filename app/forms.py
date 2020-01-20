@@ -45,8 +45,8 @@ class UpdateUserForm(FlaskForm):
     email_input = StringField("Email", validators=[DataRequired(), Email()])
     username_input = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
     contactNo_input = StringField("Contact Number", validators=[DataRequired(), Length(min=2, max=50)])
-    user_profPhoto_input = FileField("User Profile Picture", validators=[FileAllowed(["jpg", "png"])])
-    user_coverPhoto_input = FileField("User Cover Picture", validators=[FileAllowed(["jpg", "png"])])
+    user_profPhoto_input = FileField("User Profile Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
+    user_coverPhoto_input = FileField("User Cover Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
 
     updateUser_submit_input = SubmitField("Update")
 
@@ -75,8 +75,8 @@ class AddPetForm(FlaskForm):
     sex_input = RadioField("Sex", coerce=str, choices=[("Male", "Male"), ("Female", "Female")], validators=[InputRequired()])
     specie_input = SelectField("Specie", coerce=str, choices=[], validators=[InputRequired()])
     breed_input = SelectField("Breed", coerce=str, choices=[], validators=[InputRequired()])
-    pet_profPic_input = FileField("Pet Profile Picture", validators=[FileAllowed(["jpg", "png"])])
-    pet_coverPic_input = FileField("Pet Cover Picture", validators=[FileAllowed(["jpg", "png"])])
+    pet_profPic_input = FileField("Pet Profile Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
+    pet_coverPic_input = FileField("Pet Cover Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
 
     addPet_submit_input = SubmitField("Add pet")
 
@@ -87,13 +87,13 @@ class UpdatePetForm(FlaskForm):
     sex_input = RadioField("Sex", coerce=str, choices=[("Male", "Male"), ("Female", "Female")], validators=[InputRequired()])
     specie_input = SelectField("Specie", coerce=str, choices=[], validators=[InputRequired()])
     breed_input = SelectField("Breed", coerce=str, choices=[], validators=[InputRequired()])
-    pet_profPic_input = FileField("Pet Profile Picture", validators=[FileAllowed(["jpg", "png"])])
+    pet_profPic_input = FileField("Pet Profile Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
 
     updatePet_submit_input = SubmitField("Update pet")
 
 class ShareContentForm(FlaskForm):
     shareContent_input = StringField("Story Content", validators=[DataRequired(), Length(min=1, max=150)])
-    shareGallery_input = MultipleFileField("Story Gallery", validators=[FileAllowed(["jpg", "png"])])
+    shareGallery_input = MultipleFileField("Story Gallery", validators=[FileAllowed(["jpg", "jpeg", "png"])])
 
     shareContent_submit_input = SubmitField("Post story")
 
