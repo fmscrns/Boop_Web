@@ -34,8 +34,8 @@ $("#user_profPhoto_input").change(function(){
 $("#user_coverPhoto_input").change(function(){
     readURL(this, "#user-coverpic-preview");
 });
-$("#shareGallery_input").change(function(){
-    readURL(this, "#post-sharegallery-preview");
+$("#sharePhoto_input").change(function(){
+    readURL(this, "#post-sharephoto-preview");
 });
 
 function showImageCol(col_id) {

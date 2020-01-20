@@ -500,7 +500,7 @@ a#floating-btn-cont:hover > img {
     background:lightgray;
     border:1px solid lightgray;
 }
-#post-sharegallery-preview {
+#post-sharephoto-preview {
     height:200px;
     width:400px;
     object-fit:cover;

@@ -29,7 +29,6 @@
                     <div class="col-4" style="padding:0;">
                         <div id="acc-leftSection" class="container-fluid" style="padding:0;margin:0;">
                             <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
-                            {{ gallery_6() }}
                         </div>
                         <div id="flash-primary-cont" class="container-fluid">
                             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -337,33 +336,33 @@
                         {% elif user_gallery is defined %}
                             <div id="account-content-gallery-panel" class="container-fluid">
                                 <div class="row mp-0 mt-2">
-                                    {% for image in user_gallery %}
+                                    {% for photo in user_gallery %}
                                         {% if loop.length == 1 %}
                                             <div class="col mp-0">
-                                                <img class="img-fluid gall-item gall-i-s1 gall-br-tblr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                <img class="img-fluid gall-item gall-i-s1 gall-br-tblr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                             </div>
                                         {% elif loop.length == 2 %}
                                             {% if loop.index == 1 %}
                                                 <div class="col mp-0">
-                                                    <img class="img-fluid gall-item gall-i-s2 gall-br-tbl gall-p-r" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    <img class="img-fluid gall-item gall-i-s2 gall-br-tbl gall-p-r" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                 </div>
                                             {% elif loop.index == 2 %}
                                                 <div class="col mp-0">
-                                                    <img class="img-fluid gall-item gall-i-s2 gall-br-tbr gall-p-l" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    <img class="img-fluid gall-item gall-i-s2 gall-br-tbr gall-p-l" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                 </div>
                                             {% endif %}
                                         {% elif loop.length == 3 %}
                                             {% if loop.index == 1 %}
                                                 <div class="col mp-0">
-                                                    <img class="img-fluid gall-item gall-i-s3 gall-br-tbl gall-p-r" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    <img class="img-fluid gall-item gall-i-s3 gall-br-tbl gall-p-r" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                 </div>
                                             {% elif loop.index == 2 %}
                                                 <div class="col mp-0">
-                                                    <img class="img-fluid gall-item gall-i-s3 gall-p-lr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    <img class="img-fluid gall-item gall-i-s3 gall-p-lr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                 </div>
                                             {% elif loop.index == 3 %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-tbr gall-p-l" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-tbr gall-p-l" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 </div>
                                                 <div class="row mp-0">
@@ -371,88 +370,88 @@
                                         {% elif loop.length > 3 %}
                                             {% if loop.index == 1 %}
                                                 <div class="col mp-0">
-                                                    <img class="img-fluid gall-item gall-i-s3 gall-br-tl gall-p-br" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    <img class="img-fluid gall-item gall-i-s3 gall-br-tl gall-p-br" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                 </div>
                                             {% elif loop.index == 2 %}
                                                 <div class="col mp-0">
-                                                    <img class="img-fluid gall-item gall-i-s3 gall-p-blr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    <img class="img-fluid gall-item gall-i-s3 gall-p-blr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                 </div>
                                             {% elif loop.index == 3 %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-tr gall-p-bl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-tr gall-p-bl" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 </div>
                                                 <div class="row mp-0">
                                             {% elif loop.length % 3 == 1 %}
                                                 {% if (loop.index % 3 == 1) and (loop.index <= loop.length - 1 ) %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tbr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tbr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% elif (loop.index % 3 == 2) and (loop.index <= loop.length - 1 ) %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tblr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tblr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% elif (loop.index % 3 == 0) and (loop.index <= loop.length - 1 ) %}
                                                         <div class="col mp-0">
-                                                            <img class="img-fluid gall-item gall-i-s3 gall-p-tbl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                            <img class="img-fluid gall-item gall-i-s3 gall-p-tbl" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                         </div>
                                                     </div>
                                                     <div class="row mp-0">
                                                 {% else %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s1 gall-br-blr gall-p-t" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s1 gall-br-blr gall-p-t" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% endif %}
                                             {% elif loop.length % 3 == 2 %}
                                                 {% if (loop.index % 3 == 1) and (loop.index <= loop.length - 2 ) %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tbr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tbr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% elif (loop.index % 3 == 2) and (loop.index <= loop.length - 2 ) %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tblr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tblr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% elif (loop.index % 3 == 0) and (loop.index <= loop.length - 2 ) %}
                                                         <div class="col mp-0">
-                                                            <img class="img-fluid gall-item gall-i-s3 gall-p-tbl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                            <img class="img-fluid gall-item gall-i-s3 gall-p-tbl" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                         </div>
                                                     </div>
                                                     <div class="row mp-0">
                                                 {% elif loop.index == (loop.length - 1) %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s2 gall-br-bl gall-p-tr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s2 gall-br-bl gall-p-tr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% else %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s2 gall-br-br gall-p-tl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s2 gall-br-br gall-p-tl" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% endif %}
                                             {% elif loop.length % 3 == 0 %}
                                                 {% if (loop.index % 3 == 1) and (loop.index <= loop.length - 3 ) %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tbr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tbr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% elif (loop.index % 3 == 2) and (loop.index <= loop.length - 3 ) %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tblr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tblr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% elif (loop.index % 3 == 0) and (loop.index <= loop.length - 3 ) %}
                                                         <div class="col mp-0">
-                                                            <img class="img-fluid gall-item gall-i-s3 gall-p-tbl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                            <img class="img-fluid gall-item gall-i-s3 gall-p-tbl" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                         </div>
                                                     </div>
                                                     <div class="row mp-0">
                                                 {% elif loop.index == (loop.length - 2) %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-bl gall-p-tr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-bl gall-p-tr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% elif loop.index == (loop.length - 1) %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tlr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tlr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% else %}
                                                     <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-br gall-p-tl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-br gall-p-tl" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                     </div>
                                                 {% endif %}
                                             {% endif %}
@@ -654,7 +653,7 @@
                                         <div class="postStory-form" class="container">
                                             {{ shareContentForm.hidden_tag() }}
                                             <fieldset class="form-group">
-                                                <label>Your Pet's Photo</label>
+                                                <label>Upload Image</label>
                                                 <div id="image-upload-layout" class="row">
                                                     <div class="col-md-auto">
                                                         <div class="form-group">
@@ -668,8 +667,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="col">
-                                                        <img id="post-sharegallery-preview" class="rounded mx-auto d-block">
-                                                        <script>document.getElementById("post-sharegallery-preview").src = "{{ url_for('static', filename='images/pet-default-profPhoto.jpg') }}";</script>
+                                                        <img id="post-sharephoto-preview" class="rounded mx-auto d-block">
+                                                        <script>document.getElementById("post-sharephoto-preview").src = "{{ url_for('static', filename='images/pet-default-profPhoto.jpg') }}";</script>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">

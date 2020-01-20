@@ -112,7 +112,7 @@ def home():
     allPosts = []
     for x, post in enumerate(postList_req):
         author = User.get_a_user(post["post_author"])
-        print(author)
+
         dict = {}
 
         dict["public_id"] = post["public_id"]
@@ -285,7 +285,7 @@ def user_profile_posts(username):
 
             updateUserForm.process()
 
-    return render_template("user_profile.html", title="Account", updateUserForm=updateUserForm, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, postsNavActivate="3px #00002A solid")
+    return render_template("user_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, updateUserForm=updateUserForm, postsNavActivate="3px #00002A solid")
 
 @boop.route("/<username>/gallery", methods=["GET", "POST", "PUT"])
 @login_required
@@ -293,25 +293,24 @@ def user_profile_gallery(username):
     current_user_page = False
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
-    user_existence = Helper.user_existence_check(user_json)
-    post_json = Post.get_user_posts(username)
-    posts = Post.get_all_posts()["data"]
-    comments = Comment.get_all_comments()["data"]
 
+    user_existence = Helper.user_existence_check(user_json)
     if user_existence is False:
         abort(404)
 
-    userGallery = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"]
+    userPosts_req =  Post.get_user_posts(username)["data"]
+    userGallery = []
+    for post in userPosts_req:
+        if post["photo"] != None:
+            userGallery.append(post["photo"])
     
+    shareContentForm = ShareContentForm()
     updateUserForm = UpdateUserForm()
 
     if username == current_user["username"]:
         current_user_page = True
 
-        userPets_json = Pet.get_user_pets(username)
-
         if request.method == "POST":
-            
             if shareContentForm.validate_on_submit():
                 shareContent_json = Post.new_post(request)
                 
@@ -326,15 +325,36 @@ def user_profile_gallery(username):
                     
                     return redirect(url_for("user_profile_posts", username=current_user["username"]))
             
+            if updateUserForm.validate_on_submit():
+                updateUser_json = User.update_user(request)
+                
+                if updateUser_json["status"]  == "success":
+                    flash(updateUser_json["payload"], "success")
+
+                    current_user = User.get_current_user()
+
+                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
+                
+                else:
+                    flash(updateUser_json["payload"], "danger")
+
+                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
+
             else:
                 flash("Try again.", "danger")
-        
-                
-
                 
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
-    return render_template("user_profile.html", title="Account", updateUserForm=updateUserForm, post_json=post_json, current_user_page=current_user_page, current_user=current_user, user=user_json, user_gallery=userGallery, galleryNavActivate="3px #00002A solid")
+        elif request.method == "GET":
+            updateUserForm.firstName_input.default = current_user["firstName"]
+            updateUserForm.lastName_input.default = current_user["lastName"]
+            updateUserForm.email_input.default = current_user["email"]
+            updateUserForm.username_input.default = current_user["username"]
+            updateUserForm.contactNo_input.default = current_user["contactNo"]
+
+            updateUserForm.process()
+
+    return render_template("user_profile.html", title="Account", updateUserForm=updateUserForm, current_user_page=current_user_page, current_user=current_user, user=user_json, user_gallery=userGallery, shareContentForm=shareContentForm, galleryNavActivate="3px #00002A solid")
 
 @boop.route("/<username>/likes", methods=["GET", "POST", "PUT"])
 @login_required

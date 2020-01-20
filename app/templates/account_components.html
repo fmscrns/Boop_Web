@@ -43,9 +43,11 @@
                 {{ post.content }}
             </div>
             <div class="w-100"></div>
+            {% if post.photo != None %}
             <div class="col mt-2">
                 <img class="img-fluid hci-1p" src="{{ url_for('static', filename='images/{}'.format(post.photo)) }}">
             </div>
+            {% endif %}
             <div class="w-100"></div>
             <div class="col mt-2">
                 {{ content_bottomBar() }}
