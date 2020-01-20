@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, IntegerField, PasswordField, BooleanField, RadioField, SelectField, SelectMultipleField, SubmitField, MultipleFileField
+from wtforms import StringField, IntegerField, PasswordField, BooleanField, RadioField, SelectField, SelectMultipleField, SubmitField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, InputRequired, Length, Email, NumberRange, EqualTo, ValidationError
 from app.services import Auth, User
@@ -93,7 +93,7 @@ class UpdatePetForm(FlaskForm):
 
 class ShareContentForm(FlaskForm):
     shareContent_input = StringField("Story Content", validators=[DataRequired(), Length(min=1, max=150)])
-    shareGallery_input = MultipleFileField("Story Gallery", validators=[FileAllowed(["jpg", "jpeg", "png"])])
+    sharePhoto_input = FileField("Story Photo", validators=[FileAllowed(["jpg", "jpeg", "png"])])
 
     shareContent_submit_input = SubmitField("Post story")
 

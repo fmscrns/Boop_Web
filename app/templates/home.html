@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% from "navbar_components.html" import secured_navbar %}
 {% from "home_components.html" import content_item1, content_item2, content_item3, content_item4, content_item5 %}
+{% from "left_components.html" import profileSnippet %}
 
     {% block bodyStyle %}
         <body style="overflow-y:scroll;";>
@@ -29,28 +30,7 @@
                     <div class="col-4" style="padding:0;">
                         <div id="ha-leftSection" style="padding-top:0;">
                             <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
-                            <div class="ha-lefSection-profileSnippet">
-                                <img src="{{ url_for('static', filename='images/{}'.format( current_user.coverPhotoFilename )) }}" id="home-coverPhoto-panel" class="container-fluid">
-                                <div id="home-profileSnippet-profPic-cont" class="container">
-                                    <div class="float-left">
-                                        <img id="home-profileSnippet-profPic" src="{{ url_for('static', filename='images/{}'.format( current_user.profPhotoFilename )) }}">
-                                    </div>
-                                </div>
-                                <div id="home-profileSnippet-textSection" class="row mx-auto">
-                                    <div class="col-md-auto" style="width:120px;"></div>
-                                    <div class="col" style="margin:0;padding:0;">
-                                        <div class="row" style="margin:5px 0 15px 2px;">
-                                            <div class="col">
-                                                <a id="home-profileSnippet-fullName" href="{{ url_for('user_profile_pets', username=current_user.username) }}">{{ current_user.firstName }} {{ current_user.lastName }}</a>
-                                            </div>
-                                            <div class="w-100"></div>
-                                            <div class="col">
-                                                <a id="home-profileSnippet-username" href="{{ url_for('user_profile_pets', username=current_user.username) }}"><small>@{{ current_user.username }}</small></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {{ profileSnippet(current_user) }}
                             <button type="button" id="home-leftSect-postStory" class="btn btn-light btn-block">
                                 <img class="hci-bb-p" src="{{ url_for('static', filename='assets/bullhorn.svg') }}">
                                 Post Story
@@ -95,7 +75,7 @@
                             </div>
                             <div id="home-content-group" class="list-group">
                                 {% for post in all_posts %}
-                                    {{ content_item1(post) }}
+                                    {{ content_item2(post) }}
                                 {% endfor %}
                             </div>
                         </div>

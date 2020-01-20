@@ -107,13 +107,12 @@ def home():
     current_user_page = False
     current_user = User.get_current_user()
     
-    posts = Post.get_all_posts()["data"]
+    postList_req = Post.get_all_posts()["data"]
     
-    display_posts = []
-
-    for x, post in enumerate(posts):
+    allPosts = []
+    for x, post in enumerate(postList_req):
         author = User.get_a_user(post["post_author"])
-
+        print(author)
         dict = {}
 
         dict["public_id"] = post["public_id"]
@@ -123,9 +122,11 @@ def home():
         dict["author_lastName"] = author["last_name"]
         dict["author_username"] = author["username"]
         dict["author_profPhoto_filename"] = author["profPhoto_filename"]
-        display_posts.append(dict)
+        dict["photo"] = post["photo"]
 
-    return render_template("home.html", title="Home", current_user=current_user, all_posts=display_posts, shareContentForm=form, username=current_user["username"] )
+        allPosts.append(dict)
+
+    return render_template("home.html", title="Home", current_user=current_user, all_posts=allPosts, shareContentForm=form, username=current_user["username"] )
 
 @boop.route("/admin/users/all", methods=["GET"])
 @login_required
@@ -210,14 +211,15 @@ def user_profile_posts(username):
     current_user_page = False
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
+    
     user_existence = Helper.user_existence_check(user_json)
-
     if user_existence is False:
         abort(404)
 
-    posts = Post.get_user_posts(username)["data"]
-    display_posts = []
-    for x, post in enumerate(posts):
+    postList_req = Post.get_user_posts(username)["data"]
+
+    userPosts = []
+    for x, post in enumerate(postList_req):
         author = User.get_a_user(post["post_author"])
 
         dict = {}
@@ -229,13 +231,12 @@ def user_profile_posts(username):
         dict["author_lastName"] = author["last_name"]
         dict["author_username"] = author["username"]
         dict["author_profPhoto_filename"] = author["profPhoto_filename"]
-        dict["photo"] = "https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg"
+        dict["photo"] = post["photo"]
         
-        display_posts.append(dict)
+        userPosts.append(dict)
 
-    updateUserForm = UpdateUserForm()
-    commentPostForm = CommentPostForm()
     shareContentForm = ShareContentForm()
+    updateUserForm = UpdateUserForm()
 
     if username == current_user["username"]:
         current_user_page = True
@@ -255,12 +256,36 @@ def user_profile_posts(username):
                     
                     return redirect(url_for("user_profile_posts", username=current_user["username"]))
             
+            if updateUserForm.validate_on_submit():
+                updateUser_json = User.update_user(request)
+                
+                if updateUser_json["status"]  == "success":
+                    flash(updateUser_json["payload"], "success")
+
+                    current_user = User.get_current_user()
+
+                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
+                
+                else:
+                    flash(updateUser_json["payload"], "danger")
+
+                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
+
             else:
                 flash("Try again.", "danger")
                 
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 
-    return render_template("user_profile.html", title="Account", updateUserForm=updateUserForm, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=display_posts, shareContentForm=shareContentForm, postsNavActivate="3px #00002A solid")
+        elif request.method == "GET":
+            updateUserForm.firstName_input.default = current_user["firstName"]
+            updateUserForm.lastName_input.default = current_user["lastName"]
+            updateUserForm.email_input.default = current_user["email"]
+            updateUserForm.username_input.default = current_user["username"]
+            updateUserForm.contactNo_input.default = current_user["contactNo"]
+
+            updateUserForm.process()
+
+    return render_template("user_profile.html", title="Account", updateUserForm=updateUserForm, current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, postsNavActivate="3px #00002A solid")
 
 @boop.route("/<username>/gallery", methods=["GET", "POST", "PUT"])
 @login_required
@@ -303,6 +328,9 @@ def user_profile_gallery(username):
             
             else:
                 flash("Try again.", "danger")
+        
+                
+
                 
                 return redirect(url_for("user_profile_posts", username=current_user["username"]))
 

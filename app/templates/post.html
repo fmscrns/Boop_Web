@@ -2,7 +2,7 @@
 {% from "account_components.html" import gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6 %}
 {% from "navbar_components.html" import secured_navbar %}
 {% from "post_components.html" import post_item1, post_item2, post_item3, post_item4, post_item5 %}
-
+{% from "left_components.html" import profileSnippet %}
     {% block bodyStyle %}
         <body style="overflow-y:scroll;">
     {% endblock bodyStyle %}
@@ -30,28 +30,7 @@
                     <div class="col-4" style="padding:0;">
                         <div id="acc-leftSection" class="container-fluid" style="padding:0;margin:0;">
                             <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
-                            <div class="ha-lefSection-profileSnippet">
-                                <img src="https://res.cloudinary.com/fmscrns/image/upload/v1579030880/ehxrxzwpziiwoquj9fax.jpg" id="home-coverPhoto-panel" class="container-fluid">
-                                <div id="home-profileSnippet-profPic-cont" class="container">
-                                    <div class="float-left">
-                                        <img id="home-profileSnippet-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
-                                    </div>
-                                </div>
-                                <div id="home-profileSnippet-textSection" class="row mx-auto">
-                                    <div class="col-md-auto" style="width:120px;"></div>
-                                    <div class="col" style="margin:0;padding:0;">
-                                        <div class="row" style="margin:5px 0 15px 2px;">
-                                            <div class="col">
-                                                <a id="home-profileSnippet-fullName" href="{{ url_for('user_profile_pets', username=current_user.username) }}">{{ current_user.firstName }} {{ current_user.lastName }}</a>
-                                            </div>
-                                            <div class="w-100"></div>
-                                            <div class="col">
-                                                <a id="home-profileSnippet-username" href="{{ url_for('user_profile_pets', username=current_user.username) }}"><small>@{{ current_user.username }}</small></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {{ profileSnippet(current_user) }}
                         </div>
                         <div id="flash-primary-cont" class="container-fluid">
                             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -76,7 +55,7 @@
                 <div id="ha-leftSection-space" class="col-4"></div>
                 <div id="ha-rightSection" class="col">
                     <div class="container-fluid">
-                        {{ post_item1(post, display_comms, post_owner, current_user, commentPostForm) }}
+                        {{ post_item2(post, display_comms, post_owner, current_user, commentPostForm) }}
                     </div>
                 </div>
             </div>

@@ -658,12 +658,12 @@
                                                 <div id="image-upload-layout" class="row">
                                                     <div class="col-md-auto">
                                                         <div class="form-group">
-                                                            {% if shareContentForm.shareGallery_input.errors %}
-                                                                {% for error in shareContentForm.shareGallery_input.errors %}
+                                                            {% if shareContentForm.sharePhoto_input.errors %}
+                                                                {% for error in shareContentForm.sharePhoto_input.errors %}
                                                                     <span class="text-danger"> {{ error }} </span></br>
                                                                 {% endfor %}
                                                             {% else %}
-                                                                {{ shareContentForm.shareGallery_input(class="form-control-file") }}
+                                                                {{ shareContentForm.sharePhoto_input(class="form-control-file") }}
                                                             {% endif %}
                                                         </div>
                                                     </div>

@@ -24,27 +24,27 @@
     </a>
 {% endmacro %}
 
-{% macro content_item2() %}
-    <a href="#" class="list-group-item list-group-item-action pr-1">
+{% macro content_item2(post) %}
+    <a href="{{ url_for('display_post', public_id=post.public_id) }}" class="list-group-item list-group-item-action pr-1">
         <div class="float-left pt-1">
-            <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+            <img class="home-content-profPic" src="{{ url_for('static', filename='images/{}'.format(post.author_profPhoto_filename)) }}">
         </div>
         <div class="row pl-1">
             <div class="col">
                 <span class="font-weight-bold hci-bb-l">
-                    Test User
+                    {{ post.author_firstName }} {{ post.author_lastName }}
                 </span>
                 <span style="font-size:13px;">
-                    @testuser · 6m
+                    @{{ post.author_username }} · {{ post.posted_on }}
                 </span>
             </div>
             <div class="w-100"></div>
             <div class="col">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam bibendum, risus at dictum pretium, erat odio malesuada metus, non ullamcorper dolor risus ultrices quam. Cras rhoncus maximus gravida. Nunc porta et massa ut aliquet. Praesent congue nisl vel tempor bibendum massa nunc.
+                {{ post.content }}
             </div>
             <div class="w-100"></div>
             <div class="col mt-2">
-                <img class="img-fluid hci-1p" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                <img class="img-fluid hci-1p" src="{{ url_for('static', filename='images/{}'.format(post.photo)) }}">
             </div>
             <div class="w-100"></div>
             <div class="col mt-2">

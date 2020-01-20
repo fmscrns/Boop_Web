@@ -236,8 +236,15 @@ class Post:
     @staticmethod
     def new_post(data):
         form = data.form
+        fileForm = data.files
+
         content = form.get("shareContent_input")
-        newPost_req= requests.post("{}/post/".format(Variable.api_url()), json={"content" : content}, headers={"authorization" : session["booped_in"]})
+        photo = None
+        
+        if fileForm.get("sharePhoto_input"):
+            photo = Helper.save_image(fileForm.get("sharePhoto_input"))
+
+        newPost_req= requests.post("{}/post/".format(Variable.api_url()), json={"content" : content, "photo" : photo}, headers={"authorization" : session["booped_in"]})
         return json.loads(newPost_req.text)
 
 
