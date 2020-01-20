@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% from "account_components.html" import gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6 %}
 {% from "navbar_components.html" import secured_navbar %}
+{% from "home_components.html" import content_item1, content_item2, content_item3, content_item4, content_item5 %}
 
     {% block bodyStyle %}
         <body style="overflow-y:scroll;">
@@ -54,10 +55,10 @@
                 <div id="ha-leftSection-space" class="col-4"></div>
                 <div id="ha-rightSection" class="col">
                     <div class="container-fluid">
-                        <img src="https://res.cloudinary.com/fmscrns/image/upload/v1579030880/ehxrxzwpziiwoquj9fax.jpg" id="account-coverPhoto-panel" class="container-fluid mp-0">
+                        <img src="{{ url_for('static', filename='images/{}'.format(user.coverPhoto_filename)) }}" id="account-coverPhoto-panel" class="container-fluid mp-0">
                         <div id="account-profPic-cont" class="container-fluid">
                             <div class="float-left">
-                                <img id="account-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+                                <img id="account-profPic" src="{{ url_for('static', filename='images/{}'.format(user.profPhoto_filename)) }}">
                             </div>
                         </div>
                         <div id="account-info-panel" class="container-fluid">
@@ -82,108 +83,138 @@
                                             </div>
                                             <div id="account-primary-editProfile-btn-cont" class="col-4 align-self-center">
                                                 {% if current_user_page == True %}
-                                               
-                                                <button type="button" data-toggle="modal" data-target="#update-user-modal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
-                                                    Edit Profile
-                                                </button>
-
-                                                <div class="modal" id="update-user-modal" tabindex="-1" role="dialog" aria-labelledby="update-user-modal-title" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="update-user-modal-title">Update Profile Info</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <form method="PUT" action="{{ url_for('update_user', username=user.username) }}" enctype="multipart/form-data">
-                                                                <div id="updateUserForm-modal-body" class="modal-body">
-                                                                    <div class="updateUser-form" class="container">
-                                                                        {{ updateUserForm.hidden_tag() }}
-                                                                        <fieldset class="form-group">
-                                                                            
-                                                                            <div class="form-group">
-                                                                                <label>First Name</label>
-                                                                                {% if updateUserForm.firstName_input.errors %}
-                                                                                    {{ updateUserForm.firstName_input(class="form-control is-invalid") }}
-                                                                                    <div class="invalid-feedback">
-                                                                                        {% for error in updateUserForm.firstName_input.errors %}
-                                                                                            <span> {{ error }} </span>
-                                                                                        {% endfor %}
+                                                    <button type="button" data-toggle="modal" data-target="#update-user-modal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
+                                                        Edit Profile
+                                                    </button>
+                                                    <div class="modal" id="update-user-modal" tabindex="-1" role="dialog" aria-labelledby="update-user-modal-title" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="update-user-modal-title">
+                                                                        Update Profile Info
+                                                                    </h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <form method="POST" action="" enctype="multipart/form-data">
+                                                                    <div id="updateUserForm-modal-body" class="modal-body">
+                                                                        <div class="updateUser-form" class="container">
+                                                                            {{ updateUserForm.hidden_tag() }}
+                                                                            <fieldset class="form-group">
+                                                                                <label>Your Cover Photo</label>
+                                                                                <div id="image-upload-layout" class="row">
+                                                                                    <div class="col-md-auto">
+                                                                                        <div class="form-group">
+                                                                                            {% if updateUserForm.user_coverPhoto_input.errors %}
+                                                                                                {% for error in updateUserForm.user_coverPhoto_input.errors %}
+                                                                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                                                                {% endfor %}
+                                                                                            {% else %}
+                                                                                                {{ updateUserForm.user_coverPhoto_input(class="form-control-file") }}
+                                                                                            {% endif %}
+                                                                                        </div>
                                                                                     </div>
-                                                                                {% else %}
-                                                                                    {{ updateUserForm.firstName_input(class="form-control") }}
-                                                                                {% endif %}
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label>Last Name</label>
-                                                                                {% if updateUserForm.lastName_input.errors %}
-                                                                                    {{ updateUserForm.lastName_input(class="form-control is-invalid") }}
-                                                                                    <div class="invalid-feedback">
-                                                                                        {% for error in updateUserForm.lastName_input.errors %}
-                                                                                            <span> {{ error }} </span>
-                                                                                        {% endfor %}
+                                                                                    <div class="col">
+                                                                                        <img id="user-coverpic-preview" class="rounded mx-auto d-block">
+                                                                                        <script>document.getElementById("user-coverpic-preview").src = "{{ url_for('static', filename='images/' + current_user.coverPhotoFilename) }}";</script>
                                                                                     </div>
-                                                                                {% else %}
-                                                                                    {{ updateUserForm.lastName_input(class="form-control") }}
-                                                                                {% endif %}
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label>Contact Number</label>
-                                                                                {% if updateUserForm.contactNo_input.errors %}
-                                                                                    {{ updateUserForm.contactNo_input(class="form-control is-invalid") }}
-                                                                                    <div class="invalid-feedback">
-                                                                                        {% for error in updateUserForm.contactNo_input.errors %}
-                                                                                            <span> {{ error }} </span>
-                                                                                        {% endfor %}
-                                                                                    </div>
-                                                                                {% else %}
-                                                                                    {{ updateUserForm.contactNo_input(class="form-control") }}
-                                                                                {% endif %}
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label>Username</label>
-                                                                                {% if updateUserForm.username_input.errors %}
-                                                                                    {{ updateUserForm.username_input(class="form-control is-invalid") }}
-                                                                                    <div class="invalid-feedback">
-                                                                                        {% for error in updateUserForm.username_input.errors %}
-                                                                                            <span> {{ error }} </span>
-                                                                                        {% endfor %}
-                                                                                    </div>
-                                                                                {% else %}
-                                                                                    {{ updateUserForm.username_input(class="form-control") }}
-                                                                                {% endif %}
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label>Email Address</label>
-                                                                                {% if updateUserForm.email_input.errors %}
-                                                                                    {{ updateUserForm.email_input(class="form-control is-invalid") }}
-                                                                                    <div class="invalid-feedback">
-                                                                                        {% for error in updateUserForm.email_input.errors %}
-                                                                                            <span> {{ error }} </span>
-                                                                                        {% endfor %}
-                                                                                    </div>
-                                                                                {% else %}
-                                                                                    {{ updateUserForm.email_input(class="form-control") }}
-                                                                                {% endif %}
                                                                                 </div>
-                                                                                 
-                                                                            
-                                                                        </fieldset>
+                                                                                <label>Your Profile Photo</label>
+                                                                                <div id="image-upload-layout" class="row">
+                                                                                    <div class="col-md-auto">
+                                                                                        <div class="form-group">
+                                                                                            {% if updateUserForm.user_profPhoto_input.errors %}
+                                                                                                {% for error in updateUserForm.user_profPhoto_input.errors %}
+                                                                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                                                                {% endfor %}
+                                                                                            {% else %}
+                                                                                                {{ updateUserForm.user_profPhoto_input(class="form-control-file") }}
+                                                                                            {% endif %}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col">
+                                                                                        <img id="user-profpic-preview" class="rounded mx-auto d-block">
+                                                                                        <script>document.getElementById("user-profpic-preview").src = "{{ url_for('static', filename='images/' + current_user.profPhotoFilename) }}";</script>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label>First Name</label>
+                                                                                    {% if updateUserForm.firstName_input.errors %}
+                                                                                        {{ updateUserForm.firstName_input(class="form-control is-invalid") }}
+                                                                                        <div class="invalid-feedback">
+                                                                                            {% for error in updateUserForm.firstName_input.errors %}
+                                                                                                <span> {{ error }} </span>
+                                                                                            {% endfor %}
+                                                                                        </div>
+                                                                                    {% else %}
+                                                                                        {{ updateUserForm.firstName_input(class="form-control") }}
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label>Last Name</label>
+                                                                                    {% if updateUserForm.lastName_input.errors %}
+                                                                                        {{ updateUserForm.lastName_input(class="form-control is-invalid") }}
+                                                                                        <div class="invalid-feedback">
+                                                                                            {% for error in updateUserForm.lastName_input.errors %}
+                                                                                                <span> {{ error }} </span>
+                                                                                            {% endfor %}
+                                                                                        </div>
+                                                                                    {% else %}
+                                                                                        {{ updateUserForm.lastName_input(class="form-control") }}
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label>Contact Number</label>
+                                                                                    {% if updateUserForm.contactNo_input.errors %}
+                                                                                        {{ updateUserForm.contactNo_input(class="form-control is-invalid") }}
+                                                                                        <div class="invalid-feedback">
+                                                                                            {% for error in updateUserForm.contactNo_input.errors %}
+                                                                                                <span> {{ error }} </span>
+                                                                                            {% endfor %}
+                                                                                        </div>
+                                                                                    {% else %}
+                                                                                        {{ updateUserForm.contactNo_input(class="form-control") }}
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label>Username</label>
+                                                                                    {% if updateUserForm.username_input.errors %}
+                                                                                        {{ updateUserForm.username_input(class="form-control is-invalid") }}
+                                                                                        <div class="invalid-feedback">
+                                                                                            {% for error in updateUserForm.username_input.errors %}
+                                                                                                <span> {{ error }} </span>
+                                                                                            {% endfor %}
+                                                                                        </div>
+                                                                                    {% else %}
+                                                                                        {{ updateUserForm.username_input(class="form-control") }}
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label>Email Address</label>
+                                                                                    {% if updateUserForm.email_input.errors %}
+                                                                                        {{ updateUserForm.email_input(class="form-control is-invalid") }}
+                                                                                        <div class="invalid-feedback">
+                                                                                            {% for error in updateUserForm.email_input.errors %}
+                                                                                                <span> {{ error }} </span>
+                                                                                            {% endfor %}
+                                                                                        </div>
+                                                                                    {% else %}
+                                                                                        {{ updateUserForm.email_input(class="form-control") }}
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                            </fieldset>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    {{ updateUserForm.update_submit_input(class="btn btn-outline-primary") }}
-                                                                </div>
-                                                            </form>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        {{ updateUserForm.updateUser_submit_input(class="btn btn-outline-primary") }}
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    
-                                                </div>
-
                                             {% endif %}
-                                              
                                             </div>
                                         </div>
                                     </div>
@@ -206,6 +237,12 @@
                                 </a>
                                 <a href="{{ url_for('user_profile_posts', username=user.username) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ postsNavActivate }};">
                                     Posts
+                                </a>
+                                <a href="{{ url_for('user_profile_gallery', username=user.username) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ galleryNavActivate }};">
+                                    Gallery
+                                </a>
+                                <a href="{{ url_for('user_profile_likes', username=user.username) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ likesNavActivate }};">
+                                    Likes
                                 </a>
                             </div>
                         </div>
@@ -235,12 +272,11 @@
                                         <div class="col-4">
                                             <a class="pet-card" href="{{ url_for('pet_profile_wall', username=user.username, public_id=pet.public_id) }}">
                                                 <div class="card border-all">
-                                                    <img class="card-img-top acc-pc-cp" src="https://res.cloudinary.com/fmscrns/image/upload/v1579030880/ehxrxzwpziiwoquj9fax.jpg">
-                                                    
+                                                    <img class="card-img-top acc-pc-cp" src="{{ url_for('static', filename='images/{}'.format(pet.coverPhoto_filename)) }}">
                                                     <div class="card-body" style="margin-top:-20px;">
-                                                        <img class="pet-profPic-sm float-left" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
-                                                        <div class="container-fluid acc-pc-pn pl-4">
-                                                            {{ pet.pet_name }}
+                                                        <img class="pet-profPic-sm float-left" src="{{ url_for('static', filename='images/{}'.format(pet.profPhoto_filename)) }}">
+                                                        <div class="container-fluid acc-pc-pn pl-4 pt-1">
+                                                            <span class="p-2">{{ pet.pet_name }}</span>
                                                         </div>
                                                         <div class="text-muted small mt-3">
                                                             <div class="row">
@@ -273,53 +309,159 @@
                                 </div>
                             </div>
                         {% elif user_posts is defined %}
-                                {#
-                                <form method="POST" action="{{ url_for('comment',post_id=post.post_id, username=user.username) }}" enctype="multipart/form-data">
-                                    <div id="shareContentForm-modal-body" class="modal-body">
-                                        <div class="postStory-form" class="container">
-                                            {{ commentPostForm.hidden_tag() }}
-                                            <fieldset class="form-group">
-                                                <div class="form-group">
-                                                    {% if commentPostForm.commentPost_input.errors %}
-                                                                {% for error in commentPostForm.commentPost_input.errors %}
-                                                                    <span class="text-danger"> {{ error }} </span></br>
-                                                                {% endfor %}
-                                                            {% else %}
-                                                                {{ commentPostForm.commentPost_input(class="form-control-file") }}
-                                                            {% endif %}
-                                                </div>us
-                                              
-                                            </fieldset>
-                                        </div>
+                            <div id="account-content-pets-panel" class="container-fluid">
+                                <div id="flash-secondary-cont" class="container-fluid">
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+                                        {% if messages %}
+                                            {% for category, message in messages %}
+                                                <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                                    <strong>{{ message }}</strong>
+                                                    <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                                {% if user_posts is defined and user_posts|length == 0 %}
+                                    <div class="container-fluid">
+                                        @{{ user.username }} hasn't created any posts yet.
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        {{ commentPostForm.commentPost_submit_input(class="btn btn-outline-primary") }}
-                                    </div>
-                                </form>
-                           
-                               
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                {% endif %}
+                                <div id="home-content-group" class="list-group">
+                                    {% for post in user_posts %}
+                                        {{ content_item1(post) }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% elif user_gallery is defined %}
+                            <div id="account-content-gallery-panel" class="container-fluid">
+                                <div class="row mp-0 mt-2">
+                                    {% for image in user_gallery %}
+                                        {% if loop.length == 1 %}
+                                            <div class="col mp-0">
+                                                <img class="img-fluid gall-item gall-i-s1 gall-br-tblr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                            </div>
+                                        {% elif loop.length == 2 %}
+                                            {% if loop.index == 1 %}
+                                                <div class="col mp-0">
+                                                    <img class="img-fluid gall-item gall-i-s2 gall-br-tbl gall-p-r" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                </div>
+                                            {% elif loop.index == 2 %}
+                                                <div class="col mp-0">
+                                                    <img class="img-fluid gall-item gall-i-s2 gall-br-tbr gall-p-l" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                </div>
+                                            {% endif %}
+                                        {% elif loop.length == 3 %}
+                                            {% if loop.index == 1 %}
+                                                <div class="col mp-0">
+                                                    <img class="img-fluid gall-item gall-i-s3 gall-br-tbl gall-p-r" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                </div>
+                                            {% elif loop.index == 2 %}
+                                                <div class="col mp-0">
+                                                    <img class="img-fluid gall-item gall-i-s3 gall-p-lr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                </div>
+                                            {% elif loop.index == 3 %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-tbr gall-p-l" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    {% if loop.index % 1 == 0 %}
-                                        <div class="w-100" style="height:20px;"></div>
-                                    {% endif %}
-
-                                    {% endif %}
-                            
-
-                                {% endfor %}
+                                                <div class="row mp-0">
+                                            {% endif %}
+                                        {% elif loop.length > 3 %}
+                                            {% if loop.index == 1 %}
+                                                <div class="col mp-0">
+                                                    <img class="img-fluid gall-item gall-i-s3 gall-br-tl gall-p-br" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                </div>
+                                            {% elif loop.index == 2 %}
+                                                <div class="col mp-0">
+                                                    <img class="img-fluid gall-item gall-i-s3 gall-p-blr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                </div>
+                                            {% elif loop.index == 3 %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-tr gall-p-bl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                </div>
+                                                <div class="row mp-0">
+                                            {% elif loop.length % 3 == 1 %}
+                                                {% if (loop.index % 3 == 1) and (loop.index <= loop.length - 1 ) %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tbr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% elif (loop.index % 3 == 2) and (loop.index <= loop.length - 1 ) %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tblr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% elif (loop.index % 3 == 0) and (loop.index <= loop.length - 1 ) %}
+                                                        <div class="col mp-0">
+                                                            <img class="img-fluid gall-item gall-i-s3 gall-p-tbl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mp-0">
+                                                {% else %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s1 gall-br-blr gall-p-t" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% endif %}
+                                            {% elif loop.length % 3 == 2 %}
+                                                {% if (loop.index % 3 == 1) and (loop.index <= loop.length - 2 ) %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tbr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% elif (loop.index % 3 == 2) and (loop.index <= loop.length - 2 ) %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tblr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% elif (loop.index % 3 == 0) and (loop.index <= loop.length - 2 ) %}
+                                                        <div class="col mp-0">
+                                                            <img class="img-fluid gall-item gall-i-s3 gall-p-tbl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mp-0">
+                                                {% elif loop.index == (loop.length - 1) %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s2 gall-br-bl gall-p-tr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% else %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s2 gall-br-br gall-p-tl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% endif %}
+                                            {% elif loop.length % 3 == 0 %}
+                                                {% if (loop.index % 3 == 1) and (loop.index <= loop.length - 3 ) %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tbr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% elif (loop.index % 3 == 2) and (loop.index <= loop.length - 3 ) %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tblr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% elif (loop.index % 3 == 0) and (loop.index <= loop.length - 3 ) %}
+                                                        <div class="col mp-0">
+                                                            <img class="img-fluid gall-item gall-i-s3 gall-p-tbl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mp-0">
+                                                {% elif loop.index == (loop.length - 2) %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-bl gall-p-tr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% elif loop.index == (loop.length - 1) %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-p-tlr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% else %}
+                                                    <div class="col mp-0">
+                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-br gall-p-tl" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                             </div>
-                        
-                            #}
                         {% endif %}
-                        
                     </div>
                 </div>
             </div>                                           
@@ -346,6 +488,24 @@
                                                 <div id="image-upload-layout" class="row">
                                                     <div class="col-md-auto">
                                                         <div class="form-group">
+                                                            {% if addPetForm.pet_coverPic_input.errors %}
+                                                                {% for error in addPetForm.pet_coverPic_input.errors %}
+                                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {{ addPetForm.pet_coverPic_input(class="form-control-file") }}
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <img id="pet-coverpic-preview" class="rounded mx-auto d-block">
+                                                        <script>document.getElementById("pet-coverpic-preview").src = "{{ url_for('static', filename='images/pet-default-profPhoto.jpg') }}";</script>
+                                                    </div>
+                                                </div>
+                                                <label>Your Pet's Photo</label>
+                                                <div id="image-upload-layout" class="row">
+                                                    <div class="col-md-auto">
+                                                        <div class="form-group">
                                                             {% if addPetForm.pet_profPic_input.errors %}
                                                                 {% for error in addPetForm.pet_profPic_input.errors %}
                                                                     <span class="text-danger"> {{ error }} </span></br>
@@ -357,7 +517,7 @@
                                                     </div>
                                                     <div class="col">
                                                         <img id="pet-profpic-preview" class="rounded mx-auto d-block">
-                                                        <script>document.getElementById("pet-profpic-preview").src = "https://res.cloudinary.com/fmscrns/image/upload/v1557286605/boopit/pet/default/prof_pic.jpg";</script>
+                                                        <script>document.getElementById("pet-profpic-preview").src = "{{ url_for('static', filename='images/pet-default-profPhoto.jpg') }}";</script>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -495,6 +655,24 @@
                                         <div class="postStory-form" class="container">
                                             {{ shareContentForm.hidden_tag() }}
                                             <fieldset class="form-group">
+                                                <label>Your Pet's Photo</label>
+                                                <div id="image-upload-layout" class="row">
+                                                    <div class="col-md-auto">
+                                                        <div class="form-group">
+                                                            {% if shareContentForm.shareGallery_input.errors %}
+                                                                {% for error in shareContentForm.shareGallery_input.errors %}
+                                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {{ shareContentForm.shareGallery_input(class="form-control-file") }}
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <img id="post-sharegallery-preview" class="rounded mx-auto d-block">
+                                                        <script>document.getElementById("post-sharegallery-preview").src = "{{ url_for('static', filename='images/pet-default-profPhoto.jpg') }}";</script>
+                                                    </div>
+                                                </div>
                                                 <div class="form-group">
                                                     {% if shareContentForm.shareContent_input.errors %}
                                                         {{ shareContentForm.shareContent_input(class="form-control is-invalid") }}

@@ -378,6 +378,12 @@ body {
     border-top:0;
     height:auto;
 }
+#account-content-gallery-panel {
+    margin:20px 0 0 0;
+    padding:0;
+    border-top:0;
+    height:auto;
+}
 #home-content-panel {
     padding:0;
     border-top:0;
@@ -385,8 +391,6 @@ body {
     border-radius:8.5px;
     background-color:white;
     margin-bottom:20px;
-    /* border: 1px solid lightgray; */
-    /* overflow: hidden; */
 }
 #floating-btn-cont {
     position:fixed;
@@ -475,6 +479,34 @@ a#floating-btn-cont:hover > img {
     background:lightgray;
     border:1px solid lightgray;
 }
+#pet-coverpic-preview {
+    height:200px;
+    width:400px;
+    object-fit:cover;
+    background:lightgray;
+    border:1px solid lightgray;
+}
+#user-profpic-preview {
+    height:200px;
+    width:200px;
+    object-fit:cover;
+    background:lightgray;
+    border:1px solid lightgray;
+}
+#user-coverpic-preview {
+    height:200px;
+    width:400px;
+    object-fit:cover;
+    background:lightgray;
+    border:1px solid lightgray;
+}
+#post-sharegallery-preview {
+    height:200px;
+    width:400px;
+    object-fit:cover;
+    background:lightgray;
+    border:1px solid lightgray;
+}
 #pet-card-profPic-cont {
     left:50px;
     margin:0 auto;
@@ -516,7 +548,6 @@ a#floating-btn-cont:hover > img {
 .acc-lefSection-galleryCont {
     margin:0 0 20px 0;
     border-radius:8.5px;
-<<<<<<< HEAD
     background-color: white;
     padding:0 0 0 0;
 }
@@ -722,6 +753,9 @@ a#floating-btn-cont:hover > img {
 .hci-bb-l {
     color: #00002A;
 }
+.pci-bb-l {
+    color: #00002A;
+}
 .btn-light {
     border: 1px solid lightgray !important;
 }
@@ -746,16 +780,16 @@ a#floating-btn-cont:hover > img {
     position: absolute;
     border:3.2px white solid;
     border-radius:50%;
-    margin:-29.5px auto 0 -10px;
+    margin:-29px auto 0 -10px;
     width:3.5rem;
     height:3.5rem;
     object-fit:cover;
     background:#00002A;
 }
 .acc-pc-pn {
-    font-size: 14px;
-    height:20px !important;
-    width:130px !important;
+    font-size: 18px;
+    height:30px !important;
+    width:150px !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -763,6 +797,110 @@ a#floating-btn-cont:hover > img {
 .acc-pc-pn, .pet-card:hover {
     color: #00002A;
     text-decoration: none;
+}
+.post-commentSect-cont {
+    margin-top:20px !important;
+}
+.post-cont {
+    position: relative;
+    display: block;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border:1px solid lightgray;
+    border-radius: 8.5px;
+}
+.comment-input {
+    margin: 10px 0 !important;
+}
+.gall-i-s1 {
+    height:400px !important;
+    width:100%;
+    object-fit:cover;
+}
+.gall-i-s2 {
+    height:300px !important;
+    width:100%;
+    object-fit:cover;
+}
+.gall-i-s3 {
+    height:200px !important;
+    width:100%;
+    object-fit:cover;
+}
+.gall-br-tl {
+    border-top-left-radius: 8.5px;
+}
+.gall-br-tr {
+    border-top-right-radius: 8.5px;
+}
+.gall-br-bl {
+    border-bottom-left-radius: 8.5px;
+}
+.gall-br-br {
+    border-bottom-right-radius: 8.5px;
+}
+.gall-br-tblr {
+    border-radius: 8.5px;
+}
+.gall-br-blr {
+    border-bottom-left-radius: 8.5px;
+    border-bottom-right-radius: 8.5px;
+}
+.gall-br-tbl {
+    border-top-left-radius: 8.5px;
+    border-bottom-left-radius: 8.5px;
+}
+.gall-br-tbr {
+    border-top-right-radius: 8.5px;
+    border-bottom-right-radius: 8.5px;
+}
+.gall-p-t {
+    padding-top: 1.5px;
+}
+.gall-p-b {
+    padding-left: 1.5px;
+}
+.gall-p-l {
+    padding-left: 1.5px;
+}
+.gall-p-r {
+    padding-right: 1.5px;
+}
+.gall-p-tblr {
+    padding: 1.5px;
+}
+.gall-p-blr {
+    padding: 0 1.5px 1.5px 1.5px;
+}
+.gall-p-tbr {
+    padding: 1.5px 1.5px 1.5px 0;
+}
+.gall-p-tlr {
+    padding: 1.5px 1.5px 0 1.5px;
+}
+.gall-p-tbl {
+    padding: 1.5px 0 1.5px 1.5px;
+}
+.gall-p-tl {
+    padding-top: 1.5px;
+    padding-left: 1.5px;
+}
+.gall-p-tr {
+    padding-top: 1.5px;
+    padding-right: 1.5px;
+}
+.gall-p-bl {
+    padding-bottom: 1.5px;
+    padding-left: 1.5px;
+}
+.gall-p-br {
+    padding-bottom: 1.5px;
+    padding-right: 1.5px;
+}
+.gall-p-lr {
+    padding-left: 1.5px;
+    padding-right: 1.5px;
 }
 .red {
     background-color: red !important;
@@ -782,6 +920,3 @@ a#floating-btn-cont:hover > img {
 .white {
     background-color: white !important;
 }
-=======
-}
->>>>>>> 3bb1d2ef2db1ac9fccf7ac7d0adb7f884efe081e

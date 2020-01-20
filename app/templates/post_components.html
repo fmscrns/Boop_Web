@@ -1,15 +1,15 @@
-{% macro content_item1(post) %}
-    <a href="{{ url_for('display_post', public_id=post.public_id) }}" class="list-group-item list-group-item-action pr-1">
+{% macro post_item1(post, comms, post_owner, current_user, commentPostForm) %}
+    <div class="post-cont pr-1">
         <div class="float-left pt-1">
-            <img class="home-content-profPic" src="{{ url_for('static', filename='images/{}'.format(post.author_profPhoto_filename)) }}">
+            <img class="home-content-profPic" src="{{ url_for('static', filename='images/{}'.format(post_owner.profPhoto_filename)) }}">
         </div>
         <div class="row pl-1">
             <div class="col">
                 <span class="font-weight-bold hci-bb-l">
-                    {{ post.author_firstName }} {{ post.author_lastName }}
+                    {{ post_owner.first_name }} {{ post_owner.last_name }}
                 </span>
                 <span style="font-size:13px;">
-                    @{{ post.author_username }} · {{ post.posted_on }}
+                    @{{ post_owner.username }} · {{ post.posted_on }}
                 </span>
             </div>
             <div class="w-100"></div>
@@ -18,20 +18,21 @@
             </div>
             <div class="w-100"></div>
             <div class="col mt-2">
-                {{ content_bottomBar() }}
+                {{ post_bottomBar() }}
             </div>
         </div>
-    </a>
+    </div>
+    {{ comment_cont(current_user, commentPostForm, comms) }}
 {% endmacro %}
 
-{% macro content_item2() %}
-    <a href="#" class="list-group-item list-group-item-action pr-1">
+{% macro post_item2() %}
+    <div class="post-cont pr-1">
         <div class="float-left pt-1">
             <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
         </div>
         <div class="row pl-1">
             <div class="col">
-                <span class="font-weight-bold hci-bb-l">
+                <span class="font-weight-bold hci-bb-l hci-bb-l">
                     Test User
                 </span>
                 <span style="font-size:13px;">
@@ -48,14 +49,18 @@
             </div>
             <div class="w-100"></div>
             <div class="col mt-2">
-                {{ content_bottomBar() }}
+                {{ post_bottomBar() }}
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ comment_cont() }}
             </div>
         </div>
-    </a>
+    </div>
 {% endmacro %}
 
-{% macro content_item3() %}
-    <a href="#" class="list-group-item list-group-item-action pr-1">
+{% macro post_item3() %}
+    <div class="post-cont pr-1">
         <div class="float-left pt-1">
             <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
         </div>
@@ -85,14 +90,18 @@
             </div>
             <div class="w-100"></div>
             <div class="col mt-2">
-                {{ content_bottomBar() }}
+                {{ post_bottomBar() }}
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ comment_cont() }}
             </div>
         </div>
-    </a>
+    </div>
 {% endmacro %}
 
-{% macro content_item4() %}
-    <a href="#" class="list-group-item list-group-item-action pr-1">
+{% macro post_item4() %}
+    <div class="post-cont pr-1">
         <div class="float-left pt-1">
             <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
         </div>
@@ -126,14 +135,18 @@
             </div>
             <div class="w-100"></div>
             <div class="col mt-2">
-                {{ content_bottomBar() }}
+                {{ post_bottomBar() }}
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ comment_cont() }}
             </div>
         </div>
-    </a>
+    </div>
 {% endmacro %}
 
-{% macro content_item5() %}
-    <a href="#" class="list-group-item list-group-item-action pr-1">
+{% macro post_item5() %}
+    <div class="post-cont pr-1">
         <div class="float-left pt-1">
             <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
         </div>
@@ -170,13 +183,17 @@
             </div>
             <div class="w-100"></div>
             <div class="col mt-2">
-                {{ content_bottomBar() }}
+                {{ post_bottomBar() }}
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ comment_cont() }}
             </div>
         </div>
-    </a>
+    </div>
 {% endmacro %}
 
-{% macro content_bottomBar() %}
+{% macro post_bottomBar() %}
     <div class="container-fluid mp-0">
         <div class="row mp-0">
             <div class="col mp-0" style="font-size:13px;">
@@ -197,6 +214,58 @@
             </div>
         </div>
     </div>
+{% endmacro %}
+
+{% macro comment_cont(current_user, commentPostForm, comms) %}
+    <div class="post-commentSect-cont">
+        <ul class="list-group">
+            {% for comm in comms %}
+                {{ comment(comm) }}
+            {% endfor %}
+            <li class="list-group-item">
+                <div class="float-left pt-1">
+                    <img class="home-content-profPic" src="{{ url_for('static', filename='images/{}'.format(current_user.profPhotoFilename)) }}">
+                </div>
+                <div class="row pl-1">
+                    <div class="col comment-input">
+                        <form method="POST" action="">
+                            <div class="input-group">
+                                {{ commentPostForm.hidden_tag() }} 
+                                <input id="commentPost_input" type="text" name="commentPost_input" class="form-control" placeholder="Write a comment..." aria-label="" aria-describedby="commentPost_submit_input" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" name="commentPost_submit_input" type="submit" id="commentPost_submit_input" value="Comment">
+                                        Comment
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+{% endmacro %}
+
+{% macro comment(comm) %}
+    <li class="list-group-item">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="{{ url_for('static', filename='images/{}'.format(comm['profPhoto_filename'])) }}">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                   {{ comm["author_firstName"] }} {{ comm["author_lastName"] }}
+                </span>
+                <span style="font-size:13px;">
+                    @{{ comm["author_username"] }} · {{ comm["posted_on"] }}
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                {{ comm["content"] }}
+            </div>
+        </div>
+    </li>
 {% endmacro %}
 
 

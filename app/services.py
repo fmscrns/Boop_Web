@@ -19,14 +19,14 @@ class Variable:
 class Helper:
     @staticmethod
     def user_existence_check(user):
-        if len(user) == 6:
+        if len(user) == 9:
             return True
 
         else:
             return False
 
     def pet_existence_check(pet):
-        if len(pet) == 9:
+        if len(pet) == 10:
             return True
 
         else:
@@ -48,7 +48,7 @@ class Helper:
         return datetime_obj
 
     @staticmethod
-    def save_image(form_image, folder):
+    def save_image(form_image):
         if form_image:
             filename = str(uuid.uuid4())
             
@@ -62,9 +62,11 @@ class Helper:
             i = Image.open(form_image)
             i.thumbnail(output_size)
             i.save(picture_path)
+
+            return picture_fn
     
         else:
-            return "default"
+            return "default.jpg"
 
     @staticmethod
     def ensure_localAndCloud_imageUpload_reflection(photo_id):
@@ -139,16 +141,27 @@ class User:
         return json.loads(petOwners_req.text)
 
     @staticmethod
-    def update_user(username,data):
+    def update_user(data):
+        current_user = User.get_current_user()
 
-        first_name = data.get("firstName_input")
-        last_name = data.get("lastName_input")
-        username = data.get("username_input")
-        email = data.get("email_input")
-        password = data.get("password_input")
-        contact_no = data.get("contactNo_input")
+        form = data.form
+        fileForm = data.files
 
-        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "username" : username, "email" : email, "password" : password, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
+        new_first_name = form.get("firstName_input")
+        new_last_name = form.get("lastName_input")
+        new_username = form.get("username_input")
+        new_email = form.get("email_input")
+        new_password = form.get("password_input")
+        new_contact_no = form.get("contactNo_input")
+        new_user_profPhoto_filename = current_user["profPhotoFilename"]
+        new_user_coverPhoto_filename = current_user["coverPhotoFilename"]
+        
+        if fileForm.get("user_profPhoto_input"):
+            new_user_profPhoto_filename = Helper.save_image(fileForm.get("user_profPhoto_input"))
+        if fileForm.get("user_coverPhoto_input"):
+            new_user_coverPhoto_filename = Helper.save_image(fileForm.get("user_coverPhoto_input"))
+
+        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), current_user["username"]), json={"firstName" : new_first_name, "lastName" : new_last_name, "username" : new_username, "email" : new_email, "password" : new_password, "contactNo" : new_contact_no, "profPhotoFilename" : new_user_profPhoto_filename, "coverPhotoFilename" : new_user_coverPhoto_filename}, headers={"authorization" : session["booped_in"]})
         
         return json.loads(userUpdate_req.text)
 
@@ -171,9 +184,10 @@ class Pet:
         specie_id = form.get("specie_input")
         breed_id = form.get("breed_input")
 
-        pet_profPic_filename = Helper.save_image(fileForm.get("pet_profPic_input"), "pet")
+        pet_profPhoto_filename = Helper.save_image(fileForm.get("pet_profPic_input"))
+        pet_coverPhoto_filename = Helper.save_image(fileForm.get("pet_coverPic_input"))
 
-        addPet_req = requests.post("{}/pet/".format(Variable.api_url()), json={"petName" : pet_name, "bio" : bio, "birthday" : birthday, "sex" : sex, "profPicFilename" : pet_profPic_filename, "specieId" : specie_id, "breedId" : breed_id}, headers={"authorization" : session["booped_in"]})
+        addPet_req = requests.post("{}/pet/".format(Variable.api_url()), json={"petName" : pet_name, "bio" : bio, "birthday" : birthday, "sex" : sex, "profPhotoFilename" : pet_profPhoto_filename, "coverPhotoFilename" : pet_coverPhoto_filename, "specieId" : specie_id, "breedId" : breed_id}, headers={"authorization" : session["booped_in"]})
 
         return json.loads(addPet_req.text)
 
@@ -230,7 +244,7 @@ class Post:
     @staticmethod
     def get_user_posts(username):
         getUserPost_req = requests.get("{}/post/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
-  
+
         return json.loads(getUserPost_req.text)
 
 
@@ -267,7 +281,7 @@ class Comment:
 
     @staticmethod
     def get_rel_comment(post_id):
-        getRelation_req = requests.get("{}/comment/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
+        getRelation_req = requests.get("{}/comment/post/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
         return json.loads(getRelation_req.text)
 
     @staticmethod
@@ -314,6 +328,10 @@ class Deal:
 
         return json.loads(allPosts_req.text)
     
+class Photo:
+    @staticmethod
+    def add_a_photo():
+        addPhoto_req = requests.post("{}/photo/")
 """
     -----GET CONTENT----
     @staticmethod
