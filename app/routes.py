@@ -92,6 +92,7 @@ def home():
     form = ShareContentForm()
     
     current_user = User.get_current_user()
+    print(current_user)
 
     posts = Post.get_all_posts()["data"]
     # post_json = Post.get_user_posts(username)
@@ -105,15 +106,95 @@ def home():
 
     return render_template("home.html", title="Home", current_user=current_user, all_posts=posts, shareContentForm=form)
 
-@boop.route("/admin/users/all", methods=["GET"])
+@boop.route("/admin/users/all", methods=["GET","POST"])
 @login_required
 def all_users():
     current_user = User.get_current_user()
+    print(current_user)
 
     users = User.get_all_users()["data"]
 
-    return render_template("manage_user.html", title="All Users", current_user=current_user, users=users)
+    get_specie = Specie.get_all_specie()["data"]
+    print(get_specie)
+    get_breeds = Breed.get_all_breeds()["data"]
 
+
+    addSpeciesForm = AddSpeciesForm()
+    
+    addBreedForm = AddBreedForm()
+
+    if request.method == "POST":
+        print('add species!')
+        if addSpeciesForm.is_submitted():
+                
+            addSpecies_json = Specie.new_specie(request)
+                
+            print('deal routes')
+            if addSpecies_json["status"] == "success":
+                    
+                flash(addSpecies_json["payload"], "success")
+                    
+                return redirect(url_for("all_users"))
+            else:
+                flash(addSpecies_json["payload"], "danger")
+                    
+                return redirect(url_for("all_users"))
+        else:
+            flash("Try again.", "danger")
+                
+            return redirect(url_for("all_users"))
+
+    return render_template("admin.html", title="All Users", get_breeds=get_breeds, addBreedForm=addBreedForm, get_specie=get_specie, addSpeciesForm=addSpeciesForm, current_user=current_user, users=users)
+
+@boop.route("/admin/add/<public_id>/breed", methods=["GET","POST"])
+@login_required
+def add_breed(public_id):
+    current_user = User.get_current_user()
+    print(current_user)
+
+    users = User.get_all_users()["data"]
+
+    get_specie = Specie.get_all_specie()["data"]
+    get_breeds = Breed.get_all_breeds()["data"]
+
+
+    addBreedForm = AddBreedForm()
+
+    if request.method == "POST":
+        
+        if addBreedForm.validate_on_submit():
+            print('validate breed')
+                
+            addBreed_json = Breed.new_breed(request, public_id)
+                
+            print('deal routes')
+            if addBreed_json["status"] == "success":
+                    
+                flash(addBreed_json["payload"], "success")
+                    
+                return redirect(url_for("all_users"))
+            else:
+                flash(addBreed_json["payload"], "danger")
+                    
+                return redirect(url_for("all_users"))
+        else:
+            flash("Try again.", "danger")
+                
+            return redirect(url_for("all_users"))
+
+    return redirect(url_for("all_users"))
+
+
+@boop.route("/admin/specie/<public_id>/delete", methods=["GET","POST","DELETE"])
+@login_required
+def delete_species(public_id):
+    current_user = User.get_current_user()
+    get_specie = Specie.get_all_specie()["data"]
+    get_breeds = Breed.get_all_breeds()["data"]
+     
+    Specie.delete_species(public_id)
+
+    return redirect(url_for('all_users'))
 
 @boop.route("/<username>/pets", methods=["GET", "POST", "PUT"])
 @login_required
@@ -517,6 +598,42 @@ def update_pet(public_id, username):
 @login_required
 def pet_profile_media(username, public_id):
     return redirect(url_for("pet_profile_wall", username=username, public_id=public_id))
+
+
+@boop.route("/<username>/pets/adopt_page", methods=["GET", "POST"])
+@login_required
+def adopt_page(username):
+    current_user_page = False
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    current_user = User.get_current_user()
+    user_existence = Helper.user_existence_check(user_json)
+    all_pets = Pet.get_all_pets()
+    deals = Deal.get_all_deals()['data']
+    user_pets = Pet.get_user_pets(username)["data"]
+
+    if user_existence is False:
+        abort(404)
+
+    return render_template("adopt_pets.html", title="Account", deals=deals,current_user=current_user,user=user_json,all_pets=all_pets, user_pets=user_pets, postsNavActivate="3px #00002A solid")
+
+@boop.route("/<username>/pets/sale_page", methods=["GET", "POST"])
+@login_required
+def sale_page(username):
+    current_user_page = False
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    current_user = User.get_current_user()
+    user_existence = Helper.user_existence_check(user_json)
+    all_pets = Pet.get_all_pets()
+    deals = Deal.get_all_deals()['data']
+    user_pets = Pet.get_user_pets(username)["data"]
+
+    if user_existence is False:
+        abort(404)
+
+    return render_template("sale_pets.html", title="Account", deals=deals,current_user=current_user,user=user_json,all_pets=all_pets, user_pets=user_pets, postsNavActivate="3px #00002A solid")
+
 
 @boop.route("/logout", methods=["GET", "POST"])
 @login_required

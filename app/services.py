@@ -178,6 +178,12 @@ class Pet:
 
         return json.loads(updateUserPets_req.text)
 
+    @staticmethod
+    def get_all_pets():
+        getAllPets_req = requests.get("{}/pet/user/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(getAllPets_req.text)
+
 class Specie:
     @staticmethod
     def get_all_specie():
@@ -185,12 +191,43 @@ class Specie:
         
         return json.loads(getAllSpecie_req.text)
 
+    @staticmethod
+    def new_specie(data):
+        form = data.form
+
+        specie_name = form.get("addSpecies_input")
+        newSpecies_req = requests.post("{}/specie/".format(Variable.api_url()),  json={"specieName" : specie_name},  headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(newSpecies_req.text)
+    
+    @staticmethod
+    def delete_species(public_id):
+        deleteSpecies_req = requests.delete("{}/specie/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+
+        return json.loads(deleteSpecies_req.text)
+
+    
+
 class Breed:
     @staticmethod
     def get_dog_breeds(specie_id):
         getDogBreeds_req = requests.get("{}/breed/specie/{}".format(Variable.api_url(), specie_id), headers={"authorization" : session["booped_in"]})
         
         return json.loads(getDogBreeds_req.text)
+
+    @staticmethod
+    def new_breed(data, public_id):
+        form = data.form
+        breed_name = form.get("addBreed_input")
+        addNewBreeds_req = requests.post("{}/breed/{}".format(Variable.api_url(), public_id),  json={"breedName" : breed_name}, headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(addNewBreeds_req.text)
+
+    @staticmethod
+    def get_all_breeds():
+        getAllBreeds_req = requests.get("{}/breed/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(getAllBreeds_req.text)
 
 class Post:
     @staticmethod

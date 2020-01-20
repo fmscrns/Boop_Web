@@ -68,3 +68,13 @@ class ForSaleForm(FlaskForm):
     forSale_input = DecimalField("Price", validators=[InputRequired(), NumberRange(min=Decimal('0.0'))])
     status_input = [('Adopt', 'Adopt')]
     forSale_submit_input = SubmitField("Submit")
+
+class AddSpeciesForm(FlaskForm):
+    addSpecies_input = StringField("Species", validators=[DataRequired(), Length(min=1, max=150)])
+
+    addSpecies_submit_input = SubmitField("Add Species")
+
+class AddBreedForm(FlaskForm):
+    addBreed_input = StringField("Breed", validators=[DataRequired(), Length(min=1, max=150)])
+
+    addBreed_submit_input = SubmitField("Add Breed")
