@@ -467,7 +467,7 @@ def pet_profile_wall(username, public_id):
 
     pet_json = Pet.get_a_pet(public_id)
     pet_existence = Helper.pet_existence_check(pet_json)
-    
+    print(pet_json)
     if pet_existence is False:
         abort(404)
 
