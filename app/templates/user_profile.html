@@ -82,41 +82,78 @@
                                             </div>
                                             <div id="account-primary-editProfile-btn-cont" class="col-4 align-self-center">
                                                 {% if current_user_page == True %}
-                                                    <button type="button" data-toggle="modal" data-target="#update-user-modal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
-                                                        Edit Profile
-                                                    </button>
-                                                    <div class="modal" id="update-user-modal" tabindex="-1" role="dialog" aria-labelledby="update-user-modal-title" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="update-user-modal-title">
-                                                                        Update Profile Info
-                                                                    </h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <form method="POST" action="" enctype="multipart/form-data">
-                                                                    <div id="updateUserForm-modal-body" class="modal-body">
-                                                                        <div class="updateUser-form" class="container">
-                                                                            {{ updateUserForm.hidden_tag() }}
-                                                                            <fieldset class="form-group">
-                                                                                <label>Your Cover Photo</label>
-                                                                                <div id="image-upload-layout" class="row">
-                                                                                    <div class="col-md-auto">
-                                                                                        <div class="form-group">
-                                                                                            {% if updateUserForm.user_coverPhoto_input.errors %}
-                                                                                                {% for error in updateUserForm.user_coverPhoto_input.errors %}
-                                                                                                    <span class="text-danger"> {{ error }} </span></br>
-                                                                                                {% endfor %}
-                                                                                            {% else %}
-                                                                                                {{ updateUserForm.user_coverPhoto_input(class="form-control-file") }}
-                                                                                            {% endif %}
-                                                                                        </div>
+
+                                               
+                                                <button type="button" data-toggle="modal" data-target="#update{{user.public_id}}" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
+                                                    Edit Profile
+                                                </button>
+
+                                                <div class="modal" id="update{{user.public_id}}" tabindex="-1" role="dialog" aria-labelledby="update-user-modal-title" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="update-user-modal-title">Update Profile Info</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="{{ url_for('update_user', username=user.username) }}" enctype="multipart/form-data">
+                                                                <div id="updateUserForm-modal-body" class="modal-body">
+                                                                    <div class="updateUser-form" class="container">
+                                                                        {{ updateUserForm.csrf_token }}
+                                                                        {{ updateUserForm.hidden_tag() }}
+                                                                        <fieldset class="form-group">
+                                                                            
+                                                                            <div class="form-group">
+                                                                                <label>First Name</label>
+                                                                                {% if updateUserForm.firstName_input.errors %}
+                                                                                    {{ updateUserForm.firstName_input(class="form-control is-invalid") }}
+                                                                                    <div class="invalid-feedback">
+                                                                                        {% for error in updateUserForm.firstName_input.errors %}
+                                                                                            <span> {{ error }} </span>
+                                                                                        {% endfor %}
                                                                                     </div>
-                                                                                    <div class="col">
-                                                                                        <img id="user-coverpic-preview" class="rounded mx-auto d-block">
-                                                                                        <script>document.getElementById("user-coverpic-preview").src = "{{ url_for('static', filename='images/' + current_user.coverPhotoFilename) }}";</script>
+                                                                                {% else %}
+                                                                                    {{ updateUserForm.firstName_input(class="form-control") }}
+                                                                                {% endif %}
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label>Last Name</label>
+                                                                                {% if updateUserForm.lastName_input.errors %}
+                                                                                    {{ updateUserForm.lastName_input(class="form-control is-invalid") }}
+                                                                                    <div class="invalid-feedback">
+                                                                                        {% for error in updateUserForm.lastName_input.errors %}
+                                                                                            <span> {{ error }} </span>
+                                                                                        {% endfor %}
+                                                                                    </div>
+                                                                                {% else %}
+                                                                                    {{ updateUserForm.lastName_input(class="form-control") }}
+                                                                                {% endif %}
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label>Bio</label>
+                                                                                {% if updateUserForm.bio_input.errors %}
+                                                                                    {{ updateUserForm.bio_input(class="form-control is-invalid") }}
+                                                                                    <div class="invalid-feedback">
+                                                                                        {% for error in updateUserForm.bio_input.errors %}
+                                                                                            <span> {{ error }} </span>
+                                                                                        {% endfor %}
+                                                                                    </div>
+                                                                                {% else %}
+                                                                                    {{ updateUserForm.bio_input(class="form-control") }}
+                                                                                {% endif %}
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label>Contact Number</label>
+                                                                                {% if updateUserForm.contactNo_input.errors %}
+                                                                                    {{ updateUserForm.contactNo_input(class="form-control is-invalid") }}
+                                                                                    <div class="invalid-feedback">
+                                                                                        {% for error in updateUserForm.contactNo_input.errors %}
+                                                                                            <span> {{ error }} </span>
+                                                                                        {% endfor %}
+
+
+
                                                                                     </div>
                                                                                 </div>
                                                                                 <label>Your Profile Photo</label>
@@ -132,85 +169,21 @@
                                                                                             {% endif %}
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col">
-                                                                                        <img id="user-profpic-preview" class="rounded mx-auto d-block">
-                                                                                        <script>document.getElementById("user-profpic-preview").src = "{{ url_for('static', filename='images/' + current_user.profPhotoFilename) }}";</script>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label>First Name</label>
-                                                                                    {% if updateUserForm.firstName_input.errors %}
-                                                                                        {{ updateUserForm.firstName_input(class="form-control is-invalid") }}
-                                                                                        <div class="invalid-feedback">
-                                                                                            {% for error in updateUserForm.firstName_input.errors %}
-                                                                                                <span> {{ error }} </span>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    {% else %}
-                                                                                        {{ updateUserForm.firstName_input(class="form-control") }}
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label>Last Name</label>
-                                                                                    {% if updateUserForm.lastName_input.errors %}
-                                                                                        {{ updateUserForm.lastName_input(class="form-control is-invalid") }}
-                                                                                        <div class="invalid-feedback">
-                                                                                            {% for error in updateUserForm.lastName_input.errors %}
-                                                                                                <span> {{ error }} </span>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    {% else %}
-                                                                                        {{ updateUserForm.lastName_input(class="form-control") }}
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label>Contact Number</label>
-                                                                                    {% if updateUserForm.contactNo_input.errors %}
-                                                                                        {{ updateUserForm.contactNo_input(class="form-control is-invalid") }}
-                                                                                        <div class="invalid-feedback">
-                                                                                            {% for error in updateUserForm.contactNo_input.errors %}
-                                                                                                <span> {{ error }} </span>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    {% else %}
-                                                                                        {{ updateUserForm.contactNo_input(class="form-control") }}
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label>Username</label>
-                                                                                    {% if updateUserForm.username_input.errors %}
-                                                                                        {{ updateUserForm.username_input(class="form-control is-invalid") }}
-                                                                                        <div class="invalid-feedback">
-                                                                                            {% for error in updateUserForm.username_input.errors %}
-                                                                                                <span> {{ error }} </span>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    {% else %}
-                                                                                        {{ updateUserForm.username_input(class="form-control") }}
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label>Email Address</label>
-                                                                                    {% if updateUserForm.email_input.errors %}
-                                                                                        {{ updateUserForm.email_input(class="form-control is-invalid") }}
-                                                                                        <div class="invalid-feedback">
-                                                                                            {% for error in updateUserForm.email_input.errors %}
-                                                                                                <span> {{ error }} </span>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    {% else %}
-                                                                                        {{ updateUserForm.email_input(class="form-control") }}
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                            </fieldset>
-                                                                        </div>
+
+                                                                                {% else %}
+                                                                                    {{ updateUserForm.username_input(class="form-control") }}
+                                                                                {% endif %}
+                                                                            </div>
+                                                                            
+                                                                        </fieldset>
                                                                     </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        {{ updateUserForm.updateUser_submit_input(class="btn btn-outline-primary") }}
-                                                                    </div>
-                                                                </form>
-                                                            </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    {{ updateUserForm.update_submit_input(class="btn btn-outline-primary") }}
+                                                                </div>
+                                                            </form>
+
                                                         </div>
                                                     </div>
                                             {% endif %}
@@ -334,37 +307,133 @@
                                     {% endfor %}
                                 </div>
                             </div>
-                        {% elif user_gallery is defined %}
-                            <div id="account-content-gallery-panel" class="container-fluid">
-                                <div class="row mp-0 mt-2">
-                                    {% for image in user_gallery %}
-                                        {% if loop.length == 1 %}
-                                            <div class="col mp-0">
-                                                <img class="img-fluid gall-item gall-i-s1 gall-br-tblr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
-                                            </div>
-                                        {% elif loop.length == 2 %}
-                                            {% if loop.index == 1 %}
-                                                <div class="col mp-0">
-                                                    <img class="img-fluid gall-item gall-i-s2 gall-br-tbl gall-p-r" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
-                                                </div>
-                                            {% elif loop.index == 2 %}
-                                                <div class="col mp-0">
-                                                    <img class="img-fluid gall-item gall-i-s2 gall-br-tbr gall-p-l" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
-                                                </div>
-                                            {% endif %}
-                                        {% elif loop.length == 3 %}
-                                            {% if loop.index == 1 %}
-                                                <div class="col mp-0">
-                                                    <img class="img-fluid gall-item gall-i-s3 gall-br-tbl gall-p-r" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
-                                                </div>
-                                            {% elif loop.index == 2 %}
-                                                <div class="col mp-0">
-                                                    <img class="img-fluid gall-item gall-i-s3 gall-p-lr" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
-                                                </div>
-                                            {% elif loop.index == 3 %}
-                                                    <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-tbr gall-p-l" src="{{ url_for('static', filename='images/4320577c-2825-4258-b514-d42e820151d2.jpg') }}">
+
+                            <div id="acc-content-pet-deck" class="row">
+                                
+                                {% for post in user_posts %}
+                                    <div class="col-12">
+                                        <a id="pet-card" >
+                                            <div class="card">
+
+                                                <div class="card-body">
+                                                    <div id="acc-content-pet-name-cont">
+                                                        <a class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#post{{post.public_id}}"><img class="boop-nameplate" src="{{ url_for('static', filename='images/delete.png') }}" style="width:20px; float: right;"></a>
+                                                        <p id="acc-content-pet-name" class="card-title text-center">
+                                                            <h5>@{{ post.post_author }}</h5>
+                                                        </p>
+                                                       
                                                     </div>
+                                                    <div class="container-fluid">
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                                <img style="width:25px;">
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        
+                                                                        <h5>{{post.content}}</h5>
+
+                                                                        <p>{{ post.posted_on.strftime("%B") }} {{ post.posted_on.strftime("%d") }}, {{ post.posted_on.strftime("%Y") }}</p>
+                                               
+
+                                                                        <!--COMMENT SECTION-->
+                                                                     
+                                                                          
+                                                                        {% for c in comments %}
+
+                                                                            {% if post.public_id == c.post_id %}
+
+                                                                              {{c.posted_by}}: {{ c.comment }}
+                                                                              <a class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#comment{{c.public_id}}"><img class="boop-nameplate" src="{{ url_for('static', filename='images/delete.png') }}" style="width:20px; float: right;"></a>
+                                                       
+
+                                                                            <br>
+                                                                            <br>
+
+                                                                            {% endif %}
+
+
+                                                                            <!--DELETE COMMENT modal-->
+                                                                    <div class="modal fade" name="modal" id="comment{{c.public_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                          <div class="modal-content">
+                                                                            <div class="modal-header border-0 text-center">
+                                                                              <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Confirm Action</h5>
+                                                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                              </button>
+                                                                            </div>
+                                                                            <div class="modal-body mb-0">
+                                                                                <h5>Are you sure you want to delete comment? {{c.comment}}</h5>
+                                                                            </div>
+                                                                            <div class="modal-footer border-0">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+                                                                               
+                                                                        <form action="{{ url_for('delete_comment',public_id=c.public_id, username=user.username) }}" method="DELETE">
+                                                                            <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Comment ">
+                                                                        </form>
+                                                                            </div>
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>
+                                                                    <!--end DELETE COMMENT modal-->
+
+                                                                          {% endfor %}
+                                                                       
+                                                                    <!--END COMMENT SECTION-->
+
+                                                                    </div>
+
+
+                                                                    <div class="w-100">
+
+                                                                        
+                                                                        <!--DELETE POST modal-->
+                                                                        <div class="modal fade" name="modal" id="post{{post.public_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                              <div class="modal-content">
+                                                                                <div class="modal-header border-0 text-center">
+                                                                                  <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Confirm Action</h5>
+                                                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                  </button>
+                                                                                </div>
+                                                                                <div class="modal-body mb-0">
+                                                                                    <h5>Are you sure you want to delete post? {{post.content}}</h5>
+                                                                                </div>
+                                                                                <div class="modal-footer border-0">
+                                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+                                                                                   
+                                                                            <form action="{{ url_for('delete_post',public_id=post.public_id, username=user.username) }}" method="DELETE">
+                                                                                <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Post ">
+                                                                            </form>
+                                                                                </div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </div>
+                                                                        <!--end DELETE POST modal-->
+                                                                    </div>
+
+                                                    
+
+                      <div class="col">
+                        {% if user_posts is defined %}
+                    
+                                <form method="POST" action="{{ url_for('comment',public_id=post.public_id, username=user.username) }}" enctype="multipart/form-data">
+                                    <div id="shareContentForm-modal-body" class="modal-body">
+                                        <div class="postStory-form" class="container">
+                                            {{ commentPostForm.hidden_tag() }}
+                                            <fieldset class="form-group">
+                                                <div class="form-group">
+                                                    {% if commentPostForm.commentPost_input.errors %}
+                                                                {% for error in commentPostForm.commentPost_input.errors %}
+                                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {{ commentPostForm.commentPost_input(class="form-control-file") }}
+                                                            {% endif %}
+
                                                 </div>
                                                 <div class="row mp-0">
                                             {% endif %}

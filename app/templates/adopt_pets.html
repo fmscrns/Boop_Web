@@ -1,9 +1,7 @@
 {% extends "layout.html" %}
-{% from "navbar_components.html" import secured_navbar %}
-{% from "home_components.html" import content_item1, content_item2, content_item3, content_item4, content_item5 %}
 
     {% block bodyStyle %}
-        <body style="overflow-y:scroll;";>
+        <body>
     {% endblock bodyStyle %}
 
     {% block navbarAdjust %}
@@ -11,7 +9,7 @@
     {% endblock navbarAdjust %}
 
     {% block navbarStyle %}
-        <nav class="navbar navbar-expand-lg navbar-dark">
+        <p class="navbar navbar-expand-lg navbar-dark" style="background-color:#00002A;">
     {% endblock navbarStyle %}
 
     {% block navbarNameplate %}
@@ -19,7 +17,6 @@
     {% endblock navbarNameplate %}
 
     {% block navbarContent %}
-
         <button id="navbar-collapse-toggler-btn" class="btn btn-outline-light navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <div style="width:25px;margin:0 2px -5px 2px;">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -60,28 +57,11 @@
                         Account
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('adopt_page', username=current_user['username']) }}" role="button" style="color:white;">
-                        For Adoption
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('sale_page', username=current_user['username']) }}" role="button" style="color:white;">
-                        For Sale
-                    </a>
-                </li>
                 <li class="nav-item nav-item-collapse">
                     <a class="nav-link" href="#" role="button" style="color:white;">
                         Settings
                     </a>
                 </li>
-                {% if current_user.admin == true %}
-                <li class="nav-item nav-item-collapse">
-                <a class="nav-link" href="{{ url_for('all_users', username=current_user['username']) }}" role="button" style="color:white;">
-                    Admin
-                </a>
-                </li>
-                {% endif %}
                 <li class="nav-item nav-item-collapse">
                     <a class="nav-link" href="{{ url_for('logout') }}" role="button" style="color:white;">
                         Log out
@@ -109,24 +89,12 @@
                         </div>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a id="navbar-settings" class="dropdown-item" href="#">
-                            Settings
-                        </a>
-                        <a id="navbar-logout" class="dropdown-item" href="{{ url_for('logout') }}">
-                            Log out
-                        </a>
-                        {% if current_user.admin == True %}
-                    
-                        <a id="navbar-settings" class="dropdown-item" href="{{ url_for('all_users', username=current_user['username']) }}">
-                            Manage
-                        </a>
-                        
-                        {% endif %}
+                        <a id="navbar-settings" class="dropdown-item" href="#">Settings</a>
+                        <a id="navbar-logout" class="dropdown-item" href="{{ url_for('logout') }}">Log out</a>
                     </div>
                 </div>
             </div>
         </div>
-
     {% endblock navbarContent %}
 
     {% block content %}
@@ -134,34 +102,7 @@
             <div class="container" style="position:fixed;padding:0;">
                 <div class="row" style="padding:0;margin:0;">
                     <div class="col-4" style="padding:0;">
-                        <div id="ha-leftSection" style="padding-top:0;">
-                            <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
-                            <div class="ha-lefSection-profileSnippet">
-                                <img src="{{ url_for('static', filename='images/{}'.format( current_user.coverPhotoFilename )) }}" id="home-coverPhoto-panel" class="container-fluid">
-                                <div id="home-profileSnippet-profPic-cont" class="container">
-                                    <div class="float-left">
-                                        <img id="home-profileSnippet-profPic" src="{{ url_for('static', filename='images/{}'.format( current_user.profPhotoFilename )) }}">
-                                    </div>
-                                </div>
-                                <div id="home-profileSnippet-textSection" class="row mx-auto">
-                                    <div class="col-md-auto" style="width:120px;"></div>
-                                    <div class="col" style="margin:0;padding:0;">
-                                        <div class="row" style="margin:5px 0 15px 2px;">
-                                            <div class="col">
-                                                <a id="home-profileSnippet-fullName" href="{{ url_for('user_profile_pets', username=current_user.username) }}">{{ current_user.firstName }} {{ current_user.lastName }}</a>
-                                            </div>
-                                            <div class="w-100"></div>
-                                            <div class="col">
-                                                <a id="home-profileSnippet-username" href="{{ url_for('user_profile_pets', username=current_user.username) }}"><small>@{{ current_user.username }}</small></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" id="home-leftSect-postStory" class="btn btn-light btn-block">
-                                <img class="hci-bb-p" src="{{ url_for('static', filename='assets/bullhorn.svg') }}">
-                                Post Story
-                            </button>
+                        <div id="ha-leftSection" class="container-fluid" style="padding:0;margin:0;">
                         </div>
                         <div id="flash-primary-cont" class="container-fluid">
                             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -178,45 +119,88 @@
                             {% endwith %}
                         </div>
                     </div>
-                    <div class="col"></div>
+                    <div class="col">
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div id="ha-leftSection-space" class="col-4"></div>
-                <div id="ha-rightSection ml-5" class="col">
-                    <div class="container-fluid mp-0">
-                        <div id="home-content-panel" class="container-fluid">
-                            <div id="flash-secondary-cont" class="container-fluid">
-                                {% with messages = get_flashed_messages(with_categories=true) %}
-                                    {% if messages %}
-                                        {% for category, message in messages %}
-                                            <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                                <strong>{{ message }}</strong>
-                                                <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endwith %}
+                <div id="ha-rightSection" class="col">
+                    <div class="container-fluid">
+                        
+
+                        {% if user_pets is defined %}
+                            <div id="account-content-pets-panel" class="container-fluid">
+                                <div id="flash-secondary-cont" class="container-fluid">
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+                                        {% if messages %}
+                                            {% for category, message in messages %}
+                                                <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                                    <strong>{{ message }}</strong>
+                                                    <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                             
+                                <div id="acc-content-pet-deck" class="row">
+                        {% for pet in user_pets %}
+                            {% for deal in deals %}
+                                {% if deal.pet_id == pet.public_id %}
+                                    {% if deal.status == 'adopt' %}
+                                        
+                                        <div class="col-4">
+                                            <a id="pet-card" href="{{ url_for('pet_profile_wall', username=user.username, public_id=pet.public_id) }}">
+                                                <div class="card">
+                                                    <img src="https://res.cloudinary.com/fmscrns/image/upload/c_scale,w_300/v1557286605/boopit/pet/default/small/default-coverPhoto-sm.jpg" class="card-img-top" alt="...">
+                                                    {% if pet.profPic_filename == "default" %}
+                                                        <img id="pet-profPic-sm" src="https://res.cloudinary.com/fmscrns/image/upload/c_scale,w_120/v1557286605/boopit/pet/default/default-profilePhoto.jpg">
+                                                    {% else %}
+                                                        <img id="pet-profPic-sm" src="https://res.cloudinary.com/fmscrns/image/upload/c_scale,w_120/v1557301121/boopit/pet/{{ user.username }}/{{ pet.profPic_filename }}">
+                                                    {% endif %}
+                                                    <div class="card-body">
+                                                        <div id="acc-content-pet-name-cont">
+                                                            <p id="acc-content-pet-name" class="card-title text-center">
+                                                                {{ pet.pet_name }}
+                                                            </p>
+                                                        </div>
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-3">
+                                                                    <img src="{{ url_for('static', filename='assets/' + pet.specie_name + '.svg') }}" style="width:25px;">
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <span style="font-size:10px;"><p class="card-text text-muted">{{ pet.sex }}</p></span>
+                                                                        </div>
+                                                                        <div class="w-100"></div>
+                                                                        <div class="col">
+                                                                            <span style="font-size:10px;"><p class="card-text text-muted">{{ pet.specie_name }} | {{ pet.breed_name }}</p></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        {% if loop.index % 3 == 0 %}
+                                            <div class="w-100" style="height:20px;"></div>
+                                        {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                  
+                                </div>
                             </div>
-                            <div id="home-content-group" class="list-group">
-                                {% for post in all_posts %}
-                                    {{ content_item1(post) }}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        {% endif %}
+                        
+
         </div>
-        <style>
-            #acc-search {
-                background-image: url({{ url_for('static', filename='assets/search.svg') }});
-                background-size:17.5px;
-                background-position: 4% 50%;
-                background-repeat: no-repeat;
-                text-indent: 30px;
-            }
-        </style>
     {% endblock content %}

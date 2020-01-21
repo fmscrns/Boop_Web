@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, IntegerField, PasswordField, BooleanField, RadioField, SelectField, SelectMultipleField, SubmitField, MultipleFileField
+
+from wtforms import StringField, IntegerField, PasswordField, BooleanField, RadioField, DecimalField, SelectField, SelectMultipleField, SubmitField
 from wtforms.fields.html5 import DateField
-from wtforms.validators import DataRequired, InputRequired, Length, Email, NumberRange, EqualTo, ValidationError
-from app.services import Auth, User
+from wtforms.validators import DataRequired, NumberRange, InputRequired, Length, Email, NumberRange, EqualTo
+from decimal import Decimal
 
 class SignupPartOneForm(FlaskForm):
     firstName_input = StringField("First Name", validators=[DataRequired(), Length(min=2, max=50)])
@@ -42,23 +43,10 @@ class LoginForm(FlaskForm):
 class UpdateUserForm(FlaskForm):
     firstName_input = StringField("First Name", validators=[DataRequired(), Length(min=2, max=50)])
     lastName_input = StringField("Last Name", validators=[DataRequired(), Length(min=2, max=50)])
-    email_input = StringField("Email", validators=[DataRequired(), Email()])
-    username_input = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
+
+    bio_input = StringField("Bio", validators=[DataRequired(), Length(min=2, max=150)])
     contactNo_input = StringField("Contact Number", validators=[DataRequired(), Length(min=2, max=50)])
-    user_profPhoto_input = FileField("User Profile Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
-    user_coverPhoto_input = FileField("User Cover Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
-
-    updateUser_submit_input = SubmitField("Update")
-
-    def validate_email_input(self, email_input):
-        current_user = User.get_current_user()
-        email_resp = Auth.verify_email(email_input.data)
-
-        if email_resp["status"] == "success" and current_user["email"] != email_input.data:
-            print("NGANO EMAIL")
-            raise ValidationError("This email address has already been taken.")
-        else:
-            print("EMAIL AKOA NA")
+    username_input = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
 
     def validate_username_input(self, username_input):
         current_user = User.get_current_user()
@@ -102,7 +90,18 @@ class CommentPostForm(FlaskForm):
 
     commentPost_submit_input = SubmitField("Comment Post")
 
-class DealPetForm(FlaskForm):
-    pricePet_input = StringField("Price", validators=[DataRequired(), Length(min=1, max=150)])
+class ForSaleForm(FlaskForm):
+    forSale_input = DecimalField("Price", validators=[InputRequired(), NumberRange(min=Decimal('0.0'))])
+    status_input = [('Adopt', 'Adopt')]
+    forSale_submit_input = SubmitField("Submit")
 
-    dealPet_submit_input = SubmitField("Submit")
+class AddSpeciesForm(FlaskForm):
+    addSpecies_input = StringField("Species", validators=[DataRequired(), Length(min=1, max=150)])
+
+    addSpecies_submit_input = SubmitField("Add Species")
+
+class AddBreedForm(FlaskForm):
+    addBreed_input = StringField("Breed", validators=[DataRequired(), Length(min=1, max=150)])
+    addBreed_submit_input = SubmitField("Add Breed")
+
+    

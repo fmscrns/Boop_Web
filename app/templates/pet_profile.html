@@ -151,6 +151,22 @@
                                                         <div id="account-primary-nameplate-cont" class="col">
                                                             <h5 id="account-fullName">{{ pet.pet_name }}</h5>
                                                         </div>
+                                                        {% for deal in deals %}
+                                                            {% if deal.pet_id == pet.public_id %}
+                                                                {% if deal.status == 'adopt' %}
+                                                                    <div id="account-primary-nameplate-cont" class="col">  
+                                                                        <h5> For Adoption </h5>
+                                                                    </div>
+                                                                {% elif deal.status == 'for_sale' %}
+                                                                    <div id="account-primary-nameplate-cont" class="col">  
+                                                                        <h5> Price : {{ deal.price }} </h5>
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                <div id="account-primary-nameplate-cont" class="col"></div>
+                                                            {% endif %}                                                    
+                                                        {% endfor %}
+
                                                         <div class="w-100"></div>
                                                         <div id="account-secondary-nameplate-cont" class="col">
                                                             <small>{{ pet.bio }}</small>
@@ -166,9 +182,9 @@
                                                         
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item"  data-toggle="modal" data-target="#adoptPet"}> Adopt Pet </a>
-                                                        <a class="dropdown-item"   data-toggle="modal" data-target="#petForSale"}> Pet For Sale </a>
-                                                        <a class="dropdown-item"   data-toggle="modal" data-target="#myModal"}> Delete Pet </a>
+                                                        <a class="dropdown-item"  data-toggle="modal" data-target="#adopt{{pet.public_id}}"}> For Adopt </a>
+                                                        <a class="dropdown-item"   data-toggle="modal" data-target="#forsale{{pet.public_id}}"}> Pet For Sale </a>
+                                                        <a class="dropdown-item"   data-toggle="modal" data-target="#delete{{pet.public_id}}"}> Delete Pet </a>
                                                 
                                                     </div>
                                                   </div>
@@ -231,11 +247,11 @@
                                     
                                         <br>
                                           <!--Adopt Pet Modal-->
-                                          <div class="modal fade" name="modal" id="adoptPet" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                          <div class="modal fade" name="modal" id="adopt{{pet.public_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                               <div class="modal-content">
                                                 <div class="modal-header border-0 text-center">
-                                                  <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Adopt Pet</h5>
+                                                  <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">For Adoption</h5>
                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                   </button>
@@ -246,8 +262,8 @@
                                                 <div class="modal-footer border-0">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
                                                    
-                                            <form action="{{ url_for('delete_pet',public_id=pet.public_id, username=user.username) }}" method="DELETE">
-                                                <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Pet ">
+                                            <form action="{{ url_for('adopt_pet',public_id=pet.public_id, username=user.username) }}" method="POST">
+                                                <input class="btn btn-outline-primary float-right" type="submit" value=" Adopt Pet ">
                                             </form>
                                                 </div>
                                               </div>
@@ -256,7 +272,7 @@
                                           <!--End Adopt Pet-->
 
                                            <!--Pet for Sale Modal-->
-                                           <div class="modal fade" name="modal" id="petForSale" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                           <div class="modal fade" name="modal" id="forsale{{pet.public_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                               <div class="modal-content">
                                                 <div class="modal-header border-0 text-center">
@@ -266,22 +282,40 @@
                                                   </button>
                                                 </div>
                                                 <div class="modal-body mb-0">
-                                                    <h5>Are you sure you want to delete pet?</h5>
+                                                    
+                                                    <form method="POST" action="{{ url_for('for_sale',public_id=pet.public_id, username=user.username) }}" enctype="multipart/form-data">
+                                                        <div id="shareContentForm-modal-body" class="modal-body">
+                                                            <div class="postStory-form" class="container">
+                                                                {{ forSaleForm.hidden_tag() }}
+                                                                <fieldset class="form-group">
+                                                                    <div class="form-group">
+                                                                        <label>Input Price</label>
+                                                                        {% if forSaleForm.forSale_input.errors %}
+                                                                                {% for error in forSaleForm.forSale_input.errors %}
+                                                                                        <span class="text-danger"> {{ error }} </span></br>
+                                                                                    {% endfor %}
+                                                                                {% else %}
+                                                                                    {{ forSaleForm.forSale_input(class="form-control-file") }}
+                                                                                {% endif %}
+                                                                    </div>
+                                                                  
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            {{ forSaleForm.forSale_submit_input(class="btn btn-outline-primary") }}
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                <div class="modal-footer border-0">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
-                                                   
-                                            <form action="{{ url_for('delete_pet',public_id=pet.public_id, username=user.username) }}" method="DELETE">
-                                                <input class="btn btn-outline-primary float-right" type="submit" value=" Delete Pet ">
-                                            </form>
-                                                </div>
+                                               
                                               </div>
                                             </div>
                                           </div>
                                           <!--End Pet for sale-->
 
                                         <!--Delete Pet Modal-->
-                                        <div class="modal fade" name="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                        <div class="modal fade" name="modal" id="delete{{pet.public_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                               <div class="modal-content">
                                                 <div class="modal-header border-0 text-center">
