@@ -4,14 +4,6 @@
         <body>
     {% endblock bodyStyle %}
 
-    {% block navbarStyle %}
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#00002A;">
-    {% endblock navbarStyle %}
-
-    {% block navbarNameplate %}
-        <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate.svg') }}" style="width:60px;">
-    {% endblock navbarNameplate %}
-
     {% block flashMessage %}
         <div id="alert-box" class="container">
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -31,52 +23,67 @@
 
     {% block content %}
         <div class="input-group mb-3 justify-content-center">
-            <form method="POST" action="">
-                {{ loginForm.hidden_tag() }}
-                <fieldset id="login-form" class="form-group">
-                    <div class="form-group">
-                        <label>Username or Email Address</label>
-                        {% if loginForm.usernameOrEmail_input.errors %}
-                            {{ loginForm.usernameOrEmail_input(class="form-control is-invalid", style="width:20rem;", placeholder="Username or Email Address") }}
-                            <div class="invalid-feedback">
-                                {% for error in loginForm.usernameOrEmail_input.errors %}
-                                    <span> {{ error }} </span>
-                                {% endfor %}
+            <div id="login-form">
+                <div class="row">
+                    <div id="welcomeForm-illustrationSection" class="col-md-auto" style="background: url('{{ url_for('static', filename='assets/spaceship_landing.svg') }}') center no-repeat;">
+                        <a href="{{ url_for('welcome') }}">
+                            <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate.svg') }}" style="width:80px;margin:25px 0 0 15px;">
+                        </a>
+                    </div>
+                    <div id="loginForm-inputSection-gradient" class="col">
+                        <div id="welcomeForm-inputSection-cont">
+                            <div id="welcomeForm-inputSection">
+                                <form method="POST" action="">
+                                    {{ loginForm.hidden_tag() }}
+                                    <fieldset class="form-group">
+                                        <div class="form-group">
+                                            <label>Username or Email Address</label>
+                                            {% if loginForm.usernameOrEmail_input.errors %}
+                                                {{ loginForm.usernameOrEmail_input(class="form-control is-invalid", style="width:20rem;", placeholder="Username or Email Address") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in loginForm.usernameOrEmail_input.errors %}
+                                                        <span> {{ error }} </span>
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                {{ loginForm.usernameOrEmail_input(class="form-control", style="width:20rem;", placeholder="Username or Email Address") }}
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            {% if loginForm.password_input.errors %}
+                                                {{ loginForm.password_input(class="form-control is-invalid", placeholder="Password") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in loginForm.password_input.errors %}
+                                                        <span> {{ error }} </span>
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                {{ loginForm.password_input(class="form-control", placeholder="Password") }}
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-check">
+                                            <div>
+                                                {{ loginForm.remember_input(class="form-check-input") }}
+                                            </div>
+                                            <div>
+                                                <label>Remember password</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-right" style="padding-top:1.5rem;">
+                                            {{ loginForm.login_submit_input(class="btn btn-outline-primary btn-block") }}
+                                        </div>
+                                        <div class="border-top pt-3">
+                                            <small class="text-muted">
+                                                New to Boop? <a class="ml-2" href="{{ url_for('signup_part_one') }}" style="color:#00002A;">Sign up here</a>
+                                            </small>
+                                        </div> 
+                                    </fieldset>
+                                </form>
                             </div>
-                        {% else %}
-                            {{ loginForm.usernameOrEmail_input(class="form-control", style="width:20rem;", placeholder="Username or Email Address") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        {% if loginForm.password_input.errors %}
-                            {{ loginForm.password_input(class="form-control is-invalid", placeholder="Password") }}
-                            <div class="invalid-feedback">
-                                {% for error in loginForm.password_input.errors %}
-                                    <span> {{ error }} </span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ loginForm.password_input(class="form-control", placeholder="Password") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-check">
-                        <div>
-                            {{ loginForm.remember_input(class="form-check-input") }}
-                        </div>
-                        <div>
-                            <label>Remember password</label>
                         </div>
                     </div>
-                    <div class="form-group text-right" style="padding-top:1.5rem;">
-                        {{ loginForm.login_submit_input(class="btn btn-outline-primary btn-block") }}
-                    </div>
-                    <div class="border-top pt-3">
-                        <small class="text-muted">
-                            New to Boop? <a class="ml-2" href="{{ url_for('signup') }}" style="color:#00002A;">Sign up here</a>
-                        </small>
-                    </div> 
-                </fieldset>
-            </form>
+                </div>
+            </div>
         </div>
     {% endblock content %}

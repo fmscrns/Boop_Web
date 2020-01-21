@@ -1,0 +1,272 @@
+{% macro post_item1(post, comms, post_owner, current_user, commentPostForm) %}
+    <div class="post-cont pr-1">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="{{ url_for('static', filename='images/{}'.format(post_owner.profPhoto_filename)) }}">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                    {{ post_owner.first_name }} {{ post_owner.last_name }}
+                </span>
+                <span style="font-size:13px;">
+                    @{{ post_owner.username }} · {{ post.posted_on }}
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                {{ post.content }}
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ post_bottomBar() }}
+            </div>
+        </div>
+    </div>
+    {{ comment_cont(current_user, commentPostForm, comms) }}
+{% endmacro %}
+
+{% macro post_item2() %}
+    <div class="post-cont pr-1">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l hci-bb-l">
+                    Test User
+                </span>
+                <span style="font-size:13px;">
+                    @testuser · 6m
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam bibendum, risus at dictum pretium, erat odio malesuada metus, non ullamcorper dolor risus ultrices quam. Cras rhoncus maximus gravida. Nunc porta et massa ut aliquet. Praesent congue nisl vel tempor bibendum massa nunc.
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                <img class="img-fluid hci-1p" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ post_bottomBar() }}
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ comment_cont() }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro post_item3() %}
+    <div class="post-cont pr-1">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                    Test User
+                </span>
+                <span style="font-size:13px;">
+                    @testuser · 6m
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam bibendum, risus at dictum pretium, erat odio malesuada metus, non ullamcorper dolor risus ultrices quam. Cras rhoncus maximus gravida. Nunc porta et massa ut aliquet. Praesent congue nisl vel tempor bibendum massa nunc.
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                <div class="row">
+                    <div class="col hci-2p-lpc">
+                        <img class="hci-2p-lp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="col hci-2p-rpc">
+                        <img class="hci-2p-rp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ post_bottomBar() }}
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ comment_cont() }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro post_item4() %}
+    <div class="post-cont pr-1">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                    Test User
+                </span>
+                <span style="font-size:13px;">
+                    @testuser · 6m
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                <div class="row">
+                    <div class="col hci-2p-lpc">
+                        <img class="hci-2p-tlp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="col hci-2p-rpc">
+                        <img class="hci-2p-trp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <img class="img-fluid hci-1p-bp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ post_bottomBar() }}
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ comment_cont() }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro post_item5() %}
+    <div class="post-cont pr-1">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                    Test User
+                </span>
+                <span style="font-size:13px;">
+                    @testuser · 6m
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam bibendum, risus at dictum pretium, erat odio malesuada metus, non ullamcorper dolor risus ultrices quam. Cras rhoncus maximus gravida. Nunc porta et massa ut aliquet. Praesent congue nisl vel tempor bibendum massa nunc.
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                <div class="row">
+                    <div class="col hci-2p-lpc">
+                        <img class="hci-2p-tlp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="col hci-2p-rpc">
+                        <img class="hci-2p-trp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col hci-2p-lpc">
+                        <img class="hci-2p-blp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="col hci-2p-rpc">
+                        <img class="hci-2p-brp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ post_bottomBar() }}
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ comment_cont() }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro post_bottomBar() %}
+    <div class="container-fluid mp-0">
+        <div class="row mp-0">
+            <div class="col mp-0" style="font-size:13px;">
+                20 likes · 2 comments
+            </div>
+            <div class="w-100" style="height:7.5px;"></div>
+            <div class="col pl-0">
+                <button class="btn btn-light btn-block" type="submit">
+                    <img class="hci-bb-p" src="{{ url_for('static', filename='assets/star.svg') }}">
+                    <span class="hci-bb-l">Like</span>
+                </button>
+            </div>
+            <div class="col pr-0">
+                <button class="btn btn-light btn-block" type="submit">
+                    <img class="hci-bb-p" src="{{ url_for('static', filename='assets/comment.svg') }}">
+                    <span class="hci-bb-l">Comment</span>
+                </button>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro comment_cont(current_user, commentPostForm, comms) %}
+    <div class="post-commentSect-cont">
+        <ul class="list-group">
+            {% for comm in comms %}
+                {{ comment(comm) }}
+            {% endfor %}
+            <li class="list-group-item">
+                <div class="float-left pt-1">
+                    <img class="home-content-profPic" src="{{ url_for('static', filename='images/{}'.format(current_user.profPhotoFilename)) }}">
+                </div>
+                <div class="row pl-1">
+                    <div class="col comment-input">
+                        <form method="POST" action="">
+                            <div class="input-group">
+                                {{ commentPostForm.hidden_tag() }} 
+                                <input id="commentPost_input" type="text" name="commentPost_input" class="form-control" placeholder="Write a comment..." aria-label="" aria-describedby="commentPost_submit_input" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" name="commentPost_submit_input" type="submit" id="commentPost_submit_input" value="Comment">
+                                        Comment
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+{% endmacro %}
+
+{% macro comment(comm) %}
+    <li class="list-group-item">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="{{ url_for('static', filename='images/{}'.format(comm['profPhoto_filename'])) }}">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                   {{ comm["author_firstName"] }} {{ comm["author_lastName"] }}
+                </span>
+                <span style="font-size:13px;">
+                    @{{ comm["author_username"] }} · {{ comm["posted_on"] }}
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                {{ comm["content"] }}
+            </div>
+        </div>
+    </li>
+{% endmacro %}
+
+
+

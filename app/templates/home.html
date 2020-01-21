@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
+{% from "navbar_components.html" import secured_navbar %}
+{% from "home_components.html" import content_item1, content_item2, content_item3, content_item4, content_item5 %}
 
     {% block bodyStyle %}
-        <body>
+        <body style="overflow-y:scroll;";>
     {% endblock bodyStyle %}
 
     {% block navbarAdjust %}
@@ -17,6 +19,7 @@
     {% endblock navbarNameplate %}
 
     {% block navbarContent %}
+
         <button id="navbar-collapse-toggler-btn" class="btn btn-outline-light navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <div style="width:25px;margin:0 2px -5px 2px;">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -123,6 +126,7 @@
                 </div>
             </div>
         </div>
+
     {% endblock navbarContent %}
 
     {% block content %}
@@ -130,49 +134,34 @@
             <div class="container" style="position:fixed;padding:0;">
                 <div class="row" style="padding:0;margin:0;">
                     <div class="col-4" style="padding:0;">
-                        <div id="ha-leftSection" class="container-fluid" style="padding:0;margin:0;">
-                            <div class="row" style="height: 225px;">
-                                <div id="home-account-profPic-cont" class="container-fluid">
-                                    <img id="home-account-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+                        <div id="ha-leftSection" style="padding-top:0;">
+                            <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
+                            <div class="ha-lefSection-profileSnippet">
+                                <img src="{{ url_for('static', filename='images/{}'.format( current_user.coverPhotoFilename )) }}" id="home-coverPhoto-panel" class="container-fluid">
+                                <div id="home-profileSnippet-profPic-cont" class="container">
+                                    <div class="float-left">
+                                        <img id="home-profileSnippet-profPic" src="{{ url_for('static', filename='images/{}'.format( current_user.profPhotoFilename )) }}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row" style="padding-left: 30px;">
-                                <div id="account-primary-nameplate-cont" class="col">
-                                    <h5 id="account-fullName">{{ current_user.firstName }} {{ current_user.lastName }}</h5>
-                                </div>
-                                <div class="w-100"></div>
-                                <div id="account-secondary-nameplate-cont" class="col">
-                                    <small>@{{ current_user.username }}</small>
-                                </div>
-                            </div>
-                            <div class="row" style="padding: 30px;">
-                                <form method="POST" action="" enctype="multipart/form-data">
-                                    <div id="shareContentForm-modal-body" class="modal-body">
-                                        <div class="postStory-form" class="container">
-                                            {{ shareContentForm.hidden_tag() }}
-                                            <fieldset class="form-group">
-                                                <div class="form-group">
-                                                    {% if shareContentForm.shareContent_input.errors %}
-                                                        {{ shareContentForm.shareContent_input(class="form-control is-invalid") }}
-                                                        <div class="invalid-feedback">
-                                                            {% for error in shareContentForm.shareContent_input.errors %}
-                                                                <span> {{ error }} </span>
-                                                            {% endfor %}
-                                                        </div>
-                                                    {% else %}
-                                                        {{ shareContentForm.shareContent_input(class="form-control") }}
-                                                    {% endif %}
-                                                </div>
-                                              
-                                            </fieldset>
+                                <div id="home-profileSnippet-textSection" class="row mx-auto">
+                                    <div class="col-md-auto" style="width:120px;"></div>
+                                    <div class="col" style="margin:0;padding:0;">
+                                        <div class="row" style="margin:5px 0 15px 2px;">
+                                            <div class="col">
+                                                <a id="home-profileSnippet-fullName" href="{{ url_for('user_profile_pets', username=current_user.username) }}">{{ current_user.firstName }} {{ current_user.lastName }}</a>
+                                            </div>
+                                            <div class="w-100"></div>
+                                            <div class="col">
+                                                <a id="home-profileSnippet-username" href="{{ url_for('user_profile_pets', username=current_user.username) }}"><small>@{{ current_user.username }}</small></a>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        {{ shareContentForm.shareContent_submit_input(class="btn btn-outline-primary") }}
-                                    </div>
-                                </form>
+                                </div>
                             </div>
+                            <button type="button" id="home-leftSect-postStory" class="btn btn-light btn-block">
+                                <img class="hci-bb-p" src="{{ url_for('static', filename='assets/bullhorn.svg') }}">
+                                Post Story
+                            </button>
                         </div>
                         <div id="flash-primary-cont" class="container-fluid">
                             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -194,10 +183,9 @@
             </div>
             <div class="row">
                 <div id="ha-leftSection-space" class="col-4"></div>
-                <div id="ha-rightSection" class="col">
-                    <div class="container-fluid">
+                <div id="ha-rightSection ml-5" class="col">
+                    <div class="container-fluid mp-0">
                         <div id="home-content-panel" class="container-fluid">
-                            
                             <div id="flash-secondary-cont" class="container-fluid">
                                 {% with messages = get_flashed_messages(with_categories=true) %}
                                     {% if messages %}
@@ -212,44 +200,9 @@
                                     {% endif %}
                                 {% endwith %}
                             </div>
-                            <div class="row">
-                                {% for post in all_posts| sort(attribute='posted_on', reverse = True)  %}
-                                    <div class="col-12">
-                                        <a id="pet-card" >
-                                            <div class="card">
-
-                                                <div class="card-body">
-                                                    <div id="acc-content-pet-name-cont">
-                                                        <p id="acc-content-pet-name" class="card-title">
-                                                            {{ post.post_author }}
-                                                        </p>
-                                                    </div>
-                                                    <div class="container-fluid">
-                                                        <div class="row">
-                                                            <div class="col-1">
-                                                                <img style="width:25px;">
-                                                            </div>
-                                                            <div class="col">
-                                                                <div class="row">
-                                                                    <div class="col">
-                                                                        {{ post.posted_on.strftime("%B") }} {{ post.posted_on.strftime("%d") }}, {{ post.posted_on.strftime("%I") }}:{{ post.posted_on.strftime("%M") }} {{ post.posted_on.strftime("%p") }}
-                                                                        <span style="font-size:25px;"><p >{{ post.content }} </p></span>
-                                                                    </div>
-                                                                    <div class="w-100">
-                                                                    </div>
-                                                                    <div class="col">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    {% if loop.index % 1 == 0 %}
-                                        <div class="w-100" style="height:20px;"></div>
-                                    {% endif %}
+                            <div id="home-content-group" class="list-group">
+                                {% for post in all_posts %}
+                                    {{ content_item1(post) }}
                                 {% endfor %}
                             </div>
                         </div>
@@ -257,4 +210,13 @@
                 </div>
             </div>
         </div>
+        <style>
+            #acc-search {
+                background-image: url({{ url_for('static', filename='assets/search.svg') }});
+                background-size:17.5px;
+                background-position: 4% 50%;
+                background-repeat: no-repeat;
+                text-indent: 30px;
+            }
+        </style>
     {% endblock content %}
