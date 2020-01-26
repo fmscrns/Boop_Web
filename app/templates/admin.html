@@ -112,47 +112,7 @@
     {% endblock navbarContent %}
 
     {% block content %}
-        <div id="ha-body" class="container" style="padding:0;">
-            <div class="container" style="position:fixed;padding:0;">
-                <div class="row" style="padding:0;margin:0;">
-                    <div class="col-4" style="padding:0;">
-                        <div id="ha-leftSection" class="container-fluid" style="padding:0;margin:0;">
-                            <div class="row" style="height: 225px;">
-                                <div id="home-account-profPic-cont" class="container-fluid">
-                                    <img id="home-account-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
-                                </div>
-                            </div>
-                            <div class="row" style="padding-left: 30px;">
-                                <div id="account-primary-nameplate-cont" class="col">
-                                    <h5 id="account-fullName">{{ current_user.firstName }} {{ current_user.lastName }}</h5>
-                                </div>
-                                <div class="w-100"></div>
-                                <div id="account-secondary-nameplate-cont" class="col">
-                                    <small>@{{ current_user.username }}</small>
-                                </div>
-                            </div>
-                            <div class="row" style="padding: 30px;">
-                                
-                            </div>
-                        </div>
-                        <div id="flash-primary-cont" class="container-fluid">
-                            {% with messages = get_flashed_messages(with_categories=true) %}
-                                {% if messages %}
-                                    {% for category, message in messages %}
-                                        <div id="ha-primary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                            <strong>{{ message }}</strong>
-                                            <button id="ha-primary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endwith %}
-                        </div>
-                    </div>
-                    <div class="col"></div>
-                </div>
-            </div>
+        
             <div class="row">
                 <div id="ha-leftSection-space" class="col-4">
                     
@@ -206,7 +166,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            
                                                             {{ addSpeciesForm.addSpecies_submit_input(class="btn btn-outline-primary") }}
                                                         </div>
                                                     </form>

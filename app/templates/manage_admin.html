@@ -1,0 +1,232 @@
+{% extends "layout.html" %}
+{% from "navbar_components.html" import secured_navbar %}
+{% from "home_components.html" import content_item1, content_item2, content_item3, content_item4, content_item5 %}
+
+    {% block bodyStyle %}
+        <body style="overflow-y:scroll;";>
+    {% endblock bodyStyle %}
+
+    {% block navbarAdjust %}
+        <div id="secured-navbar" class="container-fluid">
+    {% endblock navbarAdjust %}
+
+    {% block navbarStyle %}
+        <nav class="navbar navbar-expand-lg navbar-dark">
+    {% endblock navbarStyle %}
+
+    {% block navbarNameplate %}
+        <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate.svg') }}" style="width:60px;">
+    {% endblock navbarNameplate %}
+
+    {% block navbarContent %}
+        {{ secured_navbar(current_user) }}
+    {% endblock navbarContent %}
+
+    {% block content %}
+        <div id="ha-body" class="container" style="padding:0;">
+            <div class="container" style="position:fixed;padding:0;">
+                <div class="row" style="padding:0;margin:0;">
+                    <div class="col-4" style="padding:0;">
+                        <div id="ha-leftSection" style="padding-top:0;">
+                            <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
+                            <div class="ha-lefSection-profileSnippet">
+                                <img src="{{ url_for('static', filename='images/{}'.format( current_user.coverPhotoFilename )) }}" id="home-coverPhoto-panel" class="container-fluid">
+                                <div id="home-profileSnippet-profPic-cont" class="container">
+                                    <div class="float-left">
+                                        <img id="home-profileSnippet-profPic" src="{{ url_for('static', filename='images/{}'.format( current_user.profPhotoFilename )) }}">
+                                    </div>
+                                </div>
+                                <div id="home-profileSnippet-textSection" class="row mx-auto">
+                                    <div class="col-md-auto" style="width:120px;"></div>
+                                    <div class="col" style="margin:0;padding:0;">
+                                        <div class="row" style="margin:5px 0 15px 2px;">
+                                            <div class="col">
+                                                <a id="home-profileSnippet-fullName" href="{{ url_for('user_profile_pets', username=current_user.username) }}">{{ current_user.firstName }} {{ current_user.lastName }}</a>
+                                            </div>
+                                            <div class="w-100"></div>
+                                            <div class="col">
+                                                <a id="home-profileSnippet-username" href="{{ url_for('user_profile_pets', username=current_user.username) }}"><small>@{{ current_user.username }}</small></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" id="home-leftSect-postStory" class="btn btn-light btn-block">
+                                Add Species
+                            </button>
+                            <a href="{{ url_for('adopt_page', username=current_user['username']) }}" id="home-leftSect-postStory" class="btn btn-light btn-block">
+                                Add Service Type
+                            </a>
+                        </div>
+                        <div id="flash-primary-cont" class="container-fluid">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div id="ha-primary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                            <strong>{{ message }}</strong>
+                                            <button id="ha-primary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="ha-leftSection-space" class="col-4"></div>
+                <div id="ha-rightSection ml-5" class="col">
+                    <div class="container-fluid mp-0">
+                        <div id="home-content-panel" class="container-fluid">
+                            <div id="flash-secondary-cont" class="container-fluid">
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                            <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                                <strong>{{ message }}</strong>
+                                                <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                            <div id="home-content-group" class="list-group">
+                                                <center><h4>Add Species </h4></center>
+                                                    <form method="POST" action="{{ url_for('all_users') }}" enctype="multipart/form-data">
+                                                        <div id="addSpeciesForm-modal-body" class="modal-body">
+                                                            <div class="postStory-form" class="container">
+                                                                {{ addSpeciesForm.hidden_tag() }}
+                                                                <fieldset class="form-group">
+                                                                    <div class="form-group">
+                                                                        {% if addSpeciesForm.addSpecies_input.errors %}
+                                                                            {{ addSpeciesForm.addSpecies_input(class="form-control is-invalid") }}
+                                                                            <div class="invalid-feedback">
+                                                                                {% for error in addSpeciesForm.addSpecies_input.errors %}
+                                                                                    <span> {{ error }} </span>
+                                                                                {% endfor %}
+                                                                            </div>
+                                                                        {% else %}
+                                                                            {{ addSpeciesForm.addSpecies_input(class="form-control") }}
+                                                                        {% endif %}
+                                                                    </div>
+                                                                  
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            {{ addSpeciesForm.addSpecies_submit_input(class="btn btn-outline-primary") }}
+                                                        </div>
+                                                    </form>
+                                                    
+                                                    <center><h5>Species</h5></center>
+                                                
+                                                    {% for s in get_species %}
+                                                    <br>
+                                                    <a  data-toggle="modal" data-target="#deletespecies{{s.public_id}}"><img class="boop-nameplate" src="{{ url_for('static', filename='images/delete.png') }}" style="width:20px; float: right;"></a>
+                                     
+                                                        <h5>{{s.specie_name}}</h5>
+                                                        <br>
+                                                    <div class="modal-footer">
+                                                    <button  class="btn btn-outline-primary" data-toggle="modal" data-target="#addBreed{{s.public_id}}"}> Add Breed </button>
+                                                    </div>
+                                                    
+                                                    <h5>breeds</h5>
+                                                    <br>
+                                                            {% for b in get_breeds %}
+                                                            {% if s.public_id == b.specie_id %}
+                                                                <h5>{{b.breed_name}}</h5>
+                                                                 <br>
+                                                            {% endif %}
+                                                            {% endfor %} 
+                                                            <br>
+                                                         
+                                                        
+                                            <!--Delete Species Modal-->
+                                            <div class="modal fade" name="modal" id="deletespecies{{s.public_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                  <div class="modal-content">
+                                                    <div class="modal-header border-0 text-center">
+                                                      <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Confirm Action</h5>
+                                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                      </button>
+                                                    </div>
+                                                    <div class="modal-body mb-0">
+                                                        <h5>Are you sure you want to delete {{s.specie_name}}?</h5>
+                                                    </div>
+                                                    <div class="modal-footer border-0">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+                                                        <form action="{{ url_for('delete_species',public_id=s.public_id) }}" method="DELETE">
+                                                            <input class="btn btn-secondary" type="submit" value=" Delete Species ">
+                                                        </form>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            <!--End Delete Species Modal-->
+
+                                            <!--Add Breed Modal-->
+
+                                            <div class="modal fade" name="modal" id="addBreed{{s.public_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                  <div class="modal-content">
+                                                    <div class="modal-header border-0 text-center">
+                                                      <h5 class="modal-title text-danger" id="exampleModalScrollableTitle">Add Breed</h5>
+                                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                      </button>
+                                                    </div>
+                                                    <div class="modal-body mb-0">
+                                                        
+                                                        <form method="POST" action="{{ url_for('add_breed',public_id=s.public_id) }}" enctype="multipart/form-data">
+                                                            <div id="shareContentForm-modal-body" class="modal-body">
+                                                                <div class="postStory-form" class="container">
+                                                                    {{ addBreedForm.hidden_tag() }}
+                                                                    <fieldset class="form-group">
+                                                                        <div class="form-group">
+                                                                            <label>Input Breed</label>
+                                                                            {% if addBreedForm.addBreed_input.errors %}
+                                                                                    {% for error in addBreedForm.addBreed_input.errors %}
+                                                                                            <span class="text-danger"> {{ error }} </span></br>
+                                                                                        {% endfor %}
+                                                                                    {% else %}
+                                                                                        {{ addBreedForm.addBreed_input(class="form-control-file") }}
+                                                                            {% endif %}
+                                                                        </div>
+                                                                      
+                                                                    </fieldset>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                {{ addBreedForm.addBreed_submit_input(class="btn btn-outline-primary") }}
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              
+                                                    <!--END add breed-->
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style>
+            #acc-search {
+                background-image: url({{ url_for('static', filename='assets/search.svg') }});
+                background-size:17.5px;
+                background-position: 4% 50%;
+                background-repeat: no-repeat;
+                text-indent: 30px;
+            }
+        </style>
+    {% endblock content %}

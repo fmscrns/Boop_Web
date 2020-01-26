@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
+{% from "navbar_components.html" import welcome_navbar %}
 
     {% block bodyStyle %}
-        <body style="background-image:url({{ url_for('static', filename='assets/bg-space.svg') }});background-size:cover;">
+        <body style="background-image:url({{ url_for('static', filename='assets/bg-space.svg') }});background-size:cover;overflow-y:scroll;">
     {% endblock bodyStyle %}
 
     {% block navbarAdjust %}
@@ -17,61 +18,7 @@
     {% endblock navbarNameplate %}
 
     {% block navbarContent %}
-        <div class="col-12">
-            <div class="row container-fluid" style="padding-top:15px;">
-                <div class="col-6"></div>
-                <div id="welcome-navbar-login" class="col-5">
-                    <form method="POST" action="">
-                        {{ loginForm.hidden_tag() }}
-                            <fieldset class="form-group">
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label class="ml-1" style="color:white;font-size:12px;">Username or Email Address</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label class="ml-1" style="color:white;font-size:12px;">Password</label>
-                                    </div>
-                                    <div class="col-1"></div>
-                                    <div class="w-100"></div>
-                                    <div class="col-5">
-                                        {% if loginForm.usernameOrEmail_input.errors %}
-                                            {{ loginForm.usernameOrEmail_input(class="form-control form-control-sm is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in loginForm.usernameOrEmail_input.errors %}
-                                                    <span> {{ error }} </span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ loginForm.usernameOrEmail_input(class="form-control form-control-sm") }}
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-4">
-                                        {% if loginForm.password_input.errors %}
-                                            {{ loginForm.password_input(class="form-control form-control-sm is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in loginForm.password_input.errors %}
-                                                    <span> {{ error }} </span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ loginForm.password_input(class="form-control form-control-sm") }}
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-1">
-                                        {{ loginForm.login_submit_input(class="btn btn-sm btn-outline-light", style="width:80px;") }}
-                                    </div>
-                                    <div class="w-100"></div>
-                                    <div class="col-5"></div>
-                                    <div class="col-4">
-                                        <a class="ml-1" href="#" style="color:white;font-size:12px;">Forgot password?</a>
-                                    </div>
-                                    <div class="col-1"></div>
-                                </div>
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-        </div>
+        {{ welcome_navbar(loginForm) }}
     {% endblock navbarContent %}
 
     {% block content %}
@@ -91,7 +38,7 @@
                                         <span class="h2" style="color:white;font-size:37px;"><strong>A space for pets.</strong></span>
                                     </div>
                                     <div style="display:flex;flex-direction:column;">
-                                        <a href="{{ url_for('signup') }}" class="btn auth-btn btn-outline-light" role="button" aria-pressed="true">Sign up</a>
+                                        <a href="{{ url_for('signup_part_one') }}" class="btn auth-btn btn-outline-light" role="button" aria-pressed="true">Sign up</a>
                                         <a href="{{ url_for('login') }}" class="btn auth-btn btn-outline-light" role="button" aria-pressed="true">Log in</a>
                                     </div>
                                 </div>
