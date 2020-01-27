@@ -1963,8 +1963,8 @@ pre code {
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid rgb(200, 200, 239);
-  border-radius: 0.25rem;
+  border: 1px solid lightgray;
+  border-radius: 8.5px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -1976,34 +1976,39 @@ pre code {
 .form-control:focus {
   color: #495057;
   background-color: #fff;
-  border-color: rgb(200, 200, 239);
+  border-color: lightgray;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgb(200, 200, 239);
+  box-shadow: 0 0 0 0.2rem lightgray;
 }
 
 .form-control::-webkit-input-placeholder {
-  color: rgba(0, 0, 42, 0.8);
+  color: gray;
   opacity: 1;
+  font-size: 15px;
 }
 
 .form-control::-moz-placeholder {
-  color: rgba(0, 0, 42, 0.8);
+  color: gray;
   opacity: 1;
+  font-size: 15px;
 }
 
 .form-control:-ms-input-placeholder {
-  color: rgba(0, 0, 42, 0.8);
+  color: gray;
   opacity: 1;
+  font-size: 15px;
 }
 
 .form-control::-ms-input-placeholder {
-  color: rgba(0, 0, 42, 0.8);
+  color: gray;
   opacity: 1;
+  font-size: 15px;
 }
 
 .form-control::placeholder {
-  color: rgba(0, 0, 42, 0.8);
+  color: gray;
   opacity: 1;
+  font-size: 15px;
 }
 
 .form-control:disabled, .form-control[readonly] {
@@ -2081,7 +2086,7 @@ select.form-control:focus::-ms-value {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
-  border-radius: 0.2rem;
+  border-radius: 8.5px;
 }
 
 select.form-control-sm:not([size]):not([multiple]), .input-group-sm > select.form-control:not([size]):not([multiple]),
@@ -2100,7 +2105,7 @@ select.form-control-sm:not([size]):not([multiple]), .input-group-sm > select.for
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   line-height: 1.5;
-  border-radius: 0.3rem;
+  border-radius: 8.5px;
 }
 
 select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.form-control:not([size]):not([multiple]),
@@ -2471,7 +2476,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
-  border-radius: 0.25rem;
+  border-radius: 8.5px;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -2543,8 +2548,8 @@ fieldset:disabled a.btn {
 
 .btn-secondary:hover {
   color: #fff;
-  background-color: rgba(0, 0, 42, 0.8);
-  border-color: rgba(0, 0, 42, 0.8):
+  background-color: gray;
+  border-color: gray:
 }
 
 .btn-secondary:focus, .btn-secondary.focus {
@@ -2787,7 +2792,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-primary:focus, .btn-outline-primary.focus {
-  box-shadow: 0 0 0 0.2rem rgb(200, 200, 239);
+  box-shadow: 0 0 0 0.2rem lightgray;
 }
 
 .btn-outline-primary.disabled, .btn-outline-primary:disabled {
@@ -2804,7 +2809,7 @@ fieldset:disabled a.btn {
 
 .btn-outline-primary:not(:disabled):not(.disabled):active:focus, .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgb(200, 200, 239);
+  box-shadow: 0 0 0 0.2rem lightgray;
 }
 
 .btn-outline-secondary {
@@ -3079,7 +3084,7 @@ fieldset:disabled a.btn {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
-  border-radius: 0.2rem;
+  border-radius: 8.5px;
 }
 
 .btn-block {
@@ -3167,7 +3172,7 @@ tbody.collapse.show {
   list-style: none;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid rgb(200, 200, 239);
+  border: 1px solid lightgray;
   border-radius: 0.25rem;
 }
 
@@ -4439,13 +4444,13 @@ tbody.collapse.show {
 }
 
 .card > .list-group:first-child .list-group-item:first-child {
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 8.5px;
+  border-top-right-radius: 8.5px;
 }
 
 .card > .list-group:last-child .list-group-item:last-child {
-  border-bottom-right-radius: 0.25rem;
-  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 8.5px;
+  border-bottom-left-radius: 8.5px;
 }
 
 .card-body {
@@ -4944,7 +4949,7 @@ tbody.collapse.show {
   padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
   border: 1px solid transparent;
-  border-radius: 0.25rem;
+  border-radius: 8.5px;
 }
 
 .alert-heading {
@@ -5185,17 +5190,18 @@ tbody.collapse.show {
   padding: 0.75rem 1.25rem;
   margin-bottom: -1px;
   background-color: #fff;
+  border:1px solid lightgray;
 }
 
 .list-group-item:first-child {
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 8.5px;
+  border-top-right-radius: 8.5px;
 }
 
 .list-group-item:last-child {
   margin-bottom: 0;
-  border-bottom-right-radius: 0.25rem;
-  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 8.5px;
+  border-bottom-left-radius: 8.5px;
 }
 
 .list-group-item:hover, .list-group-item:focus {
@@ -5480,7 +5486,7 @@ button.close {
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: 1px solid rgb(200, 200, 239);
+  border-bottom: 1px solid lightgray;
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
 }
@@ -5514,7 +5520,7 @@ button.close {
   -ms-flex-pack: end;
   justify-content: flex-end;
   padding: 1rem;
-  border-top: 1px solid rgb(200, 200, 239);
+  border-top: 1px solid lightgray;
 }
 
 .modal-footer > :not(:first-child) {

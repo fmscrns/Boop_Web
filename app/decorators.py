@@ -12,7 +12,7 @@ def login_required(f):
     
     return wrap
 
-def not_authenticated(f):
+def inaccesible_if_authenticated(f):
     @wraps(f)
     def wrap(*args, **kwargs):
         if "booped_in" in session:

@@ -1,0 +1,215 @@
+{% extends "layout.html" %}
+{% from "account_components.html" import content_item1, content_item2, content_item3, content_item4, content_item5, gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6 %}
+{% from "navbar_components.html" import secured_navbar %}
+{% from "global_components.html" import profileSnippet, flash_primary_messages, flash_secondary_messages %}
+
+    {% block bodyStyle %}
+        <body style="overflow-y:scroll;">
+    {% endblock bodyStyle %}
+
+    {% block navbarAdjust %}
+        <div id="secured-navbar" class="container-fluid">
+    {% endblock navbarAdjust %}
+
+    {% block navbarStyle %}
+        <nav class="navbar navbar-expand-lg navbar-dark">
+    {% endblock navbarStyle %}
+
+    {% block navbarNameplate %}
+        <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate.svg') }}" style="width:60px;">
+    {% endblock navbarNameplate %}
+
+    {% block navbarContent %}
+        {{ secured_navbar(current_user) }}
+    {% endblock navbarContent %}
+
+    {% block content %}
+        <div id="ha-body" class="container" style="padding:0;">
+            <div class="container" style="position:fixed;padding:0;">
+                <div class="row" style="padding:0;margin:0;">
+                    <div class="col-4" style="padding:0;">
+                        <div id="acc-leftSection" class="container-fluid" style="padding:0;margin:0;">
+                            <div class="list-group">
+                                <a href="{{ url_for('pet_settings_passport', username=user.username, public_id=pet.public_id) }}" class="list-group-item list-group-item-action {{ passportActive }}">
+                                    Set up pet passport
+                                </a>
+                                {% if pet.status == 1 %}
+                                    <a href="{{ url_for('pet_settings_adoption', username=user.username, public_id=pet.public_id) }}" class="list-group-item list-group-item-action {{ adoptionActive }}">
+                                        Close pet for adoption
+                                    </a>
+                                {% else  %}
+                                    <a href="{{ url_for('pet_settings_adoption', username=user.username, public_id=pet.public_id) }}" class="list-group-item list-group-item-action {{ adoptionActive }}">
+                                        Open pet for adoption
+                                    </a>
+                                {% endif %}
+                                <a href="{{ url_for('pet_settings_delete', username=user.username, public_id=pet.public_id) }}" class="list-group-item list-group-item-action {{ deleteActive }}">
+                                    Pet account deactivation
+                                </a>
+                            </div>
+                        </div>
+                        <div id="flash-primary-cont" class="container-fluid">
+                            {{ flash_primary_messages(get_flashed_messages(with_categories=true)) }}
+                        </div>
+                    </div>
+                    <div class="col">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="ha-leftSection-space" class="col-4"></div>
+                <div id="ha-rightSection" class="col">
+                    <div class="container-fluid">
+                        {% if passportActive is defined %}
+                            <div class="ps-rp-display container-fluid">
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <h3>Settings</h3>
+                                    </div>
+                                    <div class="w-100"></div>
+                                    <div class="col">
+                                        Set up pet passport
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        {% elif adoptionActive is defined %}
+                            {% if pet.status == 1 %}
+                                <form method="POST" action="">
+                                    {{ closeAdoptionForm.hidden_tag() }}
+                                    <div class="ps-rp-display container-fluid">
+                                        <div class="row mt-3">
+                                            <div class="col">
+                                                <h3>Settings</h3>
+                                            </div>
+                                            <div class="w-100"></div>
+                                            <div class="col">
+                                                Close pet for adoption
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                {{ closeAdoptionForm.closeAdoption_submit_input(class="btn float-right btn-outline-danger") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            {% else %}
+                                <div class="ps-rp-display container-fluid">
+                                    <div class="row mt-3">
+                                        <div class="col">
+                                            <h3>Settings</h3>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            Open pet for adoption
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <span class="text-muted small">This will prompt your pet to be known as open for adoption.</span>
+                                            <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#share-content">
+                                                Open pet for adoption
+                                            </button>
+                                            <div class="modal" id="share-content" tabindex="-1" role="dialog" aria-labelledby="share-content-modal-title" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="share-content-title">Share something</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method="POST" action="" enctype="multipart/form-data">
+                                                            <div id="forAdoptionForm-modal-body" class="modal-body">
+                                                                <div class="postStory-form" class="container">
+                                                                    {{ forAdoptionForm.hidden_tag() }}
+                                                                    <fieldset class="form-group">
+                                                                        <label>Upload Image</label>
+                                                                        <div id="image-upload-layout" class="row">
+                                                                            <div class="col-md-auto">
+                                                                                <div class="form-group">
+                                                                                    {% if forAdoptionForm.sharePhoto_input.errors %}
+                                                                                        {% for error in forAdoptionForm.sharePhoto_input.errors %}
+                                                                                            <span class="text-danger"> {{ error }} </span></br>
+                                                                                        {% endfor %}
+                                                                                    {% else %}
+                                                                                        {{ forAdoptionForm.sharePhoto_input(class="form-control-file") }}
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                <img id="post-sharephoto-preview" class="rounded mx-auto d-block">
+                                                                                <script>document.getElementById("post-sharephoto-preview").src = "{{ url_for('static', filename='images/pet-default-profPhoto.jpg') }}";</script>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            {% if forAdoptionForm.shareContent_input.errors %}
+                                                                                {{ forAdoptionForm.shareContent_input(class="form-control is-invalid") }}
+                                                                                <div class="invalid-feedback">
+                                                                                    {% for error in forAdoptionForm.shareContent_input.errors %}
+                                                                                        <span> {{ error }} </span>
+                                                                                    {% endfor %}
+                                                                                </div>
+                                                                            {% else %}
+                                                                                {{ forAdoptionForm.shareContent_input(class="form-control") }}
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    
+                                                                    </fieldset>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                {{ forAdoptionForm.withoutPost_submit_input(class="btn btn-outline-primary") }}
+                                                                {{ forAdoptionForm.withPost_submit_input(class="btn btn-outline-primary") }}
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% elif deleteActive is defined %}
+                            <div class="ps-rp-display container-fluid">
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <h3>Settings</h3>
+                                    </div>
+                                    <div class="w-100"></div>
+                                    <div class="col">
+                                        Deactivate your pet's account
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row mb-4">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="confirm-deletion-pet-name">Input the name of your pet</label>
+                                            <input class="form-control" id="confirm-deletion-pet-name">
+                                        </div>
+                                    </div>
+                                    <div class="w-100"></div>
+                                    <div class="col">
+                                        <input class="btn btn-danger float-right" type="submit" value="Deactivate">
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style>
+            #acc-search {
+                background-image: url({{ url_for('static', filename='assets/search.svg') }});
+                background-size:17.5px;
+                background-position: 4% 50%;
+                background-repeat: no-repeat;
+                text-indent: 30px;
+            }
+        </style>
+    {% endblock content %}

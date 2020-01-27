@@ -1,0 +1,519 @@
+{% macro pet_card(user, pet) %}
+    <a class="pet-card" href="{{ url_for('pet_profile_wall', username=user.username, public_id=pet.public_id) }}">
+        <div class="card border-all">
+            <img class="card-img-top acc-pc-cp" src="{{ url_for('static', filename='images/{}'.format(pet.coverPhoto_filename)) }}">
+            <div class="card-body" style="margin-top:-20px;">
+                <img class="pet-profPic-sm float-left" src="{{ url_for('static', filename='images/{}'.format(pet.profPhoto_filename)) }}">
+                <div class="container-fluid acc-pc-pn pl-4 pt-1">
+                    <span class="p-2">{{ pet.pet_name }}</span>
+                </div>
+                <div class="text-muted small mt-3">
+                    <div class="row">
+                        <div class="col">
+                            {{ pet.sex }}
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            {{ pet.specie_name }}
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            {{ pet.breed_name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+{% endmacro %}
+
+{% macro edit_profile_modal(current_user, updateUserForm) %}
+    <div class="modal" id="update-user-modal" tabindex="-1" role="dialog" aria-labelledby="update-user-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="update-user-modal-title">
+                        Update Profile Info
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="" enctype="multipart/form-data">
+                    <div id="updateUserForm-modal-body" class="modal-body">
+                        <div class="updateUser-form" class="container">
+                            {{ updateUserForm.hidden_tag() }}
+                            <fieldset class="form-group">
+                                <label>Your Cover Photo</label>
+                                <div id="image-upload-layout" class="row">
+                                    <div class="col-md-auto">
+                                        <div class="form-group">
+                                            {% if updateUserForm.user_coverPhoto_input.errors %}
+                                                {% for error in updateUserForm.user_coverPhoto_input.errors %}
+                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                {% endfor %}
+                                            {% else %}
+                                                {{ updateUserForm.user_coverPhoto_input(class="form-control-file") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <img id="user-coverpic-preview" class="rounded mx-auto d-block">
+                                        <script>document.getElementById("user-coverpic-preview").src = "{{ url_for('static', filename='images/' + current_user.coverPhotoFilename) }}";</script>
+                                    </div>
+                                </div>
+                                <label>Your Profile Photo</label>
+                                <div id="image-upload-layout" class="row">
+                                    <div class="col-md-auto">
+                                        <div class="form-group">
+                                            {% if updateUserForm.user_profPhoto_input.errors %}
+                                                {% for error in updateUserForm.user_profPhoto_input.errors %}
+                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                {% endfor %}
+                                            {% else %}
+                                                {{ updateUserForm.user_profPhoto_input(class="form-control-file") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <img id="user-profpic-preview" class="rounded mx-auto d-block">
+                                        <script>document.getElementById("user-profpic-preview").src = "{{ url_for('static', filename='images/' + current_user.profPhotoFilename) }}";</script>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    {% if updateUserForm.firstName_input.errors %}
+                                        {{ updateUserForm.firstName_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updateUserForm.firstName_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updateUserForm.firstName_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    {% if updateUserForm.lastName_input.errors %}
+                                        {{ updateUserForm.lastName_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updateUserForm.lastName_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updateUserForm.lastName_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    {% if updateUserForm.contactNo_input.errors %}
+                                        {{ updateUserForm.contactNo_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updateUserForm.contactNo_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updateUserForm.contactNo_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    {% if updateUserForm.username_input.errors %}
+                                        {{ updateUserForm.username_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updateUserForm.username_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updateUserForm.username_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    {% if updateUserForm.email_input.errors %}
+                                        {{ updateUserForm.email_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updateUserForm.email_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updateUserForm.email_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {{ updateUserForm.updateUser_submit_input(class="btn btn-outline-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro content_item1(post) %}
+    <a href="{{ url_for('display_post', public_id=post.public_id) }}" class="list-group-item list-group-item-action pr-1">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="{{ url_for('static', filename='images/{}'.format(post.author_profPhoto_filename)) }}">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                    {{ post.author_firstName }} {{ post.author_lastName }}
+                </span>
+                <span style="font-size:13px;">
+                    @{{ post.author_username }} · {{ post.posted_on }}
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                {{ post.content }}
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ content_bottomBar() }}
+            </div>
+        </div>
+    </a>
+{% endmacro %}
+
+{% macro content_item2(post) %}
+    <a href="{{ url_for('display_post', public_id=post.public_id) }}" class="list-group-item list-group-item-action pr-1">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="{{ url_for('static', filename='images/{}'.format(post.author_profPhoto_filename)) }}">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                    {{ post.author_firstName }} {{ post.author_lastName }}
+                </span>
+                <span style="font-size:13px;">
+                    @{{ post.author_username }} · {{ post.posted_on }}
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                {{ post.content }}
+            </div>
+            <div class="w-100"></div>
+            {% if post.photo != None %}
+            <div class="col mt-2">
+                <img class="img-fluid hci-1p" src="{{ url_for('static', filename='images/{}'.format(post.photo)) }}">
+            </div>
+            {% endif %}
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ content_bottomBar() }}
+            </div>
+        </div>
+    </a>
+{% endmacro %}
+
+{% macro content_item3() %}
+    <a href="#" class="list-group-item list-group-item-action pr-1">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                    Test User
+                </span>
+                <span style="font-size:13px;">
+                    @testuser · 6m
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam bibendum, risus at dictum pretium, erat odio malesuada metus, non ullamcorper dolor risus ultrices quam. Cras rhoncus maximus gravida. Nunc porta et massa ut aliquet. Praesent congue nisl vel tempor bibendum massa nunc.
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                <div class="row">
+                    <div class="col hci-2p-lpc">
+                        <img class="hci-2p-lp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="col hci-2p-rpc">
+                        <img class="hci-2p-rp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ content_bottomBar() }}
+            </div>
+        </div>
+    </a>
+{% endmacro %}
+
+{% macro content_item4() %}
+    <a href="#" class="list-group-item list-group-item-action pr-1">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                    Test User
+                </span>
+                <span style="font-size:13px;">
+                    @testuser · 6m
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                <div class="row">
+                    <div class="col hci-2p-lpc">
+                        <img class="hci-2p-tlp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="col hci-2p-rpc">
+                        <img class="hci-2p-trp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <img class="img-fluid hci-1p-bp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ content_bottomBar() }}
+            </div>
+        </div>
+    </a>
+{% endmacro %}
+
+{% macro content_item5() %}
+    <a href="#" class="list-group-item list-group-item-action pr-1">
+        <div class="float-left pt-1">
+            <img class="home-content-profPic" src="https://res.cloudinary.com/fmscrns/image/upload/v1555422032/sample.jpg">
+        </div>
+        <div class="row pl-1">
+            <div class="col">
+                <span class="font-weight-bold hci-bb-l">
+                    Test User
+                </span>
+                <span style="font-size:13px;">
+                    @testuser · 6m
+                </span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam bibendum, risus at dictum pretium, erat odio malesuada metus, non ullamcorper dolor risus ultrices quam. Cras rhoncus maximus gravida. Nunc porta et massa ut aliquet. Praesent congue nisl vel tempor bibendum massa nunc.
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                <div class="row">
+                    <div class="col hci-2p-lpc">
+                        <img class="hci-2p-tlp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="col hci-2p-rpc">
+                        <img class="hci-2p-trp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col hci-2p-lpc">
+                        <img class="hci-2p-blp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                    <div class="col hci-2p-rpc">
+                        <img class="hci-2p-brp img-fluid" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="col mt-2">
+                {{ content_bottomBar() }}
+            </div>
+        </div>
+    </a>
+{% endmacro %}
+
+{% macro content_bottomBar() %}
+    <div class="container-fluid mp-0">
+        <div class="row mp-0">
+            <div class="col mp-0" style="font-size:13px;">
+                20 likes · 2 comments
+            </div>
+            <div class="w-100" style="height:7.5px;"></div>
+            <div class="col pl-0">
+                <button class="btn btn-light btn-block" type="submit">
+                    <img class="hci-bb-p" src="{{ url_for('static', filename='assets/star.svg') }}">
+                    <span class="hci-bb-l">Like</span>
+                </button>
+            </div>
+            <div class="col pr-0">
+                <button class="btn btn-light btn-block" type="submit">
+                    <img class="hci-bb-p" src="{{ url_for('static', filename='assets/comment.svg') }}">
+                    <span class="hci-bb-l">Comment</span>
+                </button>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro gallery_1() %}
+    <div class="acc-lefSection-galleryCont">
+        <img class="img-fluid ag-1p" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+    </div>
+{% endmacro %}
+
+{% macro gallery_2() %}
+    <div class="acc-lefSection-galleryCont">
+        <div class="row mp-0">
+            <div class="col mp-0">
+                <img class="img-fluid ag-2p-lp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+            </div>
+            <div class="col mp-0">
+                <img class="img-fluid ag-2p-rp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro gallery_3() %}
+    <div class="acc-lefSection-galleryCont">
+        <div class="row mp-0">
+            <div class="col mp-0">
+                <img class="img-fluid ag-2p-lp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+            </div>
+            <div class="col mp-0">
+                <div class="container-fluid mp-0">
+                    <div class="row">
+                        <div class="col">
+                            <img class="img-fluid ag-2p-tp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <img class="img-fluid ag-2p-bp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro gallery_4() %}
+    <div class="acc-lefSection-galleryCont">
+        <div class="row mp-0">
+            <div class="col mp-0">
+                <div class="container-fluid mp-0">
+                    <div class="row">
+                        <div class="col">
+                            <img class="img-fluid ag-2p-tlp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <img class="img-fluid ag-2p-blp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mp-0">
+                <div class="container-fluid mp-0">
+                    <div class="row">
+                        <div class="col">
+                            <img class="img-fluid ag-2p-tp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <img class="img-fluid ag-2p-bp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro gallery_5() %}
+    <div class="acc-lefSection-galleryCont">
+        <div class="row mp-0">
+            <div class="col mp-0">
+                <img class="img-fluid ag-2p-lp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+            </div>
+            <div class="col mp-0">
+                <div class="container-fluid mp-0">
+                    <div class="row">
+                        <div class="col">
+                            <img class="img-fluid ag-56-m" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <img class="img-fluid ag-56-m" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mp-0">
+                <div class="container-fluid mp-0">
+                    <div class="row">
+                        <div class="col">
+                            <img class="img-fluid ag-2p-tp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <img class="img-fluid ag-2p-bp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro gallery_6() %}
+    <div class="acc-lefSection-galleryCont">
+        <div class="row mp-0">
+            <div class="col mp-0">
+                <div class="container-fluid mp-0">
+                    <div class="row">
+                        <div class="col">
+                            <img class="img-fluid ag-2p-tlp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <img class="img-fluid ag-2p-blp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mp-0">
+                <div class="container-fluid mp-0">
+                    <div class="row">
+                        <div class="col">
+                            <img class="img-fluid ag-56-m" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <img class="img-fluid ag-56-m" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mp-0">
+                <div class="container-fluid mp-0">
+                    <div class="row">
+                        <div class="col">
+                            <img class="img-fluid ag-2p-tp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <img class="img-fluid ag-2p-bp" src="https://res.cloudinary.com/fmscrns/image/upload/v1578896819/BoopIt/pet/beaalyssa/c6baba98-dc78-4e18-bf14-7d814222c450.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

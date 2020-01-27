@@ -25,9 +25,17 @@ function readURL(input, previewCont) {
 $("#pet_profPic_input").change(function(){
     readURL(this, "#pet-profpic-preview");
 });
-$("#storyImages_input").change(function(){
-    readURL(this, "#hi");
-
+$("#pet_coverPic_input").change(function(){
+    readURL(this, "#pet-coverpic-preview");
+});
+$("#user_profPhoto_input").change(function(){
+    readURL(this, "#user-profpic-preview");
+});
+$("#user_coverPhoto_input").change(function(){
+    readURL(this, "#user-coverpic-preview");
+});
+$("#sharePhoto_input").change(function(){
+    readURL(this, "#post-sharephoto-preview");
 });
 
 function showImageCol(col_id) {
@@ -43,3 +51,5 @@ $("#ha-primary-flash-close").click(function() {
 $(".alert-dismissible").fadeTo(5000, 500).slideUp(500, function(){
     $(".alert-dismissible").alert("close");
 });
+
+$("#commentPost_input").attr("aria-describedby","button-addon2");

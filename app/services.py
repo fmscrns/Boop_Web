@@ -1,8 +1,10 @@
 import requests, json, os, uuid
-from app import _cloud
+from app import boop, _cloud
 from dateutil import parser
 from flask import session
 from PIL import Image
+import urllib.request as urllib
+import io
 from app import boop
 
 class Variable:
@@ -12,19 +14,19 @@ class Variable:
 
     @staticmethod
     def api_url():
-        return "http://127.0.0.1:5000"
+        return "https://boopitapi.herokuapp.com/"
 
 class Helper:
     @staticmethod
     def user_existence_check(user):
-        if len(user) == 6:
+        if len(user) == 9:
             return True
 
         else:
             return False
 
     def pet_existence_check(pet):
-        if len(pet) == 9:
+        if len(pet) == 12:
             return True
 
         else:
@@ -46,34 +48,67 @@ class Helper:
         return datetime_obj
 
     @staticmethod
-    def save_image(form_image, folder):
+    def save_image(form_image):
         if form_image:
             filename = str(uuid.uuid4())
+            
+            _cloud.uploader.upload_image(form_image, folder="BoopIt/", public_id=filename)
 
             _, f_ext = os.path.splitext(form_image.filename)
             picture_fn = filename + f_ext
-
-            username = User.get_current_user()["username"]
-
-            _cloud.uploader.upload_image(form_image, folder="BoopIt/{}/{}/".format(folder, username), public_id=filename)
+            picture_path = os.path.join(boop.root_path,'static/images', picture_fn)
             
-            return picture_fn
-        else:
-            return "default"
+            output_size=(500, 500)
+            i = Image.open(form_image)
+            i.thumbnail(output_size)
+            i.save(picture_path)
 
+            return picture_fn
+    
+        else:
+            return "default.jpg"
+
+    @staticmethod
+    def ensure_localAndCloud_imageUpload_reflection(photo_id):
+        file_exists = os.path.exists("{}/static/images/{}".format(boop.root_path, photo_id + ".jpg"))
+        photo_fn = photo_id + ".jpg"
+
+        if file_exists is True:
+
+            return photo_fn + "IF"
+        
+        else:
+            upload_path = os.path.join(boop.root_path, 'static/images', photo_fn)
+
+            url = "https://res.cloudinary.com/fmscrns/image/upload/v1579236287/BoopIt/{}".format(photo_fn)
+            
+            fd = urllib.urlopen(url)
+            image_file = io.BytesIO(fd.read())
+            im = Image.open(image_file)
+            im.save(upload_path)
+            return photo_fn + "ELSE"
 
 class Auth:
     @staticmethod
-    def signup_user(data):
-        first_name = data.get("firstName_input")
-        last_name = data.get("lastName_input")
-        username = data.get("username_input")
-        email = data.get("email_input")
-        password = data.get("password_input")
-        contact_no = data.get("contactNo_input")
+    def verify_email(email):
+        verifyEmail_resp = requests.get("{}/user/verify/email".format(Variable.api_url()), json={"email" : email})
 
-        signup_req = requests.post("{}/user/".format(Variable.api_url()), json={"firstName" : first_name, "lastName" : last_name, "username" : username, "email" : email, "password" : password, "contactNo" : contact_no})
+        email_resp = json.loads(verifyEmail_resp.text)
 
+        return email_resp
+
+    @staticmethod
+    def verify_username(username):
+        verifyUsername_resp = requests.get("{}/user/verify/username".format(Variable.api_url()), json={"username" : username})
+
+        username_resp = json.loads(verifyUsername_resp.text)
+
+        return username_resp
+
+    @staticmethod
+    def signup_user_part_two(data):
+        signup_req = requests.post("{}/user/".format(Variable.api_url()), json={"firstName" : data["first_name"], "lastName" : data["last_name"], "username" : data["username"], "email" : data["email"], "password" : data["password"], "contactNo" : data["contact_no"]})
+    
         return json.loads(signup_req.text)
 
     @staticmethod
@@ -106,16 +141,27 @@ class User:
         return json.loads(petOwners_req.text)
 
     @staticmethod
-    def update_user(username,data):
+    def update_user(data):
+        current_user = User.get_current_user()
 
-        first_name = data.get("firstName_input")
-        last_name = data.get("lastName_input")
-        username = data.get("username_input")
-        email = data.get("email_input")
-        password = data.get("password_input")
-        contact_no = data.get("contactNo_input")
+        form = data.form
+        fileForm = data.files
 
-        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "username" : username, "email" : email, "password" : password, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
+        new_first_name = form.get("firstName_input")
+        new_last_name = form.get("lastName_input")
+        new_username = form.get("username_input")
+        new_email = form.get("email_input")
+        new_password = form.get("password_input")
+        new_contact_no = form.get("contactNo_input")
+        new_user_profPhoto_filename = current_user["profPhotoFilename"]
+        new_user_coverPhoto_filename = current_user["coverPhotoFilename"]
+        
+        if fileForm.get("user_profPhoto_input"):
+            new_user_profPhoto_filename = Helper.save_image(fileForm.get("user_profPhoto_input"))
+        if fileForm.get("user_coverPhoto_input"):
+            new_user_coverPhoto_filename = Helper.save_image(fileForm.get("user_coverPhoto_input"))
+
+        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), current_user["username"]), json={"firstName" : new_first_name, "lastName" : new_last_name, "username" : new_username, "email" : new_email, "password" : new_password, "contactNo" : new_contact_no, "profPhotoFilename" : new_user_profPhoto_filename, "coverPhotoFilename" : new_user_coverPhoto_filename}, headers={"authorization" : session["booped_in"]})
         
         return json.loads(userUpdate_req.text)
 
@@ -137,10 +183,13 @@ class Pet:
         sex = form.get("sex_input")
         specie_id = form.get("specie_input")
         breed_id = form.get("breed_input")
+        status = 0
+        price = 0.00
 
-        pet_profPic_filename = Helper.save_image(fileForm.get("pet_profPic_input"), "pet")
+        pet_profPhoto_filename = Helper.save_image(fileForm.get("pet_profPic_input"))
+        pet_coverPhoto_filename = Helper.save_image(fileForm.get("pet_coverPic_input"))
 
-        addPet_req = requests.post("{}/pet/".format(Variable.api_url()), json={"petName" : pet_name, "bio" : bio, "birthday" : birthday, "sex" : sex, "profPicFilename" : pet_profPic_filename, "specieId" : specie_id, "breedId" : breed_id}, headers={"authorization" : session["booped_in"]})
+        addPet_req = requests.post("{}/pet/".format(Variable.api_url()), json={"petName" : pet_name, "bio" : bio, "birthday" : birthday, "sex" : sex, "status" : status, "price" : price, "profPhotoFilename" : pet_profPhoto_filename, "coverPhotoFilename" : pet_coverPhoto_filename, "specieId" : specie_id, "breedId" : breed_id}, headers={"authorization" : session["booped_in"]})
 
         return json.loads(addPet_req.text)
 
@@ -171,11 +220,67 @@ class Pet:
 
         return json.loads(updateUserPets_req.text)
 
+    @staticmethod
+    def change_to_adoption_status(public_id):
+        getPet_req = requests.get("{}/pet/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+        pet = json.loads(getPet_req.text)
+
+        pet_name = pet["pet_name"]
+        bio = pet["bio"]
+        birthday = pet["birthday"]
+        sex = pet["sex"]
+        status = 1
+        price = pet["price"]
+        profPhoto_filename = pet["profPhoto_filename"]
+        coverPhoto_filename = pet["coverPhoto_filename"]
+        pet_owner = pet["pet_owner"]
+
+        changePetStatus_req = requests.put("{}/pet/{}".format(Variable.api_url(), public_id), json={"petName" : pet_name, "bio" : bio, "birthday" : birthday, "sex" : sex, "status" : status, "price" : price, "profPhotoFilename" : profPhoto_filename, "coverPhotoFilename" : coverPhoto_filename, "petOwner" : pet_owner}, headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(changePetStatus_req.text)
+
+    @staticmethod
+    def change_to_sale_status(public_id):
+        getPet_req = requests.get("{}/pet/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+        pet = json.loads(getPet_req.text)
+
+        pet_name = pet["pet_name"]
+        bio = pet["bio"]
+        birthday = pet["birthday"]
+        sex = pet["sex"]
+        status = 2
+        price = pet["price"]
+        profPhoto_filename = pet["profPhoto_filename"]
+        coverPhoto_filename = pet["coverPhoto_filename"]
+        pet_owner = pet["pet_owner"]
+
+        changePetStatus_req = requests.put("{}/pet/{}".format(Variable.api_url(), public_id), json={"petName" : pet_name, "bio" : bio, "birthday" : birthday, "sex" : sex, "status" : status, "price" : price, "profPhotoFilename" : profPhoto_filename, "coverPhotoFilename" : coverPhoto_filename, "petOwner" : pet_owner}, headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(changePetStatus_req.text)
+
+    @staticmethod
+    def change_to_no_status(public_id):
+        getPet_req = requests.get("{}/pet/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+        pet = json.loads(getPet_req.text)
+
+        pet_name = pet["pet_name"]
+        bio = pet["bio"]
+        birthday = pet["birthday"]
+        sex = pet["sex"]
+        status = 0
+        price = pet["price"]
+        profPhoto_filename = pet["profPhoto_filename"]
+        coverPhoto_filename = pet["coverPhoto_filename"]
+        pet_owner = pet["pet_owner"]
+
+        changePetStatus_req = requests.put("{}/pet/{}".format(Variable.api_url(), public_id), json={"petName" : pet_name, "bio" : bio, "birthday" : birthday, "sex" : sex, "status" : status, "price" : price, "profPhotoFilename" : profPhoto_filename, "coverPhotoFilename" : coverPhoto_filename, "petOwner" : pet_owner}, headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(changePetStatus_req.text)
 
 class Specie:
     @staticmethod
     def get_all_specie():
-        getAllSpecie_req = requests.get("{}/specie/".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        getAllSpecie_req = requests.get("{}/specie/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
         
         return json.loads(getAllSpecie_req.text)
 
@@ -190,15 +295,22 @@ class Post:
     @staticmethod
     def new_post(data):
         form = data.form
+        fileForm = data.files
+
         content = form.get("shareContent_input")
-        newPost_req= requests.post("{}/post/".format(Variable.api_url()), json={"content" : content}, headers={"authorization" : session["booped_in"]})
+        photo = None
+        
+        if fileForm.get("sharePhoto_input"):
+            photo = Helper.save_image(fileForm.get("sharePhoto_input"))
+
+        newPost_req= requests.post("{}/post/".format(Variable.api_url()), json={"content" : content, "photo" : photo}, headers={"authorization" : session["booped_in"]})
         return json.loads(newPost_req.text)
 
 
     @staticmethod
     def get_user_posts(username):
         getUserPost_req = requests.get("{}/post/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
-  
+
         return json.loads(getUserPost_req.text)
 
 
@@ -235,7 +347,7 @@ class Comment:
 
     @staticmethod
     def get_rel_comment(post_id):
-        getRelation_req = requests.get("{}/comment/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
+        getRelation_req = requests.get("{}/comment/post/{}".format(Variable.api_url(), post_id), headers={"authorization" : session["booped_in"]})
         return json.loads(getRelation_req.text)
 
     @staticmethod
@@ -245,16 +357,27 @@ class Comment:
 
 class Deal:
     @staticmethod
-    def new_deal(data, pet_id):
+    def sale_pet(data, public_id):
         form = data.form
-        price = form.post("pricePet_input")
-        newDeal_req = requests.get("{}/deal/{}".format(Variable.api_url(), pet_id),  json={"deal" : comment},headers={"authorization" : session["booped_in"]})
-        return json.loads(newDeal_req.text)
+        price = form.get("forSale_input")
+        status = 'for_sale'
+        newSale_req = requests.post("{}/deal/{}".format(Variable.api_url(), public_id),  json={"price" : price, "status": status},headers={"authorization" : session["booped_in"]})
+        print('sale pet')
+        return json.loads(newSale_req.text)
+
+    @staticmethod
+    def adopt_pet(data, public_id):
+        form = data.form
+        price = '0.0'
+        status = 'adopt'
+        newStatus_req = requests.post("{}/deal/{}".format(Variable.api_url(), public_id),  json={"price":price, "status" : status},headers={"authorization" : session["booped_in"]})
+        print('adopt pet')
+        return json.loads(newStatus_req.text)
     
     @staticmethod
-    def get_all_deals(data):
-        
-        getAllDeals_req = requests.get("{}/deal/{}".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+    def get_all_deals():
+
+        getAllDeals_req = requests.get("{}/deal/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
         return json.loads(getAllDeals_req.text)
 
     @staticmethod
@@ -270,18 +393,22 @@ class Deal:
         return json.loads(deleteUserPosts_req.text)
 
     @staticmethod
+    def get_a_deal(public_id):
+        
+        getADeal_req = requests.get("{}/deal/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+        return json.loads(getADeal_req.text)
+
+
+    @staticmethod
     def get_user_deals(username):
         
         getUserDeal_req = requests.get("{}/deal/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
         return json.loads(getUserDeal_req.text)
-
-
-    @staticmethod
-    def get_all_posts():
-        allPosts_req = requests.get("{}/post/all".format(Variable.api_url()), headers={"authorization": session["booped_in"]})
-
-        return json.loads(allPosts_req.text)
     
+class Photo:
+    @staticmethod
+    def add_a_photo():
+        addPhoto_req = requests.post("{}/photo/")
 """
     -----GET CONTENT----
     @staticmethod

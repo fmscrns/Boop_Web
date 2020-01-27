@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% from "account_components.html" import gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6 %}
+{% from "navbar_components.html" import secured_navbar %}
+{% from "post_components.html" import post_item1, post_item2, post_item3, post_item4, post_item5 %}
+{% from "global_components.html" import profileSnippet %}
+    {% block bodyStyle %}
+        <body style="overflow-y:scroll;">
+    {% endblock bodyStyle %}
+
+    {% block navbarAdjust %}
+        <div id="secured-navbar" class="container-fluid">
+    {% endblock navbarAdjust %}
+
+    {% block navbarStyle %}
+        <nav class="navbar navbar-expand-lg navbar-dark">
+    {% endblock navbarStyle %}
+
+    {% block navbarNameplate %}
+        <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate.svg') }}" style="width:60px;">
+    {% endblock navbarNameplate %}
+
+    {% block navbarContent %}
+        {{ secured_navbar(current_user) }}
+    {% endblock navbarContent %}
+
+    {% block content %}
+        <div id="ha-body" class="container" style="padding:0;">
+            <div class="container" style="position:fixed;padding:0;">
+                <div class="row" style="padding:0;margin:0;">
+                    <div class="col-4" style="padding:0;">
+                        <div id="acc-leftSection" class="container-fluid" style="padding:0;margin:0;">
+                            <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
+                            {{ profileSnippet(current_user) }}
+                        </div>
+                        <div id="flash-primary-cont" class="container-fluid">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div id="ha-primary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                            <strong>{{ message }}</strong>
+                                            <button id="ha-primary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <div class="col">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="ha-leftSection-space" class="col-4"></div>
+                <div id="ha-rightSection" class="col">
+                    <div class="container-fluid">
+                        {{ post_item2(post, display_comms, post_owner, current_user, commentPostForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style>
+            #acc-search {
+                background-image: url({{ url_for('static', filename='assets/search.svg') }});
+                background-size:17.5px;
+                background-position: 4% 50%;
+                background-repeat: no-repeat;
+                text-indent: 30px;
+            }
+        </style>
+    {% endblock content %}
