@@ -103,10 +103,11 @@ def login():
 @boop.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
-    form = ShareContentForm()
     current_user_page = False
     current_user = User.get_current_user()
     
+    shareContentForm = ShareContentForm()
+
     postList_req = Post.get_all_posts()["data"]
     
     allPosts = []
@@ -126,7 +127,7 @@ def home():
 
         allPosts.append(dict)
 
-    return render_template("home.html", title="Home", current_user=current_user, all_posts=allPosts, shareContentForm=form, username=current_user["username"] )
+    return render_template("home.html", title="Home", current_user=current_user, all_posts=allPosts, shareContentForm=shareContentForm, username=current_user["username"] )
 
 @boop.route("/admin/users/all", methods=["GET"])
 @login_required
@@ -465,9 +466,11 @@ def pet_profile_wall(username, public_id):
     if user_existence is False:
         abort(404)
 
+    forSaleForm = ForSaleForm()
+
     pet_json = Pet.get_a_pet(public_id)
     pet_existence = Helper.pet_existence_check(pet_json)
-    print(pet_json)
+
     if pet_existence is False:
         abort(404)
 
@@ -479,7 +482,7 @@ def pet_profile_wall(username, public_id):
 
     pet_json["birthday"] = Helper.datetime_str_to_datetime_obj(pet_json["birthday"])  
 
-    return render_template("pet_profile.html", title="Account", public_id=public_id, current_user_page=current_user_page, current_user=current_user, user=user_json, pet=pet_json, owner_list=owner_list, postsNavActivate="3px #00002A solid")
+    return render_template("pet_profile.html", title="Account", updateUserForm=UpdateUserForm(), public_id=public_id, current_user_page=current_user_page, current_user=current_user, user=user_json, pet=pet_json, owner_list=owner_list, forSaleForm=forSaleForm, postsNavActivate="3px #00002A solid")
 
 
 @boop.route("/<username>/pets/<public_id>/delete", methods=["GET","POST","DELETE"])
@@ -501,47 +504,6 @@ def delete_pet(public_id, username):
     pet_json["birthday"] = Helper.datetime_str_to_datetime_obj(pet_json["birthday"])  
 
     return redirect(url_for('user_profile_pets',username=current_user["username"]))
-'''
-@boop.route("/<username>/pet/<pet_id>/deal", methods=["GET", "POST"])
-@login_required
-def deal_pet(username, pet_id):
-    current_user_page = False
-    current_user = User.get_current_user()
-    user_json = User.get_a_user(username)
-    user_existence = Helper.user_existence_check(user_json)
-
-    if user_existence is False:
-        abort(404)
-
-    dealPetForm = DealPetForm()
-
-    if username == current_user["username"]:
-        current_user_page = True
-
-    if request.method == "POST":
-            print('comment bitchhh')
-            if dealPetForm.validate_on_submit():
-                dealPet_json = Deal.new_deal(request,pet_id)
-                
-                print('deal routes')
-                if dealPet_json["status"] == "success":
-                    
-                    flash(dealPet_json["payload"], "success")
-                    
-                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
-
-                else:
-                    flash(dealPet_json["payload"], "danger")
-                    
-                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
-            
-            else:
-                flash("Try again.", "danger")
-                
-                return redirect(url_for("user_profile_posts", username=current_user["username"]))
-
-    return redirect(url_for("pet_profile_wall",username=current_user["username"]))
-'''   
 
 @boop.route("/<username>/pets/<public_id>/update", methods=["GET","PUT","DELETE"])
 @login_required
@@ -574,7 +536,7 @@ def display_post(public_id):
 
     comments = Comment.get_rel_comment(public_id)
     display_comments = []
-    print(comments)
+
     if comments:
         for x, comment in enumerate(comments):
             author = User.get_a_user(comment["posted_by"])
@@ -625,3 +587,194 @@ def logout():
     session.pop("booped_in")
 
     return redirect(url_for("welcome"))
+
+@boop.route("/<username>/pet/<public_id>/for_sale", methods=["GET", "POST"])
+@login_required
+def for_sale(username, public_id):
+    current_user_page = False
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    user_existence = Helper.user_existence_check(user_json)
+    deals = Deal.get_all_deals()['data']
+    pet = Pet.get_a_pet(public_id)
+    get_a_deal = Deal.get_a_deal(public_id)
+
+    if user_existence is False:
+        abort(404)
+
+    forSaleForm = ForSaleForm()
+
+    if username == current_user["username"]:
+        current_user_page = True
+
+    if request.method == "POST":
+            if forSaleForm.is_submitted():
+                
+                dealPet_json = Deal.sale_pet(request, public_id)
+                
+                if dealPet_json["status"] == "success":
+                    
+                    flash(dealPet_json["payload"], "success")
+                    
+                    return redirect(url_for("pet_profile_wall", username=current_user["username"], public_id=public_id))
+
+                else:
+                    flash(dealPet_json["payload"], "danger")
+                    
+                    return redirect(url_for("pet_profile_wall", username=current_user["username"], public_id=public_id))
+            
+            else:
+                flash("Try again.", "danger")
+                
+                return redirect(url_for("pet_profile_wall", username=current_user["username"], public_id=public_id))
+
+    return redirect(url_for("pet_profile_wall",username=current_user["username"], public_id=public_id))
+
+@boop.route("/<username>/pet/<public_id>/adopt", methods=["GET", "POST"])
+@login_required
+def adopt_pet(username, public_id):
+    current_user_page = False
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    user_existence = Helper.user_existence_check(user_json)
+    deals = Deal.get_all_deals()['data']
+    pet = Pet.get_a_pet(public_id)
+    get_a_deal = Deal.get_a_deal(public_id)
+
+    if user_existence is False:
+        abort(404)
+
+    forSaleForm = ForSaleForm()
+
+    if username == current_user["username"]:
+        current_user_page = True
+
+    if request.method == "POST":
+        if forSaleForm.is_submitted():
+
+            dealPet_json = Deal.adopt_pet(request, public_id)
+
+        return redirect(url_for("pet_profile_wall", username=current_user["username"], public_id=public_id))
+
+    return redirect(url_for("pet_profile_wall",username=current_user["username"], public_id=public_id))
+
+@boop.route("/<username>/pets/<public_id>/settings", methods=["GET", "POST"])
+@boop.route("/<username>/pets/<public_id>/settings/passport", methods=["GET", "POST"])
+@login_required
+def pet_settings_passport(username, public_id):
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    user_existence = Helper.user_existence_check(user_json)
+
+    if user_existence is False:
+        abort(404)
+
+    pet_json = Pet.get_a_pet(public_id)
+    pet_existence = Helper.pet_existence_check(pet_json)
+
+    if pet_existence is False:
+        abort(404)
+    
+    return render_template("pet_settings.html", title="Account", current_user=current_user, user=user_json, pet=pet_json, passportActive="active")
+
+@boop.route("/<username>/pets/<public_id>/settings/adoption", methods=["GET", "POST"])
+@login_required
+def pet_settings_adoption(username, public_id):
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    user_existence = Helper.user_existence_check(user_json)
+
+    if user_existence is False:
+        abort(404)
+
+    pet_json = Pet.get_a_pet(public_id)
+    pet_existence = Helper.pet_existence_check(pet_json)
+
+    if pet_existence is False:
+        abort(404)
+
+    if pet_json["status"] == 1:
+        closeAdoptionForm = CloseAdoptionForm()
+
+        if closeAdoptionForm.is_submitted():
+            closeAdoption_resp = Pet.change_to_no_status(public_id)
+
+            if closeAdoption_resp["status"] == "success":
+                flash(closeAdoption_resp["payload"], "success")
+
+                return redirect(url_for("pet_settings_adoption", username=username, public_id=public_id))
+
+            else:
+                flash(closeAdoption_resp["payload"], "danger")
+
+                return redirect(url_for("pet_settings_adoption", username=username, public_id=public_id))
+    
+        return render_template("pet_settings.html", title="Account", current_user=current_user, user=user_json, pet=pet_json, closeAdoptionForm=closeAdoptionForm, adoptionActive="active")
+
+    else:
+        forAdoptionForm = ForAdoptionForm()
+
+        if request.method == "POST":
+            if forAdoptionForm.validate_on_submit():
+                if forAdoptionForm.withoutPost_submit_input.data:
+                    changeToAdoptionStatus_resp = Pet.change_to_adoption_status(public_id)
+
+                    if changeToAdoptionStatus_resp["status"] == "success":
+                        flash(changeToAdoptionStatus_resp["payload"], "success")
+                        
+                        return redirect(url_for("pet_settings_adoption", username=username, public_id=public_id))
+
+                    else:
+                        flash(changeToAdoptionStatus_resp["payload"], "danger")
+
+                        return redirect(url_for("pet_settings_adoption", username=username, public_id=public_id))
+                    
+                elif forAdoptionForm.withPost_submit_input.data:
+                    shareContent_json = Post.new_post(request)
+                
+                    if shareContent_json["status"] == "success":
+                        changeToAdoptionStatus_resp = Pet.change_to_adoption_status(public_id)
+
+                        if changeToAdoptionStatus_resp["status"] == "success":
+                            flash(changeToAdoptionStatus_resp["payload"], "success")
+
+                        else:
+                            flash(changeToAdoptionStatus_resp["payload"], "danger")
+
+                        flash(shareContent_json["payload"], "success")
+                        
+                        return redirect(url_for("user_profile_posts", username=current_user["username"]))
+
+                    else:
+                        changeToAdoptionStatus_resp = Pet.change_to_adoption_status(public_id)
+
+                        if changeToAdoptionStatus_resp["status"] == "success":
+                            flash(changeToAdoptionStatus_resp["payload"], "success")
+
+                        else:
+                            flash(changeToAdoptionStatus_resp["payload"], "danger")
+
+                        flash(shareContent_json["payload"], "danger")
+                        
+                        return redirect(url_for("user_profile_posts", username=current_user["username"]))
+        
+        return render_template("pet_settings.html", title="Account", current_user=current_user, user=user_json, pet=pet_json, forAdoptionForm=forAdoptionForm, adoptionActive="active")
+
+@boop.route("/<username>/pets/<public_id>/settings/delete", methods=["GET", "POST"])
+@login_required
+def pet_settings_delete(username, public_id):
+    current_user_page = False
+    current_user = User.get_current_user()
+    user_json = User.get_a_user(username)
+    user_existence = Helper.user_existence_check(user_json)
+
+    if user_existence is False:
+        abort(404)
+    
+    pet_json = Pet.get_a_pet(public_id)
+    pet_existence = Helper.pet_existence_check(pet_json)
+
+    if pet_existence is False:
+        abort(404)
+
+    return render_template("pet_settings.html", title="Account", current_user=current_user, user=user_json, pet=pet_json, deleteActive="active")

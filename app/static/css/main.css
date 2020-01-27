@@ -38,6 +38,9 @@ body {
     #account-info-panel-rightSpace {
         right:20px;
     }
+    #pet-account-info-panel-rightSpace {
+        right:45px;
+    }
 }
 @media (min-width:768px) {
     #account-profPic {
@@ -65,6 +68,9 @@ body {
     }
     #account-info-panel-rightSpace {
         display:none;
+    }
+    #pet-account-info-panel-rightSpace {
+        display: none;
     }
     #account-primary-editProfile-btn-cont {
         margin:0;
@@ -305,6 +311,13 @@ body {
     overflow:hidden;
 
 }
+#settings-action-panel {
+    background-color:white;
+    border: 1px solid lightgray;
+    border-radius:8.5px;
+    overflow:hidden;
+
+}
 .account-actionPanel-item {
     font-weight:500;
     height:35px;
@@ -436,6 +449,12 @@ a#floating-btn-cont:hover > img {
 #gear-btn:hover .st0 {
     fill:#00002A; 
 }
+#gear-btn2 {
+    height:38px;
+}
+#gear-btn2:hover .st1 {
+    fill:white;
+}
 #navbar-collapse-toggler-btn:hover .st0 {
     fill:#00002A; 
 }
@@ -529,6 +548,8 @@ a#floating-btn-cont:hover > img {
 #account-details-panel {
     height:130px;
     background-color:white;
+    border-left:1px solid lightgray;
+    border-right:1px solid lightgray;
 }
 .acc-detail-img-cont {
     width:20px;
@@ -901,6 +922,19 @@ a#floating-btn-cont:hover > img {
 .gall-p-lr {
     padding-left: 1.5px;
     padding-right: 1.5px;
+}
+#acc-label {
+    position: absolute;
+    top:-45px;
+    left:16px;
+}
+.ps-rp-display {
+    border-radius: 8.5px;
+    border:1px solid lightgray;
+}
+#adopt-reason-textbox {
+    height:80px;
+    resize: none;
 }
 .red {
     background-color: red !important;

@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
-{% from "account_components.html" import content_item1, content_item2, content_item3, content_item4, content_item5, gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6 %}
+{% from "account_components.html" import pet_card, edit_profile_modal, content_item1, content_item2, content_item3, content_item4, content_item5, gallery_1, gallery_2, gallery_3, gallery_4, gallery_5, gallery_6 %}
 {% from "navbar_components.html" import secured_navbar %}
+{% from "global_components.html" import flash_primary_messages, flash_secondary_messages, search %}
 
     {% block bodyStyle %}
         <body style="overflow-y:scroll;">
@@ -28,21 +29,10 @@
                 <div class="row" style="padding:0;margin:0;">
                     <div class="col-4" style="padding:0;">
                         <div id="acc-leftSection" class="container-fluid" style="padding:0;margin:0;">
-                            <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
+                            {{ search(url_for('static', filename='assets/search.svg')) }}
                         </div>
                         <div id="flash-primary-cont" class="container-fluid">
-                            {% with messages = get_flashed_messages(with_categories=true) %}
-                                {% if messages %}
-                                    {% for category, message in messages %}
-                                        <div id="ha-primary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                            <strong>{{ message }}</strong>
-                                            <button id="ha-primary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endwith %}
+                            {{ flash_primary_messages(get_flashed_messages(with_categories=true)) }}
                         </div>
                     </div>
                     <div class="col">
@@ -84,134 +74,6 @@
                                                     <button type="button" data-toggle="modal" data-target="#update-user-modal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
                                                         Edit Profile
                                                     </button>
-                                                    <div class="modal" id="update-user-modal" tabindex="-1" role="dialog" aria-labelledby="update-user-modal-title" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="update-user-modal-title">
-                                                                        Update Profile Info
-                                                                    </h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <form method="POST" action="" enctype="multipart/form-data">
-                                                                    <div id="updateUserForm-modal-body" class="modal-body">
-                                                                        <div class="updateUser-form" class="container">
-                                                                            {{ updateUserForm.hidden_tag() }}
-                                                                            <fieldset class="form-group">
-                                                                                <label>Your Cover Photo</label>
-                                                                                <div id="image-upload-layout" class="row">
-                                                                                    <div class="col-md-auto">
-                                                                                        <div class="form-group">
-                                                                                            {% if updateUserForm.user_coverPhoto_input.errors %}
-                                                                                                {% for error in updateUserForm.user_coverPhoto_input.errors %}
-                                                                                                    <span class="text-danger"> {{ error }} </span></br>
-                                                                                                {% endfor %}
-                                                                                            {% else %}
-                                                                                                {{ updateUserForm.user_coverPhoto_input(class="form-control-file") }}
-                                                                                            {% endif %}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col">
-                                                                                        <img id="user-coverpic-preview" class="rounded mx-auto d-block">
-                                                                                        <script>document.getElementById("user-coverpic-preview").src = "{{ url_for('static', filename='images/' + current_user.coverPhotoFilename) }}";</script>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <label>Your Profile Photo</label>
-                                                                                <div id="image-upload-layout" class="row">
-                                                                                    <div class="col-md-auto">
-                                                                                        <div class="form-group">
-                                                                                            {% if updateUserForm.user_profPhoto_input.errors %}
-                                                                                                {% for error in updateUserForm.user_profPhoto_input.errors %}
-                                                                                                    <span class="text-danger"> {{ error }} </span></br>
-                                                                                                {% endfor %}
-                                                                                            {% else %}
-                                                                                                {{ updateUserForm.user_profPhoto_input(class="form-control-file") }}
-                                                                                            {% endif %}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col">
-                                                                                        <img id="user-profpic-preview" class="rounded mx-auto d-block">
-                                                                                        <script>document.getElementById("user-profpic-preview").src = "{{ url_for('static', filename='images/' + current_user.profPhotoFilename) }}";</script>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label>First Name</label>
-                                                                                    {% if updateUserForm.firstName_input.errors %}
-                                                                                        {{ updateUserForm.firstName_input(class="form-control is-invalid") }}
-                                                                                        <div class="invalid-feedback">
-                                                                                            {% for error in updateUserForm.firstName_input.errors %}
-                                                                                                <span> {{ error }} </span>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    {% else %}
-                                                                                        {{ updateUserForm.firstName_input(class="form-control") }}
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label>Last Name</label>
-                                                                                    {% if updateUserForm.lastName_input.errors %}
-                                                                                        {{ updateUserForm.lastName_input(class="form-control is-invalid") }}
-                                                                                        <div class="invalid-feedback">
-                                                                                            {% for error in updateUserForm.lastName_input.errors %}
-                                                                                                <span> {{ error }} </span>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    {% else %}
-                                                                                        {{ updateUserForm.lastName_input(class="form-control") }}
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label>Contact Number</label>
-                                                                                    {% if updateUserForm.contactNo_input.errors %}
-                                                                                        {{ updateUserForm.contactNo_input(class="form-control is-invalid") }}
-                                                                                        <div class="invalid-feedback">
-                                                                                            {% for error in updateUserForm.contactNo_input.errors %}
-                                                                                                <span> {{ error }} </span>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    {% else %}
-                                                                                        {{ updateUserForm.contactNo_input(class="form-control") }}
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label>Username</label>
-                                                                                    {% if updateUserForm.username_input.errors %}
-                                                                                        {{ updateUserForm.username_input(class="form-control is-invalid") }}
-                                                                                        <div class="invalid-feedback">
-                                                                                            {% for error in updateUserForm.username_input.errors %}
-                                                                                                <span> {{ error }} </span>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    {% else %}
-                                                                                        {{ updateUserForm.username_input(class="form-control") }}
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label>Email Address</label>
-                                                                                    {% if updateUserForm.email_input.errors %}
-                                                                                        {{ updateUserForm.email_input(class="form-control is-invalid") }}
-                                                                                        <div class="invalid-feedback">
-                                                                                            {% for error in updateUserForm.email_input.errors %}
-                                                                                                <span> {{ error }} </span>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    {% else %}
-                                                                                        {{ updateUserForm.email_input(class="form-control") }}
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                            </fieldset>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        {{ updateUserForm.updateUser_submit_input(class="btn btn-outline-primary") }}
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                             {% endif %}
                                             </div>
                                         </div>
@@ -220,7 +82,7 @@
                                 <div id="account-info-panel-rightSpace" class="col-4">
                                     <div class="container">
                                         {% if current_user_page == True %}  
-                                            <button type="button" id="edit-user-modal-title" class="btn btn-outline-primary" data-toggle="modal" data-target="#updateProfileModal">
+                                            <button type="button" data-toggle="modal" data-target="#update-user-modal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
                                                 Edit Profile
                                             </button>
                                         {% endif %}
@@ -247,18 +109,7 @@
                         {% if user_pets is defined %}
                             <div id="account-content-pets-panel" class="container-fluid">
                                 <div id="flash-secondary-cont" class="container-fluid">
-                                    {% with messages = get_flashed_messages(with_categories=true) %}
-                                        {% if messages %}
-                                            {% for category, message in messages %}
-                                                <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                                    <strong>{{ message }}</strong>
-                                                    <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                            {% endfor %}
-                                        {% endif %}
-                                    {% endwith %}
+                                    {{ flash_secondary_messages(get_flashed_messages(with_categories=true)) }}
                                 </div>
                                 {% if user_pets is defined and user_pets|length == 0 %}
                                     <div class="container-fluid">
@@ -268,32 +119,7 @@
                                 <div id="acc-content-pet-deck" class="row">
                                     {% for pet in user_pets %}
                                         <div class="col-4">
-                                            <a class="pet-card" href="{{ url_for('pet_profile_wall', username=user.username, public_id=pet.public_id) }}">
-                                                <div class="card border-all">
-                                                    <img class="card-img-top acc-pc-cp" src="{{ url_for('static', filename='images/{}'.format(pet.coverPhoto_filename)) }}">
-                                                    <div class="card-body" style="margin-top:-20px;">
-                                                        <img class="pet-profPic-sm float-left" src="{{ url_for('static', filename='images/{}'.format(pet.profPhoto_filename)) }}">
-                                                        <div class="container-fluid acc-pc-pn pl-4 pt-1">
-                                                            <span class="p-2">{{ pet.pet_name }}</span>
-                                                        </div>
-                                                        <div class="text-muted small mt-3">
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    {{ pet.sex }}
-                                                                </div>
-                                                                <div class="w-100"></div>
-                                                                <div class="col">
-                                                                    {{ pet.specie_name }}
-                                                                </div>
-                                                                <div class="w-100"></div>
-                                                                <div class="col">
-                                                                    {{ pet.breed_name }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
+                                            {{ pet_card(user, pet) }}
                                         </div>
                                         {% if loop.index % 3 == 0 %}
                                             <div class="w-100" style="height:20px;"></div>
@@ -309,18 +135,7 @@
                         {% elif user_posts is defined %}
                             <div id="account-content-pets-panel" class="container-fluid">
                                 <div id="flash-secondary-cont" class="container-fluid">
-                                    {% with messages = get_flashed_messages(with_categories=true) %}
-                                        {% if messages %}
-                                            {% for category, message in messages %}
-                                                <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                                    <strong>{{ message }}</strong>
-                                                    <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                            {% endfor %}
-                                        {% endif %}
-                                    {% endwith %}
+                                    {{ flash_secondary_messages(get_flashed_messages(with_categories=true)) }}
                                 </div>
                                 {% if user_posts is defined and user_posts|length == 0 %}
                                     <div class="container-fluid">
@@ -613,7 +428,7 @@
                             specie_select.onchange = function() {
                                 specie_id = specie_select.value;
 
-                                fetch("http://127.0.0.1:5000/breed/specie/" + specie_id, {
+                                fetch("https://boopitapi.herokuapp.com/breed/specie/" + specie_id, {
                                     method: "GET",
                                     mode: "cors",
                                     cache: "no-cache",
@@ -698,13 +513,5 @@
                 {% endif %}
             {% endif %}
         </div>
-        <style>
-            #acc-search {
-                background-image: url({{ url_for('static', filename='assets/search.svg') }});
-                background-size:17.5px;
-                background-position: 4% 50%;
-                background-repeat: no-repeat;
-                text-indent: 30px;
-            }
-        </style>
+        {{ edit_profile_modal(current_user, updateUserForm) }}
     {% endblock content %}

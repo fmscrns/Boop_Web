@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% from "navbar_components.html" import secured_navbar %}
 {% from "home_components.html" import content_item1, content_item2, content_item3, content_item4, content_item5 %}
-{% from "left_components.html" import profileSnippet %}
+{% from "global_components.html" import profileSnippet, flash_primary_messages, flash_secondary_messages, search %}
 
     {% block bodyStyle %}
         <body style="overflow-y:scroll;";>
@@ -29,26 +29,72 @@
                 <div class="row" style="padding:0;margin:0;">
                     <div class="col-4" style="padding:0;">
                         <div id="ha-leftSection" style="padding-top:0;">
-                            <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
+                            {{ search(url_for('static', filename='assets/search.svg')) }}
                             {{ profileSnippet(current_user) }}
-                            <button type="button" id="home-leftSect-postStory" class="btn btn-light btn-block">
+                            <!-- <button type="button" id="home-leftSect-postStory" class="btn btn-light btn-block" data-toggle="modal" data-target="#share-content">
                                 <img class="hci-bb-p" src="{{ url_for('static', filename='assets/bullhorn.svg') }}">
                                 Post Story
                             </button>
-                        </div>
-                        <div id="flash-primary-cont" class="container-fluid">
-                            {% with messages = get_flashed_messages(with_categories=true) %}
-                                {% if messages %}
-                                    {% for category, message in messages %}
-                                        <div id="ha-primary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                            <strong>{{ message }}</strong>
-                                            <button id="ha-primary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            
+                            <div class="modal" id="share-content" tabindex="-1" role="dialog" aria-labelledby="share-content-modal-title" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="share-content-title">Share something</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endwith %}
+                                        <form method="POST" action="" enctype="multipart/form-data">
+                                            <div id="shareContentForm-modal-body" class="modal-body">
+                                                <div class="postStory-form" class="container">
+                                                    {{ shareContentForm.hidden_tag() }}
+                                                    <fieldset class="form-group">
+                                                        <label>Upload Image</label>
+                                                        <div id="image-upload-layout" class="row">
+                                                            <div class="col-md-auto">
+                                                                <div class="form-group">
+                                                                    {% if shareContentForm.sharePhoto_input.errors %}
+                                                                        {% for error in shareContentForm.sharePhoto_input.errors %}
+                                                                            <span class="text-danger"> {{ error }} </span></br>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        {{ shareContentForm.sharePhoto_input(class="form-control-file") }}
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <img id="post-sharephoto-preview" class="rounded mx-auto d-block">
+                                                                <script>document.getElementById("post-sharephoto-preview").src = "{{ url_for('static', filename='images/pet-default-profPhoto.jpg') }}";</script>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            {% if shareContentForm.shareContent_input.errors %}
+                                                                {{ shareContentForm.shareContent_input(class="form-control is-invalid") }}
+                                                                <div class="invalid-feedback">
+                                                                    {% for error in shareContentForm.shareContent_input.errors %}
+                                                                        <span> {{ error }} </span>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% else %}
+                                                                {{ shareContentForm.shareContent_input(class="form-control") }}
+                                                            {% endif %}
+                                                        </div>
+                                                      
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                {{ shareContentForm.shareContent_submit_input(class="btn btn-outline-primary") }}
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div id="flash-primary-cont" class="container-fluid">
+                            {{ flash_primary_messages(get_flashed_messages(with_categories=true)) }}
                         </div>
                     </div>
                     <div class="col"></div>
@@ -60,18 +106,7 @@
                     <div class="container-fluid mp-0">
                         <div id="home-content-panel" class="container-fluid">
                             <div id="flash-secondary-cont" class="container-fluid">
-                                {% with messages = get_flashed_messages(with_categories=true) %}
-                                    {% if messages %}
-                                        {% for category, message in messages %}
-                                            <div id="ha-secondary-flash" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                                <strong>{{ message }}</strong>
-                                                <button id="ha-secondary-flash-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endwith %}
+                                {{ flash_secondary_messages(get_flashed_messages(with_categories=true)) }}
                             </div>
                             <div id="home-content-group" class="list-group">
                                 {% for post in all_posts %}
@@ -83,13 +118,4 @@
                 </div>
             </div>
         </div>
-        <style>
-            #acc-search {
-                background-image: url({{ url_for('static', filename='assets/search.svg') }});
-                background-size:17.5px;
-                background-position: 4% 50%;
-                background-repeat: no-repeat;
-                text-indent: 30px;
-            }
-        </style>
     {% endblock content %}

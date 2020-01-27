@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, IntegerField, PasswordField, BooleanField, RadioField, SelectField, SelectMultipleField, SubmitField
+from wtforms import StringField, IntegerField, PasswordField, BooleanField, RadioField, SelectField, SelectMultipleField, SubmitField, DecimalField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, InputRequired, Length, Email, NumberRange, EqualTo, ValidationError
 from app.services import Auth, User
+from decimal import Decimal
 
 class SignupPartOneForm(FlaskForm):
     firstName_input = StringField("First Name", validators=[DataRequired(), Length(min=2, max=50)])
@@ -78,7 +79,7 @@ class AddPetForm(FlaskForm):
     pet_profPic_input = FileField("Pet Profile Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
     pet_coverPic_input = FileField("Pet Cover Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
 
-    addPet_submit_input = SubmitField("Add pet")
+    addPet_submit_input = SubmitField("Add Pet")
 
 class UpdatePetForm(FlaskForm):
     petName_input = StringField("Pet Name", validators=[DataRequired(), Length(min=2, max=80)])
@@ -88,8 +89,9 @@ class UpdatePetForm(FlaskForm):
     specie_input = SelectField("Specie", coerce=str, choices=[], validators=[InputRequired()])
     breed_input = SelectField("Breed", coerce=str, choices=[], validators=[InputRequired()])
     pet_profPic_input = FileField("Pet Profile Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
+    pet_coverPic_input = FileField("Pet Cover Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
 
-    updatePet_submit_input = SubmitField("Update pet")
+    updatePet_submit_input = SubmitField("Update Pet")
 
 class ShareContentForm(FlaskForm):
     shareContent_input = StringField("Story Content", validators=[DataRequired(), Length(min=1, max=150)])
@@ -102,7 +104,18 @@ class CommentPostForm(FlaskForm):
 
     commentPost_submit_input = SubmitField("Comment Post")
 
-class DealPetForm(FlaskForm):
-    pricePet_input = StringField("Price", validators=[DataRequired(), Length(min=1, max=150)])
+class ForAdoptionForm(FlaskForm):
+    shareContent_input = StringField("Reason In Opening Pet For Adoption", validators=[Length(max=150)])
+    sharePhoto_input = FileField("Story Photo", validators=[FileAllowed(["jpg", "jpeg", "png"])])
 
-    dealPet_submit_input = SubmitField("Submit")
+    withoutPost_submit_input = SubmitField("Not now, but continue")
+    withPost_submit_input = SubmitField("Post and continue")
+
+class CloseAdoptionForm(FlaskForm):
+    closeAdoption_submit_input = SubmitField("Close adoption")
+
+class ForSaleForm(FlaskForm):
+    openForSale_reason_input = StringField("Reason In Opening Pet For Sale", validators=[DataRequired(), Length(min=1, max=150)])
+    forSale_input = DecimalField("Price", validators=[InputRequired(), NumberRange(min=Decimal('0.0'))])
+
+    forSale_submit_input = SubmitField("Open Pet For Sale")

@@ -201,5 +201,17 @@
     </div>
 {% endmacro %}
 
+{% macro style(search_icon_link) %}
+    <style>
+        #acc-search {
+            background-image: url({{ search_icon_link }});
+            background-size:17.5px;
+            background-position: 4% 50%;
+            background-repeat: no-repeat;
+            text-indent: 30px;
+        }
+    </style>
+{% endmacro %}
+
 
 

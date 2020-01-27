@@ -1982,31 +1982,31 @@ pre code {
 }
 
 .form-control::-webkit-input-placeholder {
-  color: rgba(0, 0, 42, 0.8);
+  color: gray;
   opacity: 1;
   font-size: 15px;
 }
 
 .form-control::-moz-placeholder {
-  color: rgba(0, 0, 42, 0.8);
+  color: gray;
   opacity: 1;
   font-size: 15px;
 }
 
 .form-control:-ms-input-placeholder {
-  color: rgba(0, 0, 42, 0.8);
+  color: gray;
   opacity: 1;
   font-size: 15px;
 }
 
 .form-control::-ms-input-placeholder {
-  color: rgba(0, 0, 42, 0.8);
+  color: gray;
   opacity: 1;
   font-size: 15px;
 }
 
 .form-control::placeholder {
-  color: rgba(0, 0, 42, 0.8);
+  color: gray;
   opacity: 1;
   font-size: 15px;
 }
@@ -2548,8 +2548,8 @@ fieldset:disabled a.btn {
 
 .btn-secondary:hover {
   color: #fff;
-  background-color: rgba(0, 0, 42, 0.8);
-  border-color: rgba(0, 0, 42, 0.8):
+  background-color: gray;
+  border-color: gray:
 }
 
 .btn-secondary:focus, .btn-secondary.focus {

@@ -1,3 +1,163 @@
+{% macro pet_card(user, pet) %}
+    <a class="pet-card" href="{{ url_for('pet_profile_wall', username=user.username, public_id=pet.public_id) }}">
+        <div class="card border-all">
+            <img class="card-img-top acc-pc-cp" src="{{ url_for('static', filename='images/{}'.format(pet.coverPhoto_filename)) }}">
+            <div class="card-body" style="margin-top:-20px;">
+                <img class="pet-profPic-sm float-left" src="{{ url_for('static', filename='images/{}'.format(pet.profPhoto_filename)) }}">
+                <div class="container-fluid acc-pc-pn pl-4 pt-1">
+                    <span class="p-2">{{ pet.pet_name }}</span>
+                </div>
+                <div class="text-muted small mt-3">
+                    <div class="row">
+                        <div class="col">
+                            {{ pet.sex }}
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            {{ pet.specie_name }}
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            {{ pet.breed_name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+{% endmacro %}
+
+{% macro edit_profile_modal(current_user, updateUserForm) %}
+    <div class="modal" id="update-user-modal" tabindex="-1" role="dialog" aria-labelledby="update-user-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="update-user-modal-title">
+                        Update Profile Info
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="" enctype="multipart/form-data">
+                    <div id="updateUserForm-modal-body" class="modal-body">
+                        <div class="updateUser-form" class="container">
+                            {{ updateUserForm.hidden_tag() }}
+                            <fieldset class="form-group">
+                                <label>Your Cover Photo</label>
+                                <div id="image-upload-layout" class="row">
+                                    <div class="col-md-auto">
+                                        <div class="form-group">
+                                            {% if updateUserForm.user_coverPhoto_input.errors %}
+                                                {% for error in updateUserForm.user_coverPhoto_input.errors %}
+                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                {% endfor %}
+                                            {% else %}
+                                                {{ updateUserForm.user_coverPhoto_input(class="form-control-file") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <img id="user-coverpic-preview" class="rounded mx-auto d-block">
+                                        <script>document.getElementById("user-coverpic-preview").src = "{{ url_for('static', filename='images/' + current_user.coverPhotoFilename) }}";</script>
+                                    </div>
+                                </div>
+                                <label>Your Profile Photo</label>
+                                <div id="image-upload-layout" class="row">
+                                    <div class="col-md-auto">
+                                        <div class="form-group">
+                                            {% if updateUserForm.user_profPhoto_input.errors %}
+                                                {% for error in updateUserForm.user_profPhoto_input.errors %}
+                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                {% endfor %}
+                                            {% else %}
+                                                {{ updateUserForm.user_profPhoto_input(class="form-control-file") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <img id="user-profpic-preview" class="rounded mx-auto d-block">
+                                        <script>document.getElementById("user-profpic-preview").src = "{{ url_for('static', filename='images/' + current_user.profPhotoFilename) }}";</script>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    {% if updateUserForm.firstName_input.errors %}
+                                        {{ updateUserForm.firstName_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updateUserForm.firstName_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updateUserForm.firstName_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    {% if updateUserForm.lastName_input.errors %}
+                                        {{ updateUserForm.lastName_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updateUserForm.lastName_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updateUserForm.lastName_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    {% if updateUserForm.contactNo_input.errors %}
+                                        {{ updateUserForm.contactNo_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updateUserForm.contactNo_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updateUserForm.contactNo_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    {% if updateUserForm.username_input.errors %}
+                                        {{ updateUserForm.username_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updateUserForm.username_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updateUserForm.username_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    {% if updateUserForm.email_input.errors %}
+                                        {{ updateUserForm.email_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updateUserForm.email_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updateUserForm.email_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {{ updateUserForm.updateUser_submit_input(class="btn btn-outline-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
 {% macro content_item1(post) %}
     <a href="{{ url_for('display_post', public_id=post.public_id) }}" class="list-group-item list-group-item-action pr-1">
         <div class="float-left pt-1">
