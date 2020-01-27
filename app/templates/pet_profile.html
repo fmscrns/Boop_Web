@@ -70,6 +70,22 @@
                                                         <div id="account-primary-nameplate-cont" class="col">
                                                             <h5 id="account-fullName">{{ pet.pet_name }}</h5>
                                                         </div>
+                                                        {% for deal in deals %}
+                                                            {% if deal.pet_id == pet.public_id %}
+                                                                {% if deal.status == 'adopt' %}
+                                                                    <div id="account-primary-nameplate-cont" class="col">  
+                                                                        <h5> For Adoption </h5>
+                                                                    </div>
+                                                                {% elif deal.status == 'for_sale' %}
+                                                                    <div id="account-primary-nameplate-cont" class="col">  
+                                                                        <h5> Price : {{ deal.price }} </h5>
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                <div id="account-primary-nameplate-cont" class="col"></div>
+                                                            {% endif %}                                                    
+                                                        {% endfor %}
+
                                                         <div class="w-100"></div>
                                                         <div id="account-secondary-nameplate-cont" class="col">
                                                             <small>{{ pet.bio }}</small>

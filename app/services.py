@@ -14,8 +14,9 @@ class Variable:
 
     @staticmethod
     def api_url():
-        return "https://boopitapi.herokuapp.com/"
-
+        # return "https://boopitapi.herokuapp.com"
+        return "http://127.0.0.1:5000"
+        
 class Helper:
     @staticmethod
     def user_existence_check(user):
@@ -141,27 +142,21 @@ class User:
         return json.loads(petOwners_req.text)
 
     @staticmethod
-    def update_user(data):
-        current_user = User.get_current_user()
 
+    def update_user(username,data):
         form = data.form
-        fileForm = data.files
 
-        new_first_name = form.get("firstName_input")
-        new_last_name = form.get("lastName_input")
-        new_username = form.get("username_input")
-        new_email = form.get("email_input")
-        new_password = form.get("password_input")
-        new_contact_no = form.get("contactNo_input")
-        new_user_profPhoto_filename = current_user["profPhotoFilename"]
-        new_user_coverPhoto_filename = current_user["coverPhotoFilename"]
-        
-        if fileForm.get("user_profPhoto_input"):
-            new_user_profPhoto_filename = Helper.save_image(fileForm.get("user_profPhoto_input"))
-        if fileForm.get("user_coverPhoto_input"):
-            new_user_coverPhoto_filename = Helper.save_image(fileForm.get("user_coverPhoto_input"))
+        print('servicess!!!')
 
-        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), current_user["username"]), json={"firstName" : new_first_name, "lastName" : new_last_name, "username" : new_username, "email" : new_email, "password" : new_password, "contactNo" : new_contact_no, "profPhotoFilename" : new_user_profPhoto_filename, "coverPhotoFilename" : new_user_coverPhoto_filename}, headers={"authorization" : session["booped_in"]})
+        first_name = form.get("firstName_input")
+        last_name = form.get("lastName_input")
+        bio = form.get("bio_input")
+        username = form.get("username_input")
+        contact_no = form.get("contactNo_input")
+
+        userUpdate_req = requests.post("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "bio" : bio, "username" : username, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
+        print('---------------------------------------')
+        print (userUpdate_req)
         
         return json.loads(userUpdate_req.text)
 
@@ -277,6 +272,12 @@ class Pet:
         
         return json.loads(changePetStatus_req.text)
 
+    @staticmethod
+    def get_all_pets():
+        getAllPets_req = requests.get("{}/pet/user/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(getAllPets_req.text)
+
 class Specie:
     @staticmethod
     def get_all_specie():
@@ -284,12 +285,43 @@ class Specie:
         
         return json.loads(getAllSpecie_req.text)
 
+    @staticmethod
+    def new_specie(data):
+        form = data.form
+
+        specie_name = form.get("addSpecies_input")
+        newSpecies_req = requests.post("{}/specie/".format(Variable.api_url()),  json={"specieName" : specie_name},  headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(newSpecies_req.text)
+    
+    @staticmethod
+    def delete_species(public_id):
+        deleteSpecies_req = requests.delete("{}/specie/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
+
+        return json.loads(deleteSpecies_req.text)
+
+    
+
 class Breed:
     @staticmethod
     def get_dog_breeds(specie_id):
         getDogBreeds_req = requests.get("{}/breed/specie/{}".format(Variable.api_url(), specie_id), headers={"authorization" : session["booped_in"]})
         
         return json.loads(getDogBreeds_req.text)
+
+    @staticmethod
+    def new_breed(data, public_id):
+        form = data.form
+        breed_name = form.get("addBreed_input")
+        addNewBreeds_req = requests.post("{}/breed/{}".format(Variable.api_url(), public_id),  json={"breedName" : breed_name}, headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(addNewBreeds_req.text)
+
+    @staticmethod
+    def get_all_breeds():
+        getAllBreeds_req = requests.get("{}/breed/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
+        
+        return json.loads(getAllBreeds_req.text)
 
 class Post:
     @staticmethod
@@ -334,10 +366,10 @@ class Post:
 
 class Comment:
     @staticmethod
-    def new_comment(data, post_id):
+    def new_comment(data, public_id):
         form = data.form
         comment = form.get("commentPost_input")
-        newComment_req= requests.post("{}/comment/{}".format(Variable.api_url(), post_id), json={"comment" : comment}, headers={"authorization" : session["booped_in"]})
+        newComment_req= requests.post("{}/comment/{}".format(Variable.api_url(), public_id), json={"comment" : comment}, headers={"authorization" : session["booped_in"]})
         return json.loads(newComment_req.text)
 
     @staticmethod
@@ -355,69 +387,12 @@ class Comment:
         getAllComments_req = requests.get("{}/comment/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
         return json.loads(getAllComments_req.text)
 
-class Deal:
     @staticmethod
-    def sale_pet(data, public_id):
-        form = data.form
-        price = form.get("forSale_input")
-        status = 'for_sale'
-        newSale_req = requests.post("{}/deal/{}".format(Variable.api_url(), public_id),  json={"price" : price, "status": status},headers={"authorization" : session["booped_in"]})
-        print('sale pet')
-        return json.loads(newSale_req.text)
+    def delete_comment(public_id):
+        deletePostComment_req = requests.delete("{}/comment/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
 
-    @staticmethod
-    def adopt_pet(data, public_id):
-        form = data.form
-        price = '0.0'
-        status = 'adopt'
-        newStatus_req = requests.post("{}/deal/{}".format(Variable.api_url(), public_id),  json={"price":price, "status" : status},headers={"authorization" : session["booped_in"]})
-        print('adopt pet')
-        return json.loads(newStatus_req.text)
-    
-    @staticmethod
-    def get_all_deals():
+        return json.loads(deletePostComment_req.text)
 
-        getAllDeals_req = requests.get("{}/deal/all".format(Variable.api_url()), headers={"authorization" : session["booped_in"]})
-        return json.loads(getAllDeals_req.text)
-
-    @staticmethod
-    def get_a_deal(public_id):
-        
-        getADeal_req = requests.get("{}/deal/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
-        return json.loads(getADeal_req.text)
-
-    @staticmethod
-    def delete_deal(public_id):
-        deleteDeal_req = requests.delete("{}/deal/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
-
-        return json.loads(deleteUserPosts_req.text)
-
-    @staticmethod
-    def get_a_deal(public_id):
-        
-        getADeal_req = requests.get("{}/deal/{}".format(Variable.api_url(), public_id), headers={"authorization" : session["booped_in"]})
-        return json.loads(getADeal_req.text)
-
-
-    @staticmethod
-    def get_user_deals(username):
-        
-        getUserDeal_req = requests.get("{}/deal/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
-        return json.loads(getUserDeal_req.text)
-    
-class Photo:
-    @staticmethod
-    def add_a_photo():
-        addPhoto_req = requests.post("{}/photo/")
-"""
-    -----GET CONTENT----
-    @staticmethod
-    def get_a_content(data):
-        getContent_req = requests.get("{}/content/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
-        
-        return json.loads(getUserPets_req.text)
-
-"""
 
 
 

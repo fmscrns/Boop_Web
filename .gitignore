@@ -5,5 +5,5 @@ env/
 venv/
 *iml
 *xml
-__pycache__/
 .idea/
+__pycache__/

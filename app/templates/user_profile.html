@@ -101,7 +101,7 @@
                                 <a href="{{ url_for('user_profile_gallery', username=user.username) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ galleryNavActivate }};">
                                     Gallery
                                 </a>
-                                <a href="{{ url_for('user_profile_likes', username=user.username) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ likesNavActivate }};">
+                                <a href="#" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ likesNavActivate }};">
                                     Likes
                                 </a>
                             </div>
@@ -176,11 +176,9 @@
                                                     <img class="img-fluid gall-item gall-i-s3 gall-p-lr" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                 </div>
                                             {% elif loop.index == 3 %}
-                                                    <div class="col mp-0">
-                                                        <img class="img-fluid gall-item gall-i-s3 gall-br-tbr gall-p-l" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
-                                                    </div>
+                                                <div class="col mp-0">
+                                                    <img class="img-fluid gall-item gall-i-s3 gall-br-tbr gall-p-l" src="{{ url_for('static', filename='images/{}'.format(photo)) }}">
                                                 </div>
-                                                <div class="row mp-0">
                                             {% endif %}
                                         {% elif loop.length > 3 %}
                                             {% if loop.index == 1 %}
@@ -428,7 +426,7 @@
                             specie_select.onchange = function() {
                                 specie_id = specie_select.value;
 
-                                fetch("https://boopitapi.herokuapp.com/breed/specie/" + specie_id, {
+                                fetch("http://127.0.0.1:5000/breed/specie/" + specie_id, {
                                     method: "GET",
                                     mode: "cors",
                                     cache: "no-cache",
@@ -483,7 +481,9 @@
                                                     </div>
                                                     <div class="col">
                                                         <img id="post-sharephoto-preview" class="rounded mx-auto d-block">
-                                                        <script>document.getElementById("post-sharephoto-preview").src = "{{ url_for('static', filename='images/pet-default-profPhoto.jpg') }}";</script>
+                                                        <script>
+                                                            document.getElementById("post-sharephoto-preview").src = "{{ url_for('static', filename='images/pet-default-profPhoto.jpg') }}";
+                                                        </script>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
