@@ -426,7 +426,7 @@
                             specie_select.onchange = function() {
                                 specie_id = specie_select.value;
 
-                                fetch("http://127.0.0.1:5000/breed/specie/" + specie_id, {
+                                fetch("https://boopitapi.herokuapp.com/breed/specie/" + specie_id, {
                                     method: "GET",
                                     mode: "cors",
                                     cache: "no-cache",

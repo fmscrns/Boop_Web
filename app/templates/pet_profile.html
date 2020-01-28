@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "pet_account_components.html" import edit_pet_profile_modal %}
 {% from "navbar_components.html" import secured_navbar %}
 {% from "global_components.html" import flash_primary_messages, flash_secondary_messages, search %}
 
@@ -70,22 +71,6 @@
                                                         <div id="account-primary-nameplate-cont" class="col">
                                                             <h5 id="account-fullName">{{ pet.pet_name }}</h5>
                                                         </div>
-                                                        {% for deal in deals %}
-                                                            {% if deal.pet_id == pet.public_id %}
-                                                                {% if deal.status == 'adopt' %}
-                                                                    <div id="account-primary-nameplate-cont" class="col">  
-                                                                        <h5> For Adoption </h5>
-                                                                    </div>
-                                                                {% elif deal.status == 'for_sale' %}
-                                                                    <div id="account-primary-nameplate-cont" class="col">  
-                                                                        <h5> Price : {{ deal.price }} </h5>
-                                                                    </div>
-                                                                {% endif %}
-                                                            {% else %}
-                                                                <div id="account-primary-nameplate-cont" class="col"></div>
-                                                            {% endif %}                                                    
-                                                        {% endfor %}
-
                                                         <div class="w-100"></div>
                                                         <div id="account-secondary-nameplate-cont" class="col">
                                                             <small>{{ pet.bio }}</small>
@@ -113,7 +98,7 @@
                                                             </svg>
                                                         </div>
                                                     </a>
-                                                    <button type="button" data-toggle="modal" data-target="#update-user-modal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
+                                                    <button type="button" data-toggle="modal" data-target="#update-pet-modal" id="edit-pet-modal-title" class="btn btn-outline-primary float-right">
                                                         Edit Profile
                                                     </button>
                                                 {% endif %}
@@ -279,4 +264,5 @@
                 </div>
             </div>
         </div>
+        {{ edit_pet_profile_modal(pet, updatePetForm) }}
     {% endblock content %}

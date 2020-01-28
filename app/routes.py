@@ -245,7 +245,6 @@ def user_profile_pets(username):
             addPetForm.breed_input.choices = [(request.form.get("breed_input"), "")]
 
             if addPetForm.validate_on_submit():
-                print('add pet!!')
                 addPet_json = Pet.add_a_pet(request)
 
                 if addPet_json["status"] == "success":
@@ -261,9 +260,32 @@ def user_profile_pets(username):
             if updateUserForm.validate_on_submit():
                 updateUser_json = User.update_user(request)
                 
+                if updateUser_json["status"]  == "success":
+                    flash(updateUser_json["payload"], "success")
 
-                return redirect(url_for("user_profile_pets", username=current_user["username"]))
+                    current_user = User.get_current_user()
 
+                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
+                
+                else:
+                    flash(updateUser_json["payload"], "danger")
+
+                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
+
+            else:
+                flash("Try again.", "danger")
+                
+
+                return redirect(url_for("user_profile_posts", username=current_user["username"]))
+
+        elif request.method == "GET":
+            updateUserForm.firstName_input.default = current_user["firstName"]
+            updateUserForm.lastName_input.default = current_user["lastName"]
+            updateUserForm.email_input.default = current_user["email"]
+            updateUserForm.username_input.default = current_user["username"]
+            updateUserForm.contactNo_input.default = current_user["contactNo"]
+
+            updateUserForm.process()
 
     return render_template("user_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_pets=userPets, addPetForm=addPetForm, updateUserForm=updateUserForm, petsNavActivate="3px #00002A solid")
 
@@ -434,16 +456,14 @@ def pet_profile_wall(username, public_id):
     user_existence = Helper.user_existence_check(user_json)
     pet_json = Pet.get_a_pet(public_id)
     pet_existence = Helper.pet_existence_check(pet_json)
-    deals = Deal.get_all_deals()['data']
-    get_a_deal = Deal.get_a_deal(public_id)
-
-    forSaleForm = ForSaleForm()
 
     if user_existence is False:
         abort(404)
 
     if pet_existence is False:
         abort(404)
+
+    updatePetForm = UpdatePetForm()
 
     owner_list = User.get_pet_owners(pet_json["public_id"])["data"]
 
@@ -453,7 +473,24 @@ def pet_profile_wall(username, public_id):
 
         pet_json["birthday"] = Helper.datetime_str_to_datetime_obj(pet_json["birthday"])  
 
-    return render_template("pet_profile.html", title="Account", updateUserForm=UpdateUserForm(), public_id=public_id, current_user_page=current_user_page, current_user=current_user, user=user_json, pet=pet_json, owner_list=owner_list, forSaleForm=forSaleForm, postsNavActivate="3px #00002A solid")
+    if username == current_user["username"]:
+        current_user_page = True
+
+        if request.method == "POST":
+            if updatePetForm.validate_on_submit():
+                flash("ok", "success")
+
+                return redirect(url_for("pet_profile_wall", username=username, public_id=public_id))
+
+        elif request.method == "GET":
+            updatePetForm.petName_input.default = pet_json["pet_name"]
+            updatePetForm.bio_input.default = pet_json["bio"]
+            updatePetForm.birthday_input.default = pet_json["birthday"]
+            updatePetForm.sex_input.default = pet_json["sex"]
+
+            updatePetForm.process()
+
+    return render_template("pet_profile.html", title="Account", updatePetForm=updatePetForm, public_id=public_id, current_user_page=current_user_page, current_user=current_user, user=user_json, pet=pet_json, owner_list=owner_list, postsNavActivate="3px #00002A solid")
 
 @boop.route("/post/<public_id>", methods=["GET", "POST"])
 @login_required

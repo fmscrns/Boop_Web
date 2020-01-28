@@ -14,8 +14,8 @@ class Variable:
 
     @staticmethod
     def api_url():
-        # return "https://boopitapi.herokuapp.com"
-        return "http://127.0.0.1:5000"
+        return "https://boopitapi.herokuapp.com"
+        # return "http://127.0.0.1:5000"
         
 class Helper:
     @staticmethod
@@ -142,21 +142,27 @@ class User:
         return json.loads(petOwners_req.text)
 
     @staticmethod
+    def update_user(data):
+        current_user = User.get_current_user()
 
-    def update_user(username,data):
         form = data.form
+        fileForm = data.files
 
-        print('servicess!!!')
+        new_first_name = form.get("firstName_input")
+        new_last_name = form.get("lastName_input")
+        new_username = form.get("username_input")
+        new_email = form.get("email_input")
+        new_password = form.get("password_input")
+        new_contact_no = form.get("contactNo_input")
+        new_user_profPhoto_filename = current_user["profPhotoFilename"]
+        new_user_coverPhoto_filename = current_user["coverPhotoFilename"]
+        
+        if fileForm.get("user_profPhoto_input"):
+            new_user_profPhoto_filename = Helper.save_image(fileForm.get("user_profPhoto_input"))
+        if fileForm.get("user_coverPhoto_input"):
+            new_user_coverPhoto_filename = Helper.save_image(fileForm.get("user_coverPhoto_input"))
 
-        first_name = form.get("firstName_input")
-        last_name = form.get("lastName_input")
-        bio = form.get("bio_input")
-        username = form.get("username_input")
-        contact_no = form.get("contactNo_input")
-
-        userUpdate_req = requests.post("{}/user/{}".format(Variable.api_url(), username), json={"firstName" : first_name, "lastName" : last_name, "bio" : bio, "username" : username, "contactNo" : contact_no}, headers={"authorization" : session["booped_in"]})
-        print('---------------------------------------')
-        print (userUpdate_req)
+        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), current_user["username"]), json={"firstName" : new_first_name, "lastName" : new_last_name, "username" : new_username, "email" : new_email, "password" : new_password, "contactNo" : new_contact_no, "profPhotoFilename" : new_user_profPhoto_filename, "coverPhotoFilename" : new_user_coverPhoto_filename}, headers={"authorization" : session["booped_in"]})
         
         return json.loads(userUpdate_req.text)
 

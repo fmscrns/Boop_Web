@@ -1,0 +1,115 @@
+{% macro edit_pet_profile_modal(pet, updatePetForm) %}
+    <div class="modal" id="update-pet-modal" tabindex="-1" role="dialog" aria-labelledby="update-pet-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="update-pet-modal-title">Create pet profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="" enctype="multipart/form-data">
+                    <div id="updatePetForm-modal-body" class="modal-body">
+                        <div class="updatePet-form" class="container">
+                            {{ updatePetForm.hidden_tag() }}
+                            <fieldset class="form-group">
+                                <label>Your Pet's Photo</label>
+                                <div id="image-upload-layout" class="row">
+                                    <div class="col-md-auto">
+                                        <div class="form-group">
+                                            {% if updatePetForm.pet_coverPic_input.errors %}
+                                                {% for error in updatePetForm.pet_coverPic_input.errors %}
+                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                {% endfor %}
+                                            {% else %}
+                                                {{ updatePetForm.pet_coverPic_input(class="form-control-file") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <img id="pet-coverpic-preview" class="rounded mx-auto d-block">
+                                        <script>document.getElementById("pet-coverpic-preview").src = "{{ url_for('static', filename='images/{}'.format(pet.coverPhoto_filename)) }}";</script>
+                                    </div>
+                                </div>
+                                <label>Your Pet's Photo</label>
+                                <div id="image-upload-layout" class="row">
+                                    <div class="col-md-auto">
+                                        <div class="form-group">
+                                            {% if updatePetForm.pet_profPic_input.errors %}
+                                                {% for error in updatePetForm.pet_profPic_input.errors %}
+                                                    <span class="text-danger"> {{ error }} </span></br>
+                                                {% endfor %}
+                                            {% else %}
+                                                {{ updatePetForm.pet_profPic_input(class="form-control-file") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <img id="pet-profpic-preview" class="rounded mx-auto d-block">
+                                        <script>document.getElementById("pet-profpic-preview").src = "{{ url_for('static', filename='images/{}'.format(pet.profPhoto_filename)) }}";</script>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Pet Name</label>
+                                    {% if updatePetForm.petName_input.errors %}
+                                        {{ updatePetForm.petName_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updatePetForm.petName_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updatePetForm.petName_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Bio</label>
+                                    {% if updatePetForm.bio_input.errors %}
+                                        {{ updatePetForm.bio_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updatePetForm.bio_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updatePetForm.bio_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Birthday</label>
+                                    {% if updatePetForm.birthday_input.errors %}
+                                        {{ updatePetForm.birthday_input(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in updatePetForm.birthday_input.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ updatePetForm.birthday_input(class="form-control") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Sex</label>
+                                    {% for subfield in updatePetForm.sex_input %}
+                                        <div class="row container-fluid">
+                                            <div class="col-1">
+                                                {{ subfield }}
+                                            </div>
+                                            <div class="col-8">
+                                                {{ subfield.label }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {{ updatePetForm.updatePet_submit_input(class="btn btn-outline-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

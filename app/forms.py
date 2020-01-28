@@ -43,17 +43,27 @@ class LoginForm(FlaskForm):
 class UpdateUserForm(FlaskForm):
     firstName_input = StringField("First Name", validators=[DataRequired(), Length(min=2, max=50)])
     lastName_input = StringField("Last Name", validators=[DataRequired(), Length(min=2, max=50)])
-
-    bio_input = StringField("Bio", validators=[DataRequired(), Length(min=2, max=150)])
-    contactNo_input = StringField("Contact Number", validators=[DataRequired(), Length(min=2, max=50)])
+    email_input = StringField("Email", validators=[DataRequired(), Email()])
     username_input = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
+    contactNo_input = StringField("Contact Number", validators=[DataRequired(), Length(min=2, max=50)])
+    user_profPhoto_input = FileField("User Profile Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
+    user_coverPhoto_input = FileField("User Cover Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
+
+    updateUser_submit_input = SubmitField("Update")
+
+    def validate_email_input(self, email_input):
+        current_user = User.get_current_user()
+        email_resp = Auth.verify_email(email_input.data)
+
+        if email_resp["status"] == "success" and current_user["email"] != email_input.data:
+
+            raise ValidationError("This email address has already been taken.")
 
     def validate_username_input(self, username_input):
         current_user = User.get_current_user()
         username_resp = Auth.verify_username(username_input.data)
-        
+
         if username_resp["status"] == "success" and current_user["username"] != username_input.data:
-            print("NGANO USERNAME")
             raise ValidationError("This username has already been taken.")
 
 class AddPetForm(FlaskForm):
@@ -73,8 +83,6 @@ class UpdatePetForm(FlaskForm):
     bio_input = StringField("Pet Bio", validators=[Length(min=2, max=200)])
     birthday_input = DateField("Pet Birthday", format="%Y-%m-%d")
     sex_input = RadioField("Sex", coerce=str, choices=[("Male", "Male"), ("Female", "Female")], validators=[InputRequired()])
-    specie_input = SelectField("Specie", coerce=str, choices=[], validators=[InputRequired()])
-    breed_input = SelectField("Breed", coerce=str, choices=[], validators=[InputRequired()])
     pet_profPic_input = FileField("Pet Profile Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
     pet_coverPic_input = FileField("Pet Cover Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
 
