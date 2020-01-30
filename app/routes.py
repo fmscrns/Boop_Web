@@ -176,7 +176,7 @@ def admin_service_type():
     users = User.get_all_users()["data"]
     get_species = Specie.get_all_specie()["data"]
     print(get_species)
-    get_breeds = Breed.get_all_breeds()["data"]
+    get_breeds = Breed.get_all_breeds()
 
     addServiceTypeForm = AddServiceTypeForm()
 
@@ -493,7 +493,7 @@ def delete_post(public_id, username):
 def delete_species(public_id):
     current_user = User.get_current_user()
     get_specie = Specie.get_all_specie()["data"]
-    get_breeds = Breed.get_all_breeds()["data"]
+    get_breeds = Breed.get_all_breeds()
      
     Specie.delete_species(public_id)
 
@@ -805,7 +805,7 @@ def add_breed(public_id):
     users = User.get_all_users()["data"]
 
     get_specie = Specie.get_all_specie()["data"]
-    get_breeds = Breed.get_all_breeds()["data"]
+    get_breeds = Breed.get_all_breeds()
 
 
     addBreedForm = AddBreedForm()
