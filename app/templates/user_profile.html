@@ -31,18 +31,20 @@
                             <input type="search" class="form-control" id="acc-search" placeholder="Search Boop">
                             {{ gallery_6() }}
                         </div>
-                        <a class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ likesNavActivate }};">
+                        <a class="col account-actionPanel-item text-center" >
                             Services
                         </a>
                         <button type="button" data-toggle="modal" data-target="#addServiceModal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
                             Add Services
                         </button>
+                        <div id="acc-leftSection" class="container-fluid" style="padding:0;margin:0;">
+                        <br>
                         {% for service in user_service %}
-                        
-                        {{ service.service_name }}
-                                           
-
+                            <h5>{{ service.service_name }}</h5>
                         {% endfor %}
+                        
+                        </div>
+                       
                        
                         <div id="flash-primary-cont" class="container-fluid">
                             {% with messages = get_flashed_messages(with_categories=true) %}

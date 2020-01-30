@@ -132,15 +132,16 @@ def home():
 @login_required
 def all_users():
     current_user = User.get_current_user()
-    print(current_user)
 
     users = User.get_all_users()["data"]
     get_species = Specie.get_all_specie()["data"]
-    print(get_species)
-    get_breeds = Breed.get_all_breeds()["data"]
+    get_breeds = Breed.get_all_breeds()
 
     addSpeciesForm = AddSpeciesForm()
     addBreedForm = AddBreedForm()
+
+
+
 
     if request.method == "POST":
         print('add species!')
@@ -216,8 +217,12 @@ def user_profile_pets(username):
         abort(404)
 
     userPets = Pet.get_user_pets(username)["data"]
-    user_service = Services.get_user_service(username)
+    user_service = Services.get_user_service(username)["data"]
+    print(user_service)
     all_services = Services.get_all_services()
+
+    for x in user_service:
+        print(x)
 
     addPetForm = AddPetForm()
     updateUserForm = UpdateUserForm()
@@ -391,11 +396,13 @@ def user_profile_likes(username):
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
     user_existence = Helper.user_existence_check(user_json)
+    user_pets = Pet.get_user_pets(username)["data"]
 
     if user_existence is False:
         abort(404)
 
     updateUserForm = UpdateUserForm()
+    addPetForm = AddPetForm()
 
     if username == current_user["username"]:
         current_user_page = True

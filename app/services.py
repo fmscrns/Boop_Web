@@ -394,7 +394,6 @@ class Photo:
     def add_a_photo():
         addPhoto_req = requests.post("{}/photo/")
 
-
 class Services:
     @staticmethod
     def create_service(data):
