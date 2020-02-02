@@ -14,8 +14,8 @@ class Variable:
 
     @staticmethod
     def api_url():
-        return "https://boopitapi.herokuapp.com"
-        # return "http://127.0.0.1:5000"
+        # return "https://boopitapi.herokuapp.com"
+        return "http://127.0.0.1:5000"
         
 class Helper:
     @staticmethod
@@ -150,9 +150,6 @@ class User:
 
         new_first_name = form.get("firstName_input")
         new_last_name = form.get("lastName_input")
-        new_username = form.get("username_input")
-        new_email = form.get("email_input")
-        new_password = form.get("password_input")
         new_contact_no = form.get("contactNo_input")
         new_user_profPhoto_filename = current_user["profPhotoFilename"]
         new_user_coverPhoto_filename = current_user["coverPhotoFilename"]
@@ -162,7 +159,7 @@ class User:
         if fileForm.get("user_coverPhoto_input"):
             new_user_coverPhoto_filename = Helper.save_image(fileForm.get("user_coverPhoto_input"))
 
-        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), current_user["username"]), json={"firstName" : new_first_name, "lastName" : new_last_name, "username" : new_username, "email" : new_email, "password" : new_password, "contactNo" : new_contact_no, "profPhotoFilename" : new_user_profPhoto_filename, "coverPhotoFilename" : new_user_coverPhoto_filename}, headers={"authorization" : session["booped_in"]})
+        userUpdate_req = requests.put("{}/user/{}".format(Variable.api_url(), current_user["username"]), json={"firstName" : new_first_name, "lastName" : new_last_name, "contactNo" : new_contact_no, "profPhotoFilename" : new_user_profPhoto_filename, "coverPhotoFilename" : new_user_coverPhoto_filename}, headers={"authorization" : session["booped_in"]})
         
         return json.loads(userUpdate_req.text)
 

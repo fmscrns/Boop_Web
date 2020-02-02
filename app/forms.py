@@ -43,8 +43,6 @@ class LoginForm(FlaskForm):
 class UpdateUserForm(FlaskForm):
     firstName_input = StringField("First Name", validators=[DataRequired(), Length(min=2, max=50)])
     lastName_input = StringField("Last Name", validators=[DataRequired(), Length(min=2, max=50)])
-    email_input = StringField("Email", validators=[DataRequired(), Email()])
-    username_input = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
     contactNo_input = StringField("Contact Number", validators=[DataRequired(), Length(min=2, max=50)])
     user_profPhoto_input = FileField("User Profile Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])
     user_coverPhoto_input = FileField("User Cover Picture", validators=[FileAllowed(["jpg", "jpeg", "png"])])

@@ -119,32 +119,6 @@
                                         {{ updateUserForm.contactNo_input(class="form-control") }}
                                     {% endif %}
                                 </div>
-                                <div class="form-group">
-                                    <label>Username</label>
-                                    {% if updateUserForm.username_input.errors %}
-                                        {{ updateUserForm.username_input(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in updateUserForm.username_input.errors %}
-                                                <span> {{ error }} </span>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ updateUserForm.username_input(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                                <div class="form-group">
-                                    <label>Email Address</label>
-                                    {% if updateUserForm.email_input.errors %}
-                                        {{ updateUserForm.email_input(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in updateUserForm.email_input.errors %}
-                                                <span> {{ error }} </span>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ updateUserForm.email_input(class="form-control") }}
-                                    {% endif %}
-                                </div>
                             </fieldset>
                         </div>
                     </div>
