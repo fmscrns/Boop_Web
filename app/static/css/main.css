@@ -1,20 +1,12 @@
 body {
     padding:0;
 }
-@media (max-width:1200px) {
-    #welcome-navbar-login {
-        display:none;
-    }
-}
-@media (max-width:991.98px) {
-    #navbar-dropdown {
-        display:none;
-    }
-}
-@media (min-width:992px) {
-    .nav-item-collapse {
-        display:none;
-    }
+#signupForm-inputSectionOne-gradient {
+    border-top-right-radius: 8.5px;
+    border-bottom-right-radius: 8.5px;
+    background: linear-gradient(0deg, rgb(246,220,181), rgb(188,208,254), rgb(197,212,249));
+    padding-left: 0;
+    padding-right: 0;
 }
 @media (max-width:767px) {
     #account-profPic {
@@ -79,15 +71,30 @@ body {
         right:0;
     }
 }
+@media (max-width:991.98px) {
+    #navbar-dropdown {
+        display:none;
+    }
+}
+@media (min-width:992px) {
+    .nav-item-collapse {
+        display: none;
+    }
+}
 @media (max-width:1200px) {
+    #welcome-navbar-login {
+        display:none;
+    }
     #welcomeForm-illustrationSection {
         display: none;
     }
     #signupForm-inputSectionOne-gradient {
-        border-radius:8.5px;
-        padding-left:0;
-        padding-right:0;
+        border-radius: 8.5px;
+        padding-left: 0;
+        padding-right: 0;
         overflow: hidden;
+        background: red;
+        margin
     }
     #signupForm-inputSectionTwo-gradient {
         border-radius:8.5px;
@@ -143,13 +150,6 @@ body {
     }
 }
 @media (min-width:1201px) {
-    #signupForm-inputSectionOne-gradient {
-        border-top-right-radius:8.5px;
-        border-bottom-right-radius:8.5px;
-        background: linear-gradient(0deg, rgb(246,220,181), rgb(188,208,254), rgb(197,212,249));
-        padding-left:0;
-        padding-right:0;
-    }
     #signupForm-inputSectionTwo-gradient {
         border-top-right-radius:8.5px;
         border-bottom-right-radius:8.5px;
