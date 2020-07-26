@@ -80,7 +80,7 @@
                                             </div>
                                             <div id="account-primary-editProfile-btn-cont" class="col-4 align-self-center">
                                                 {% if current_user_page == True %}
-                                                    <a href="{{ url_for('pet_settings_passport', username=user.username, public_id=pet.public_id) }}" id="gear-btn2" class="btn btn-outline-primary">
+                                                    <a href="{{ url_for('pet_settings_adoption', username=user.username, public_id=pet.public_id) }}" id="gear-btn2" class="btn btn-outline-primary">
                                                         <div style="width:25px;margin:0 2px -5px 2px;">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                 viewBox="150 -150 500 500" style="enable-background:new 150 -150 500 500;" xml:space="preserve">
@@ -100,6 +100,10 @@
                                                     </a>
                                                     <button type="button" data-toggle="modal" data-target="#update-pet-modal" id="edit-pet-modal-title" class="btn btn-outline-primary float-right">
                                                         Edit Profile
+                                                    </button>
+                                                {% else %}
+                                                    <button type="button" class="btn btn-primary">
+                                                        Request for Adoption
                                                     </button>
                                                 {% endif %}
                                             </div>
@@ -136,6 +140,10 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                        {% else %}
+                                            <button type="button" class="btn btn-primary">
+                                                Request for Adoption
+                                            </button>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -165,7 +173,7 @@
                                             <small>
                                                 <span class="text-muted">
                                                     Owned by 
-                                                    <a class="owner_link" href="{{ url_for('user_profile_pets', username=owner_list[0].username) }}">
+                                                    <a class="owner_link" href="{{ url_for('user_profile_pets', username=owner_list[0].username, pet_page_no=1) }}">
                                                         {{ owner_list[0].first_name }} {{ owner_list[0].last_name }}
                                                     </a>
                                                 </span>

@@ -33,9 +33,12 @@
                     <div id="loginForm-inputSection-gradient" class="col">
                         <div id="welcomeForm-inputSection-cont">
                             <div id="welcomeForm-inputSection">
+                                <a id="secondary-nameplate" href="{{ url_for('welcome') }}">
+                                    <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate-dark.svg') }}" style="width:80px;">
+                                </a>
                                 <form method="POST" action="">
                                     {{ loginForm.hidden_tag() }}
-                                    <fieldset class="form-group">
+                                    <fieldset class="mt-4 form-group">
                                         <div class="form-group">
                                             <label>Username or Email Address</label>
                                             {% if loginForm.usernameOrEmail_input.errors %}

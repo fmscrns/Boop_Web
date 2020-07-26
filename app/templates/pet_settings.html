@@ -30,9 +30,6 @@
                     <div class="col-4" style="padding:0;">
                         <div id="acc-leftSection" class="container-fluid" style="padding:0;margin:0;">
                             <div class="list-group">
-                                <a href="{{ url_for('pet_settings_passport', username=user.username, public_id=pet.public_id) }}" class="list-group-item list-group-item-action {{ passportActive }}">
-                                    Set up pet passport
-                                </a>
                                 {% if pet.status == 1 %}
                                     <a href="{{ url_for('pet_settings_adoption', username=user.username, public_id=pet.public_id) }}" class="list-group-item list-group-item-action {{ adoptionActive }}">
                                         Close pet for adoption
@@ -59,20 +56,7 @@
                 <div id="ha-leftSection-space" class="col-4"></div>
                 <div id="ha-rightSection" class="col">
                     <div class="container-fluid">
-                        {% if passportActive is defined %}
-                            <div class="ps-rp-display container-fluid">
-                                <div class="row mt-3">
-                                    <div class="col">
-                                        <h3>Settings</h3>
-                                    </div>
-                                    <div class="w-100"></div>
-                                    <div class="col">
-                                        Set up pet passport
-                                    </div>
-                                </div>
-                                <hr>
-                            </div>
-                        {% elif adoptionActive is defined %}
+                        {% if adoptionActive is defined %}
                             {% if pet.status == 1 %}
                                 <form method="POST" action="">
                                     {{ closeAdoptionForm.hidden_tag() }}

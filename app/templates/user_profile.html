@@ -74,7 +74,9 @@
                                                     <button type="button" data-toggle="modal" data-target="#update-user-modal" id="edit-user-modal-title" class="btn btn-outline-primary float-right">
                                                         Edit Profile
                                                     </button>
-                                            {% endif %}
+                                                {% else %}
+                                                    <button type="button ml-5" class="btn btn-primary">Add as a Friend</button>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -92,13 +94,13 @@
                         </div>
                         <div id="account-action-panel" class="container-fluid">
                             <div class="row">
-                                <a href="{{ url_for('user_profile_pets', username=user.username) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ petsNavActivate }};">
+                                <a href="{{ url_for('user_profile_pets', username=user.username, pet_page_no=1) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ petsNavActivate }};">
                                     Pets
                                 </a>
-                                <a href="{{ url_for('user_profile_posts', username=user.username) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ postsNavActivate }};">
+                                <a href="{{ url_for('user_profile_posts', username=user.username, post_page_no=1) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ postsNavActivate }};">
                                     Posts
                                 </a>
-                                <a href="{{ url_for('user_profile_gallery', username=user.username) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ galleryNavActivate }};">
+                                <a href="{{ url_for('user_profile_gallery', username=user.username, post_page_no=1) }}" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ galleryNavActivate }};">
                                     Gallery
                                 </a>
                                 <a href="#" class="col account-actionPanel-item text-center" style="border-radius:0;border-bottom:{{ likesNavActivate }};">
@@ -125,11 +127,65 @@
                                             <div class="w-100" style="height:20px;"></div>
                                         {% endif %}
                                     {% endfor %}
-                                </div>
-                                <div id="acc-content-pet-list" class="list-group">
-                                    {% for pet in user_pets %}
-                                        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                                    {% endfor %}
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            {% if pet_page_no == 1 %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_pets', username=user.username, pet_page_no=pet_page_no-1) }}">
+                                                        Previous
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ url_for('user_profile_pets', username=user.username, pet_page_no=pet_page_no) }}">
+                                                    {{ pet_page_no }}
+                                                </a>
+                                            </li>
+                                            {% if paginate_btn_one == "success" %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_pets', username=user.username, pet_page_no=pet_page_no + 1) }}">
+                                                        {{ pet_page_no + 1 }}
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link">
+                                                        {{ pet_page_no + 1 }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if paginate_btn_two == "success" %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_pets', username=user.username, pet_page_no=pet_page_no + 2) }}">
+                                                        {{ pet_page_no + 2 }}
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link">
+                                                        {{ pet_page_no + 2 }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if paginate_btn_one == "success" %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_pets', username=user.username, pet_page_no=pet_page_no+1) }}">
+                                                        Next
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link">
+                                                        Next
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         {% elif user_posts is defined %}
@@ -146,10 +202,74 @@
                                     {% for post in user_posts %}
                                         {{ content_item2(post) }}
                                     {% endfor %}
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            {% if post_page_no == 1 %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_posts', username=user.username, post_page_no=post_page_no-1) }}">
+                                                        Previous
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ url_for('user_profile_posts', username=user.username, post_page_no=post_page_no) }}">
+                                                    {{ post_page_no }}
+                                                </a>
+                                            </li>
+                                            {% if paginate_btn_one == "success" %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_posts', username=user.username, post_page_no=post_page_no + 1) }}">
+                                                        {{ post_page_no + 1 }}
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link">
+                                                        {{ post_page_no + 1 }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if paginate_btn_two == "success" %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_posts', username=user.username, post_page_no=post_page_no + 2) }}">
+                                                        {{ post_page_no + 2 }}
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link">
+                                                        {{ post_page_no + 2 }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if paginate_btn_one == "success" %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_posts', username=user.username, post_page_no=post_page_no+1) }}">
+                                                        Next
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link">
+                                                        Next
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         {% elif user_gallery is defined %}
                             <div id="account-content-gallery-panel" class="container-fluid">
+                                {% if user_gallery is defined and user_gallery|length == 0 %}
+                                    <div class="container-fluid">
+                                        @{{ user.username }} hasn't created any media yet.
+                                    </div>
+                                {% endif %}
                                 <div class="row mp-0 mt-2">
                                     {% for photo in user_gallery %}
                                         {% if loop.length == 1 %}
@@ -270,6 +390,65 @@
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            {% if post_page_no == 1 %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_gallery', username=user.username, post_page_no=post_page_no-1) }}">
+                                                        Previous
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ url_for('user_profile_gallery', username=user.username, post_page_no=post_page_no) }}">
+                                                    {{ post_page_no }}
+                                                </a>
+                                            </li>
+                                            {% if paginate_btn_one == "success" %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_gallery', username=user.username, post_page_no=post_page_no + 1) }}">
+                                                        {{ post_page_no + 1 }}
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link">
+                                                        {{ post_page_no + 1 }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if paginate_btn_two == "success" %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_gallery', username=user.username, post_page_no=post_page_no + 2) }}">
+                                                        {{ post_page_no + 2 }}
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link">
+                                                        {{ post_page_no + 2 }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if paginate_btn_one == "success" %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ url_for('user_profile_gallery', username=user.username, post_page_no=post_page_no+1) }}">
+                                                        Next
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link">
+                                                        Next
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         {% endif %}

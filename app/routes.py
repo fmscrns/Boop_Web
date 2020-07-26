@@ -83,7 +83,7 @@ def login():
             
             if loginUser_json["status"] == "success":
                 Variable.store_session(loginUser_json["authorization"])
-
+                print("H {}".format(loginUser_json["authorization"]))
                 flash(loginUser_json["payload"], "success")
 
                 return redirect(url_for("home"))
@@ -124,9 +124,9 @@ def home():
 
     return render_template("home.html", title="Home", current_user=current_user, all_posts=allPosts, shareContentForm=shareContentForm, username=current_user["username"])
 
-@boop.route("/<username>/pets", methods=["GET", "POST", "PUT"])
+@boop.route("/<username>/pets/<pet_page_no>", methods=["GET", "POST"])
 @login_required
-def user_profile_pets(username):
+def user_profile_pets(username, pet_page_no):
     current_user_page = False
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
@@ -135,7 +135,10 @@ def user_profile_pets(username):
     if user_existence is False:
         abort(404)
 
-    userPets = Pet.get_user_pets(username)["data"]
+    userPets = Pet.get_user_pets(username, pet_page_no)["data"]
+
+    paginate_btn_one = Pet.check_user_pets_pagination(username, int(pet_page_no)+1)["status"]
+    paginate_btn_two = Pet.check_user_pets_pagination(username, int(pet_page_no)+2)["status"]
 
     addPetForm = AddPetForm()
     updateUserForm = UpdateUserForm()
@@ -189,12 +192,24 @@ def user_profile_pets(username):
 
             updateUserForm.process()
 
-    return render_template("user_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_pets=userPets, addPetForm=addPetForm, updateUserForm=updateUserForm, petsNavActivate="3px #00002A solid")
+    return render_template(
+        "user_profile.html", 
+        paginate_btn_one=paginate_btn_one,
+        paginate_btn_two=paginate_btn_two,
+        pet_page_no=int(pet_page_no),
+        title="Account",
+        current_user_page=current_user_page,
+        current_user=current_user,
+        user=user_json,
+        user_pets=userPets,
+        addPetForm=addPetForm,
+        updateUserForm=updateUserForm,
+        petsNavActivate="3px #00002A solid"
+    )
 
-
-@boop.route("/<username>/posts", methods=["GET", "POST"])
+@boop.route("/<username>/posts/<post_page_no>", methods=["GET", "POST"])
 @login_required
-def user_profile_posts(username):
+def user_profile_posts(username, post_page_no):
     current_user_page = False
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
@@ -203,7 +218,7 @@ def user_profile_posts(username):
     if user_existence is False:
         abort(404)
 
-    postList_req = Post.get_user_posts(username)["data"]
+    postList_req = Post.get_user_posts(username, post_page_no)["data"]
 
     userPosts = []
     for x, post in enumerate(postList_req):
@@ -222,13 +237,14 @@ def user_profile_posts(username):
         
         userPosts.append(dict)
 
+    paginate_btn_one = Post.check_user_posts_pagination(username, int(post_page_no)+1)["status"]
+    paginate_btn_two = Post.check_user_posts_pagination(username, int(post_page_no)+2)["status"]
+
     shareContentForm = ShareContentForm()
     updateUserForm = UpdateUserForm()
 
     if username == current_user["username"]:
         current_user_page = True
-
-        userPets_json = Pet.get_user_pets(username)
 
         if request.method == "POST":
             if shareContentForm.validate_on_submit():
@@ -238,7 +254,7 @@ def user_profile_posts(username):
                     
                     flash(shareContent_json["payload"], "success")
                     
-                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
+                    return redirect(url_for("user_profile_posts", username=current_user["username"], post_page_no=1))
 
                 else:
                     flash(shareContent_json["payload"], "danger")
@@ -254,7 +270,7 @@ def user_profile_posts(username):
 
                     current_user = User.get_current_user()
 
-                    return redirect(url_for("user_profile_posts", username=current_user["username"]))
+                    return redirect(url_for("user_profile_posts", username=current_user["username"], post_page_no=1))
                 
                 else:
                     flash(updateUser_json["payload"], "danger")
@@ -274,11 +290,24 @@ def user_profile_posts(username):
 
             updateUserForm.process()
 
-    return render_template("user_profile.html", title="Account", current_user_page=current_user_page, current_user=current_user, user=user_json, user_posts=userPosts, shareContentForm=shareContentForm, updateUserForm=updateUserForm, postsNavActivate="3px #00002A solid")
+    return render_template(
+        "user_profile.html",
+        paginate_btn_one=paginate_btn_one, 
+        paginate_btn_two=paginate_btn_two, 
+        post_page_no=int(post_page_no), 
+        title="Account",
+        current_user_page=current_user_page,
+        current_user=current_user,
+        user=user_json,
+        user_posts=userPosts,
+        shareContentForm=shareContentForm,
+        updateUserForm=updateUserForm,
+        postsNavActivate="3px #00002A solid"
+    )
 
-@boop.route("/<username>/gallery", methods=["GET", "POST"])
+@boop.route("/<username>/gallery/<post_page_no>", methods=["GET", "POST"])
 @login_required
-def user_profile_gallery(username):
+def user_profile_gallery(username, post_page_no):
     current_user_page = False
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)
@@ -287,13 +316,16 @@ def user_profile_gallery(username):
     if user_existence is False:
         abort(404)
 
-    userPosts_req =  Post.get_user_posts(username)["data"]
-    userGallery = []
+    userPosts_req =  Post.get_user_posts(username, post_page_no)["data"]
     
+    userGallery = [] 
     for post in userPosts_req:
         if post["photo"] != None:
             userGallery.append(post["photo"])
     
+    paginate_btn_one = Post.check_user_posts_pagination(username, int(post_page_no)+1)["status"]
+    paginate_btn_two = Post.check_user_posts_pagination(username, int(post_page_no)+2)["status"]
+
     shareContentForm = ShareContentForm()
     updateUserForm = UpdateUserForm()
 
@@ -342,7 +374,20 @@ def user_profile_gallery(username):
 
             updateUserForm.process()
 
-    return render_template("user_profile.html", title="Account", updateUserForm=updateUserForm, current_user_page=current_user_page, current_user=current_user, user=user_json, user_gallery=userGallery, shareContentForm=shareContentForm, galleryNavActivate="3px #00002A solid")
+    return render_template(
+        "user_profile.html",
+        paginate_btn_one=paginate_btn_one,
+        paginate_btn_two=paginate_btn_two,
+        post_page_no=int(post_page_no),
+        title="Account",
+        updateUserForm=updateUserForm,
+        current_user_page=current_user_page,
+        current_user=current_user,
+        user=user_json,
+        user_gallery=userGallery,
+        shareContentForm=shareContentForm,
+        galleryNavActivate="3px #00002A solid"
+    )
 
 @boop.route("/<username>/pets/<public_id>", methods=["GET", "POST"])
 @boop.route("/<username>/pets/<public_id>/wall", methods=["GET", "POST"])
@@ -453,26 +498,9 @@ def logout():
     return redirect(url_for("welcome"))
 
 @boop.route("/<username>/pets/<public_id>/settings", methods=["GET", "POST"])
-@boop.route("/<username>/pets/<public_id>/settings/passport", methods=["GET", "POST"])
-@login_required
-def pet_settings_passport(username, public_id):
-    current_user = User.get_current_user()
-    user_json = User.get_a_user(username)
-    user_existence = Helper.user_existence_check(user_json)
-
-    if user_existence is False:
-        abort(404)
-
-    pet_json = Pet.get_a_pet(public_id)
-    pet_existence = Helper.pet_existence_check(pet_json)
-
-    if pet_existence is False:
-        abort(404)
-    
-    return render_template("pet_settings.html", title="Account", current_user=current_user, user=user_json, pet=pet_json, passportActive="active")
-
 @boop.route("/<username>/pets/<public_id>/settings/adoption", methods=["GET", "POST"])
 @login_required
+@access_to_pet_owners_only
 def pet_settings_adoption(username, public_id):
     current_user = User.get_current_user()
     user_json = User.get_a_user(username)

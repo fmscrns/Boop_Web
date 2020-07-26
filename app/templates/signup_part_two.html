@@ -24,7 +24,7 @@
     {% block content %}
         <div class="input-group mb-3 justify-content-center">
             <div id="signup-form">
-                <div class="row">
+                <div id="signupForm-action-cont" class="row">
                     <div id="welcomeForm-illustrationSection" class="col-md-auto" style="background: url('{{ url_for('static', filename='assets/rocketship-atmosphere.svg') }}') center no-repeat;">
                         <a href="{{ url_for('welcome') }}">
                             <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate.svg') }}" style="width:80px;margin:25px 0 0 15px;">
@@ -33,9 +33,12 @@
                     <div id="signupForm-inputSectionTwo-gradient" class="col">
                         <div id="welcomeForm-inputSection-cont">
                             <div id="welcomeForm-inputSection">
+                                <a id="secondary-nameplate" href="{{ url_for('welcome') }}">
+                                    <img class="boop-nameplate" src="{{ url_for('static', filename='assets/boop-nameplate-dark.svg') }}" style="width:80px;">
+                                </a>
                                 <form method="POST" action="">
                                     {{ signupPartTwoForm.hidden_tag() }}
-                                    <fieldset class="form-group">
+                                    <fieldset class="mt-4 form-group">
                                         <div class="form-group">
                                             <label>Contact Number</label>
                                             {% if signupPartTwoForm.contactNo_input.errors %}

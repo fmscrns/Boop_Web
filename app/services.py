@@ -198,11 +198,16 @@ class Pet:
         return json.loads(getPet_req.text)
 
     @staticmethod
-    def get_user_pets(username):
-        getUserPets_req = requests.get("{}/pet/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
+    def get_user_pets(username, pet_page_no):
+        getUserPets_req = requests.get("{}/pet/user/{}/{}".format(Variable.api_url(), username, pet_page_no), headers={"authorization" : session["booped_in"]})
         
         return json.loads(getUserPets_req.text)
 
+    @staticmethod
+    def check_user_pets_pagination(username, pet_page_no):
+        check_user_pets_pagination = requests.get("{}/pet/user/{}/{}/check".format(Variable.api_url(), username, pet_page_no), headers={"authorization" : session["booped_in"]})
+
+        return json.loads(check_user_pets_pagination.text)
         
     @staticmethod
     def delete_pet(public_id):
@@ -343,11 +348,15 @@ class Post:
 
 
     @staticmethod
-    def get_user_posts(username):
-        getUserPost_req = requests.get("{}/post/user/{}".format(Variable.api_url(), username), headers={"authorization" : session["booped_in"]})
+    def get_user_posts(username, post_page_no):
+        getUserPost_req = requests.get("{}/post/user/{}/{}".format(Variable.api_url(), username, post_page_no), headers={"authorization" : session["booped_in"]})
 
         return json.loads(getUserPost_req.text)
 
+    def check_user_posts_pagination(username, post_page_no):
+        check_user_posts_pagination = requests.get("{}/post/user/{}/{}/check".format(Variable.api_url(), username, post_page_no), headers={"authorization" : session["booped_in"]})
+
+        return json.loads(check_user_posts_pagination.text)
 
     @staticmethod
     def get_a_post(post_id):
